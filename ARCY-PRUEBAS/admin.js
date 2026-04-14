@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const logoutBtn = document.getElementById('logoutBtn');
+  const logoutBtn = document.getElementById('cerrarSesion');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function () {
       localStorage.removeItem('token');
