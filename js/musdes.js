@@ -641,7 +641,7 @@ function applyAllFilters() {
 
 
     // Render final
-    displayFavorites(3, result);
+    displayFavorites(CURRENT_LIMIT, result);
 }
 
 // Evento boton aplicar filtros
