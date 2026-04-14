@@ -711,7 +711,7 @@ document.getElementById('filterErase').addEventListener('click', () => {
 
 
 // Función para mostrar los museos en la página
-async function displayFavorites(maxMuseos = Infinity, filteredList = null) {
+async function displayFavorites(maxMuseos = CURRENT_LIMIT, filteredList = null) {
     const renderToken = ++CURRENT_RENDER_TOKEN;
 
     const favoritePlaces = filteredList || await fetchPlaces();
@@ -1334,27 +1334,54 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-// Inicializar la pantalla de museos cuando el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', () => {
-      const filterIcon = document.getElementById("filter-icon");
+document.addEventListener('DOMContentLoaded', async () => {
+    const filterIcon = document.getElementById("filter-icon");
     const filtersBox = document.getElementById("filters-expanded");
 
     filterIcon.addEventListener("click", () => {
-        
-    filtersBox.style.display =
-        filtersBox.style.display === "none" ? "block" : "none";
-});
-// Click dentro del contenedor → no cerrar
-filtersBox.addEventListener("click", (e) => {
-    e.stopPropagation();
-});
+        filtersBox.style.display =
+            filtersBox.style.display === "none" ? "block" : "none";
+    });
 
-// Click fuera → cerrar
-document.addEventListener("click", (e) => {
-    if (!filtersBox.contains(e.target) && e.target !== filterIcon) {
-        filtersBox.style.display = "none";
-    }
+    // Click dentro del contenedor → no cerrar
+    filtersBox.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
+    // Click fuera → cerrar
+    document.addEventListener("click", (e) => {
+        if (!filtersBox.contains(e.target) && e.target !== filterIcon) {
+            filtersBox.style.display = "none";
+        }
+    });
+
+    CURRENT_LIMIT = 10;
+    const STEP = 10;
+
+    await displayFavorites(CURRENT_LIMIT);
+    initUserLocation();
+
+    const showMoreBtn = document.getElementById("showMoreBtn");
+    const showLessBtn = document.getElementById("showLessBtn");
+
+    showMoreBtn.style.display = "inline-block";
+
+    showMoreBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT += STEP;
+        await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
+
+        showLessBtn.style.display = "inline-block";
+
+        if (CURRENT_LIMIT >= ALL_MUSEOS.length) {
+            showMoreBtn.style.display = "none";
+        }
+    });
+
+    showLessBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT = 10;
+        await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
+
+        showMoreBtn.style.display = "inline-block";
+        showLessBtn.style.display = "none";
+    });
 });
-    displayFavorites(3);
-     initUserLocation();
-  });
