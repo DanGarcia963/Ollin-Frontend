@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="update_data">Actualizar Datos</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/styles_perfil.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/inicio.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    <style>
+        .scrollbar-hide {
+        scrollbar-width: none; /* Firefox */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        }
+
+        /* Mostrar scrollbar solo al hacer hover */
+        .hover\\:scrollbar-default:hover {
+        scrollbar-width: auto; /* Firefox */
+        }
+
+        .hover\\:scrollbar-default:hover::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        }
+
+        .hover\\:scrollbar-default:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        }
+
+        .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
+        background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="flex h-screen">
+        <aside id="sidebar" class="w-20 bg-black text-white flex flex-col items-center py-4 justify-between">
+            <div class="space-y-6">
+                <div id="logo" class="w-12 h-12 bg-white rounded-lg"></div>
+
+                <!-- Menu -->
+                <div class="flex flex-col items-center space-y-6 mt-10">
+                    <a href="/museosAdmin" class="btn-sidebar"> 
+                        <span data-i18n="museums">Museos</span>
+                    </a>
+
+                     <a href="/gestionUsers" class="btn-sidebar"> 
+                        <span>Usuarios</span>
+                    </a>
+                    <button id="btn-calendar">📅</button>
+                    <a href="/cuentaAdmin" class="btn-sidebar"> 
+                        <span>Cuenta</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="container-data">
+                <div class="userH">
+                    <p id="name"></p>
+                    <p id="type">Administrador</p>
+                </div>
+                <form id="updateName" class="form-profile" novalidate>
+                    <br> 
+                    <label for="nombre" class="label-profile" id="labelName" data-i18n="name_placeholder">Nombre(s)</label><br>
+                    <div class="container-input" id="contInputName">                
+                        <div class="nombre-container">
+                            <input type="nombre" id="nombre" name="nombre" placeholder="" data-i18n-placeholder="name_placeholder" class="input-profile" required disabled>              
+                        </div>
+                        <button type="button" class="btn-icon" id="editName">
+                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                        </button>
+                    </div>
+                </form>
+                <form id="updatelastname" class="form-profile" novalidate>
+                    <br>
+                    <label for="lastname" class="label-profile" id="labellastname" data-i18n="lastname_placeholder">Apellido(s)</label><br>
+                    <div class="container-input" id="contInputlastname">                
+                        <div class="lastname-container">
+                            <input type="lastname" id="lastname" name="lastname" placeholder="" data-i18n-placeholder="lastname_placeholder" class="input-profile" required disabled>              
+                        </div>
+                        <button type="button" class="btn-icon" id="editlastname">
+                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                        </button>
+                    </div>
+                </form>
+
+                <form id="updatePassword" class="form-profile" novalidate>
+                    <br>
+                    <label for="password" class="label-profile" id="labelPassword" data-i18n="password_placeholder">Contraseña</label><br>
+                    <div class="container-input" id="contInputPassword">                
+                        <div class="password-container">
+                            <input type="password" id="password" name="password" placeholder="" data-i18n-placeholder="password_placeholder" class="input-profile" required disabled>              
+                            <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar contraseña" id="togglePassword">
+                        </div>
+                        <button type="button" class="btn-icon" id="editPassword">
+                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                        </button>
+                    </div>
+                </form>
+                <div class="container-delete">
+                    <button type="button" class="btn-deleteAcc" id="btnDeleteAccount">
+                        <h3 style="margin: 0;" data-i18n="delete_account">Borrar cuenta</h3>
+                        <img src="/assets/icons/basureroIcon.png" width="32px" height="32px">
+                    </button>
+                    <!-- Ventana modal -->
+                    <div class="container-modal" id="cModalAlertDelete">
+                    </div>
+                </div>
+                
+                
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module" src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/Admin/cambiar_datos_Admin.js"></script>
+    <script type="module" src="/js/Hide.js"></script>
+</body>
+</html>

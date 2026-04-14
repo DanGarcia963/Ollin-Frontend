@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Inicio de Sesión</title>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/styles_login.css">
+    <script type="module" src="js/Admin/connect_login_Admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    <script defer src="js/i18n.js"></script>
+</head>
+<body>
+    <div class="containerlanguages">
+        <!-- Selector de idioma -->
+        <div class="lang-switcher">
+            <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+            <select id="lang-select">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+                <option value="it">Italiano</option>
+                <option value="fr">Frances</option>
+            </select>
+        </div>
+    </div>
+    <div class="container">
+        <img src="/assets/icons/Logo.PNG" alt="Logo" class="logo">
+        <h1 data-i18n="heading_Admin">Accede a tu cuenta de Administrador de museo</h1>
+        <form id="login" novalidate>
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" data-i18n-placeholder="email_placeholder" required>
+
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Contraseña" data-i18n-placeholder="password_placeholder" required>
+                <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar contraseña" id="togglePassword">
+                <a href="/recuperacion" id="recuperation" data-i18n="link_recover">No recuerdo mi contraseña</a>
+            </div>
+
+            <div class="registration-containter">
+                <p>¿No tienes una cuenta?</p>
+                <div class="registration-button">
+                    <br>
+                    <a href="/registrarAdmin" class="button-style" data-i18n="button_register">Registrate</a>
+                </div>
+            </div>
+
+            <button type="submit" id="next" data-i18n="button_next">Siguiente</button>
+        </form>
+    </div>
+    <script src="js/Hide.js"></script>
+</body>
+</html>

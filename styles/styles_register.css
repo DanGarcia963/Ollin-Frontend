@@ -1,0 +1,325 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+    
+}
+#btnGuardar{
+    background-color: #65B2C6;
+    border: none;
+    padding: 6px 18px;
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: small;
+    font-weight: bold;
+    position: absolute;
+    transform: translateX(0%);
+    transform: translateY(50%);
+ }
+
+body {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FCFFE7;
+    text-align: center;
+    font-size: small;
+}
+
+.container {
+    max-width: 360px;
+    height: 590px;
+    margin: 10px auto;
+    background-color: #FCFFE7;
+    padding: 25px;
+    padding-top: 3px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerlanguages
+{
+    max-width: 360px;
+    height: 50px;
+    margin: 10px auto;
+    background-color: #FCFFE7;
+    padding: 25px;
+    padding-top: 3px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    width: 100px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+form{
+    margin-top: 4%;
+}
+
+#name, #lastname, #email, #birthdate, #password, #passwordRE, #lang-select, select{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #FCFFE7;
+    background-color: #EFEDED;
+    color: #757575;
+    height: 35px; /* Ajusta según sea necesario */
+}
+
+input:focus, input:hover, #birthdate:hover, #birthdate:focus, #gender:focus, #gender:hover, select:focus, select:hover, #password:focus, #password:hover{
+    border: 1px solid var(--cblue) !important;
+    background-color: var(--cgray) !important;
+    outline: 1px solid var(--cblue) !important; 
+}
+
+h1{
+    font-size: medium;
+    font-weight: normal;
+}
+
+#togglePassword{
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#password{
+    padding-right: 30px;
+}
+
+#next{
+    background-color: #65B2C6;
+    border: none;
+    padding: 6px 18px;
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: small;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+#next:hover {
+    background-color: #3b6873;
+}
+
+
+.password-container{
+    #password, #passwordRE{
+        margin-bottom: 0
+    }
+    position: relative;
+    display: flex   ;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+
+#password, #passwordRE {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #FCFFE7;
+    background-color: #EFEDED;
+    color: #757575;
+}
+
+#togglePassword, #togglePasswordRE {
+    position: absolute;
+    /*top: 2px;*/
+    right: 10px;
+    /*transform: translateY(-60%);*/
+    cursor: pointer;
+}
+
+
+.phone-container {
+    position: relative;
+    display: flex;
+}
+
+#tel, #tel2{
+    width: calc(100% - 22px);
+    border-radius: 5px; 
+    margin-left: 10px;
+}
+
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #EFEDED;
+    color: #757575;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    max-height: 50px; /* Establece la altura máxima según sea necesario */
+    overflow-y: auto; /* Añade una barra de desplazamiento si es necesario */
+}
+
+select:focus, select:hover {
+    border: 1px solid #65B2C6;
+    background-color: #C0CBCD;
+}
+
+.select-container {
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+}
+
+.select-container-gender {
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+}
+
+.country-code-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 0 5px 5px 0;
+    border: 1px solid black;
+    background-color: #EFEDED;
+    color: #757575;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    max-height: 50px;
+    overflow-y: auto;
+}
+
+
+.select-container::after {
+    content: '\25BC';
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-60%);
+    z-index: 0;
+}
+
+.select-container-gender::after {
+    content: '\25BC';
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-10%);
+    z-index: 0;
+}
+
+.country-code-container {
+    position: relative;
+}
+
+.container-date-gene{
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#birthdate {
+    margin-right: 10px;
+}
+
+.datebirth{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: stretch;
+    text-align: center;
+}
+
+.datebirth label, .gender-code-container label{
+    font-size: small;
+}
+
+.genderdate{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: stretch;
+    text-align: center;
+}
+
+#gender {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #EFEDED;
+    color: #757575;
+    margin-left: 5px;
+    margin-right: 0px;
+    align-self: center;
+}
+
+.gender-code-container{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    align-items: stretch;
+    text-align: center;
+}
+
+/*Empresa*/
+.select-container-category{
+    position: relative;
+    width: 100%;
+}
+.select-container-category::after {
+    content: '\25BC';
+    font-size: 14px;
+    position: absolute;
+    top: 25%;
+    right: 5%;
+    /*transform: translateY(-10%);*/
+    z-index: 0;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm{
+    background-color: #65B2C6 !important;
+}
+
+#create{
+    background-color: #65B2C6;
+    border: none;
+    padding: 6px 18px;
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: small;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="update_data">Actualizar Datos</title>
+    <script defer src="js/i18n.js"></script>
+    <link rel="stylesheet" href="/styles/styles_perfil.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <script src="/ARCY-PRUEBAS/admin.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()">&#9776;</span>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div> 
+    </header>
+    <main>
+        <div class="page-title">
+            <h2 class="h1-title" data-i18n="account_settings">Configuración de Cuenta</h2>
+        </div>
+        <div class="container-data">
+            <div class="userH">
+                <p id="name"></p>
+                <p id="type" data-i18n="tourist">Turista</p>
+            </div>
+            <form id="updateName" class="form-profile" novalidate>
+                <br> 
+                <label for="nombre" class="label-profile" id="labelName" data-i18n="name_placeholder">Nombre(s)</label><br>
+                <div class="container-input" id="contInputName">                
+                    <div class="nombre-container">
+                        <input type="nombre" id="nombre" name="nombre" placeholder="" data-i18n-placeholder="name_placeholder" class="input-profile" required disabled>              
+                    </div>
+                    <button type="button" class="btn-icon" id="editName">
+                        <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                    </button>
+                </div>
+            </form>
+            <form id="updatelastname" class="form-profile" novalidate>
+                <br>
+                <label for="lastname" class="label-profile" id="labellastname" data-i18n="lastname_placeholder">Apellido(s)</label><br>
+                <div class="container-input" id="contInputlastname">                
+                    <div class="lastname-container">
+                        <input type="lastname" id="lastname" name="lastname" placeholder="" data-i18n-placeholder="lastname_placeholder" class="input-profile" required disabled>              
+                    </div>
+                    <button type="button" class="btn-icon" id="editlastname">
+                        <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                    </button>
+                </div>
+            </form>
+
+            <form id="updatePassword" class="form-profile" novalidate>
+                <br>
+                <label for="password" class="label-profile" id="labelPassword" data-i18n="password_placeholder">Contraseña</label><br>
+                <div class="container-input" id="contInputPassword">                
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="" data-i18n-placeholder="password_placeholder" class="input-profile" required disabled>              
+                        <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar contraseña" id="togglePassword">
+                    </div>
+                    <button type="button" class="btn-icon" id="editPassword">
+                        <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
+                    </button>
+                </div>
+            </form>
+            <div class="container-delete">
+                <button type="button" class="btn-deleteAcc" id="btnDeleteAccount">
+                    <h3 style="margin: 0;" data-i18n="delete_account">Borrar cuenta</h3>
+                    <img src="/assets/icons/basureroIcon.png" width="32px" height="32px">
+                </button>
+                <!-- Ventana modal -->
+                <div class="container-modal" id="cModalAlertDelete">
+                </div>
+            </div>
+            
+            
+        </div>
+
+    </main>
+
+    <script type="module" src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/cambiar_datos.js"></script>
+    <script type="module" src="/js/Hide.js"></script>
+</body>
+</html>

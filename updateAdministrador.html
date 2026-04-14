@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar datos - Administrador</title>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/styles_perfil.css">
+    <link rel="stylesheet" href="styles/update.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script> 
+    
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <!-- Boton regresar a cuentas -->
+            <a href="/cuentas" class="btn-icon">
+                <img src="assets/icons/flechaBack.png" alt="Buscar">
+            </a>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav">
+        </div>
+        
+        <div class="page-title">
+            <h2 class="h1-title">Gestionar Cuenta</h2>
+        </div>
+    </header>
+    <main>
+        <div class="container-data">
+            <div class="user">
+                <p id="nameUser"><b>Nombre</b></p>
+                <p id="type">Turista</p>
+            </div>
+            <form id="updateName" class="form-profile" novalidate>
+                <label for="nombre" class="label-profile">Nombre</label><br>
+                <div class="container-input" id="contInputName">
+                    <input type="text" id="name" name="name" placeholder="Nombre" class="input-profile" required disabled>
+                    <button type="button" class="btn-icon" id="editName">
+                        <img src="assets/icons/editarIcono.png" style="width:24px; height:24px;" >
+                    </button>
+                </div>
+                <!--
+                <div class="btn-form-profile" id="buttomsName">
+                    <button type="button" class="btn-cancel" id="cancelUpdateName">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save" id="doUpdateName">
+                        Aceptar
+                    </button>
+               </div>-->
+            </form>
+            <form id="updateApellido" class="form-profile" novalidate>
+                <label for="apellido" class="label-profile">Apellido</label><br>
+                <div class="container-input" id="contInputApellido">
+                    <input type="text" id="apellido" name="apellido" placeholder="Apellido" class="input-profile" required disabled>
+                    <button type="button" class="btn-icon" id="editApellido">
+                        <img src="assets/icons/editarIcono.png" style="width:24px; height:24px;" >
+                    </button>
+                </div>
+                <!--
+                <div class="btn-form-profile" id="buttomsApellido">
+                    <button type="button" class="btn-cancel" id="cancelUpdateApellido">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save" id="doUpdateApellido">
+                        Aceptar
+                    </button>
+               </div>-->
+            </form>
+            <form id="updateEmail" class="form-profile" novalidate>
+                <label for="email" class="label-profile">Correo electrónico</label><br>
+                <div class="container-input" id="contInputEmail">
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" class="input-profile" required disabled>
+                    <button type="button" class="btn-icon" id="editEmail">
+                        <img src="assets/icons/editarIcono.png" style="width:24px; height:24px;" >
+                    </button>
+                </div>
+                <!--
+                <div class="btn-form-profile" id="buttomsEmail">
+                    <button type="button" class="btn-cancel" id="cancelUpdateEmail">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save" id="doUpdateEmail">
+                        Aceptar
+                    </button>
+                </div>-->
+            </form>
+            <!-- Para fecha de nacimiento -->
+            <form id="updateBirthdate" class="form-profile" novalidate>
+                <label for="birthdate" class="label-profile">Fecha de nacimiento</label><br>
+                <div class="container-input" id="contInputBirthdate">
+                    <input type="date" id="birthdate" name="birthdate" placeholder="Nacimiento" class="input-profile" required disabled>
+                    <button type="button" class="btn-icon" id="editBirthdate">
+                        <img src="assets/icons/editarIcono.png" style="width:24px; height:24px;" >
+                    </button>
+                </div>
+                <!--
+                <div class="btn-form-profile" id="buttomsBirthdate">
+                    <button type="button" class="btn-cancel" id="cancelUpdateBirthdate">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save" id="doUpdateBirthdate">
+                        Aceptar
+                    </button>
+                </div>-->
+            </form>  
+            <div class="container-delete">
+                <button type="button" class="btn-deleteAcc" id="btnDeleteAccount">
+                    <h3 style="margin: 0;">Borrar cuenta</h3>
+                    <img src="assets/icons/basureroIcon.png" width="32px" height="32px">
+                </button>
+                <!-- Ventana modal -->
+                <div class="container-modal" id="cModalAlertDelete">
+                    <div class="content-modal">
+                        <h2 style="text-align: center;">¿Estas seguro?</h2>
+                        <p style="margin: 0 0 20px 0; text-align: center;">Esta accion borrará todos los datos de tu cuenta</p>
+                        <div class="btn-form-profile" style="display: flex !important;">
+                            <button type="button" class="btn-cancel" id="btnDeleteAccountConfirmed">
+                                <b>Estoy seguro</b>
+                            </button>
+                            <button type="submit" class="btn-save" id="btnClose">
+                                <b>Regresar</b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+
+    </main>
+
+    <script src="js/toogle_modal.js"></script>
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script type="module" src="js/cambiar_datos.js"></script>
+    <script type="module" src="js/Hide.js"></script>
+    <script type="module" src="js/map.js"></script>
+    
+    <script>
+        const server = "https://ollin-backend-production.up.railway.app"
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    
+    fetch(`${server}/api/usuarioTurista/identificador/${userId}`)
+        .then(response => response.json())
+        .then(usuario => {
+            document.getElementById('nameUser').innerHTML = "<b>" + usuario.Nombre + " " + usuario.Apellido + "</b>";
+            document.getElementById('name').value = usuario.Nombre;
+            document.getElementById('email').value = usuario.Correo;
+            document.getElementById('apellido').value = usuario.Apellido;
+            // Parsea la fecha de nacimiento
+            const fechaNacimiento = new Date(usuario.Fecha_Nacimiento);
+
+            // Formatea la fecha al formato YYYY-MM-DD
+            const formattedDate = fechaNacimiento.toISOString().split('T')[0];
+
+            document.getElementById('birthdate').value = formattedDate;
+        })
+        .catch(error => console.error('Error:', error));
+});
+    </script>
+
+</body>
+</html>

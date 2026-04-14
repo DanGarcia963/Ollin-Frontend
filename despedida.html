@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despedida</title>
+    <link rel="stylesheet" href="/styles/normalize.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        /*Modal de mensaje*/
+        .container-modal{
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items:center;
+            z-index: 100;
+        }
+
+        .container-modal.active{
+            -webkit-backdrop-filter: blur(2px); /* Aplicar blur al fondo (Safari) */
+            backdrop-filter: blur(2px);
+        }
+
+        .content-modal{
+            position: relative;
+            background-color: var(--cgray);
+            width: 82%;
+            max-width: 480px;
+            border-radius: 15px;
+            
+            padding: 12px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function(){
+                document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'                
+                window.location.href="/";
+            },7500);    
+        });
+    </script>
+</head>
+<body>
+    <!-- Ventana modal -->
+    <div class="container-modal active" id="cModalAlertDelete">
+        <div class="content-modal">
+            <h2 style="text-align: center;">Cuenta eliminada</h2>
+            <img src="/assets/icons/despedida.png">
+            <p style="margin: 0 0 20px 0; text-align: center;">Lamentamos verte partir y esperamos que hayas tenido una experiencia positiva con nosotros.</p>
+        </div>
+    </div>
+</body>
+</html>

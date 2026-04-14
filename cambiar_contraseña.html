@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar contraseña</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/styles_register.css">
+    <script src="/ARCY-PRUEBAS/recuperar.js"></script>
+    <script defer src="js/i18n.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+
+</head>
+<body>
+                    <div class="containerlanguages">
+            <div class="lang-switcher">
+                <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                <select id="lang-select">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="it">Italiano</option>
+                    <option value="fr">Francés</option>
+                </select>
+            </div>
+        </div>
+    <div class="container">
+        <img src="assets/icons/Logo.PNG" alt="Logo" class="logo">
+        <h1 data-i18n="changePassword">Cambiar Contraseña</h1>
+        <form id="passwordRecover" action="#" method="post" novalidate>
+
+            <div class="password-container">
+                <input type="password" id="password" name="password" data-i18n-placeholder="introducenewpassword" required>
+                <img src="assets/icons/Boton ojoA.svg" id="togglePassword">
+            </div>
+
+            <div class="password-container">
+                <input type="password" id="passwordRE" name="passwordRE" data-i18n-placeholder="confirmnewpassword" required>
+                <img src="assets/icons/Boton ojoA.svg" id="togglePasswordRE">
+            </div>
+
+            <p data-i18n="noteNewPassword">Elige una contraseña segura para proteger tu cuenta.</p>
+
+            <button type="submit" id="next" data-i18n="button_next">Siguiente</button>
+        </form>
+    </div>
+
+    <script src="js/Hide.js"></script>
+    <script src="js/validation_alterPassword.js"></script>
+</html>
+

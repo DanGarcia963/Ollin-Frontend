@@ -1,0 +1,179 @@
+.container-modal{
+    display: flex; 
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items:start;
+    z-index: 100;
+    /* CAMBIO VISUAL: Un desenfoque mayor para el fondo cuando buscas */
+    -webkit-backdrop-filter: blur(5px); 
+    backdrop-filter: blur(5px);
+    opacity: 0; 
+    visibility: hidden;
+    transition: 0.15s;
+}
+
+.content-modal{
+    position: relative;
+    background-color: white;
+    width: 90%;
+    max-width: 480px;
+    top: 52px;
+    /* CAMBIO VISUAL: Bordes más curvos y sombra flotante */
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.container-search-box{
+    position: relative; 
+    display: flex;
+    align-items: center;
+    padding: 6px; /* CAMBIO: Un poco más de aire */
+    font-size: 14px;
+}
+
+.form-control-search-box{
+    padding: 8px 40px;
+    border: 0;
+    border-radius: 18px; /* CAMBIO */
+    outline: none;
+    box-shadow: none;
+    flex: 1;
+    /* CAMBIO VISUAL: Fondo grisecito claro tipo Google */
+    background-color: #f4f7f8;
+}
+
+#btnClose{
+    position: absolute;
+    top:0;
+    padding: 0 !important;
+}
+
+#btnClear{
+    position: absolute;
+    top:-1px;
+    right:4px;
+}
+
+.container-results{
+    padding: 0px 2px;
+    display: none; 
+}
+
+.hr-modal{
+    margin:0;
+    position: sticky;
+    top:0;
+    border-color: #eee; /* CAMBIO: Línea más suave */
+}
+
+.title-results{
+    display: flex;
+    align-items: start;
+    position: sticky;
+    top:2px;
+    z-index: 200;
+    margin: 4px 0px;
+    background-color: white;
+    /* CAMBIO */
+    border-radius: 15px;
+}
+
+.pac-container { 
+    width: 100% !important;
+    position: unset !important;
+    border-radius: 0 0 20px 20px !important; /* CAMBIO */
+    border-top: 0 !important;
+    font-family: 'Montserrat',Arial, sans-serif;
+    box-shadow: none !important;
+}
+
+.pac-logo:after{
+    margin-right: 8px;
+}
+
+.pac-item {
+    border-top: 0;
+    border-bottom: 1px solid #f0f0f0; /* CAMBIO: Línea suave */
+    padding: 10px; /* CAMBIO */
+}
+
+.pac-item:hover {
+    background-color: #f8f9fa; /* CAMBIO */
+}
+
+#containerSponsored{
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.btn-sponsored{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    height: 50px;
+    background-color: white;
+    border-width: 0px 0px 1px 0px;
+    border-color: #f0f0f0; /* CAMBIO */
+    transition: 0.2s; /* CAMBIO */
+}
+
+.btn-sponsored:hover{
+    /* CAMBIO VISUAL: Fondo azulito claro al pasar el ratón */
+    background-color: #f0faff; 
+}
+
+.sponsored-name{
+    display: flex;
+    font-size: 14px;
+    font-weight: bold;
+    justify-content: start;
+}
+
+.container-info-sponsored{
+    width: 95%;
+    height: 100%;
+    max-width: 472px;
+    margin: 0;
+    padding: 0px;
+    justify-content: start;
+    display: flex;
+}
+
+.sponsored-place-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 14px;
+    margin: 0px;
+    font-size: 12px;
+}
+
+.sponsored-data, .sponsored-schedules{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 14px;
+    margin: 0px;
+    font-size: 12px;
+}
+
+.sponsored-icon{
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .containerItinerarios{
+        width: 100%; 
+        margin: 0; 
+        padding: 5px; 
+        box-sizing: border-box; 
+    }
+}

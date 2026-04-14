@@ -1,0 +1,32 @@
+  /* Contenedor de las cards usando CSS Grid */
+  .cards-container {
+    display: grid;
+    /* Ajusta columnas según tamaño de pantalla */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    /* Alinea cada card al inicio para que no estiren su altura */
+    align-items: start;
+  }
+  
+  /* Estilos de cada card */
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    /* No fijamos altura: por defecto es auto y crece según el contenido */
+    height: auto;
+  }
+  
+  /* Iconos y medallas */
+  .icon {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin-top: 10px;
+  }
+  .medalla {
+    font-size: 1.2rem;
+    margin-left: 8px;
+  }
+  

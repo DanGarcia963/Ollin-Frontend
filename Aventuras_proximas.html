@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="">Mis Planes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <link rel="stylesheet" href="styles/stylesfav.css">
+    <link rel="stylesheet" href="styles/Aventuras_proximas.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    <script src="ARCY-PRUEBAS/admin.js"></script>
+        <style>
+    .scrollbar-hide {
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    /* Mostrar scrollbar solo al hacer hover */
+    .hover\\:scrollbar-default:hover {
+    scrollbar-width: auto; /* Firefox */
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
+    background-color: transparent;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span> 
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/inicio'">
+                <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
+            </button>
+            
+        </div>
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div>  
+    </header>
+    <main class="max-w-7xl mx-auto px-4 py-8 items-center scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 
+                scrollbar-hide hover:scrollbar-default">
+       
+    <section class="flex flex-col gap-6 ">
+
+        <div class="p-6">
+            <div class="bg-mauve-900 rounded-xl overflow-hidden shadow-lg border border-mauve-400 p-4">
+                <h1 class="titleAP" data-i18n="plans">Aventuras</h1>
+            </div>
+        </div>
+
+            <div id="containerItinerarios"
+                class="scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+                <!-- Las tarjetas de itinerarios se insertarán aquí -->
+            </div>
+
+    </section>
+        <div id="no-favorites-message" style="display: none;">
+            <p data-i18n="no_plan_museums">No hay planes de visita creados aún.</p>
+        </div>
+        <div class="create-adventure-container">
+            <button data-i18n="create_plan_museums" class="create-adventure-link">Crear nuevo Plan de Visita</button>
+        </div>
+    </main>
+    
+    
+            <!-- Resultados patrocinados -->
+            <div class="container-results" id="containerSponsored">
+                <hr class="hr-modal">
+                <div class="title-results">
+                    <h5 style="margin: 0">Patrocinados</h5>
+                    <img src="assets/icons/promocionNegroIcon.png" width="16px" height="16px" style="margin-left: 4px;" alt="Patrocinados">
+                </div>
+                    
+            </div>
+            <!-- Resultados de API Places -->
+            <div class="container-results" id="containerResultsPlaces">
+                <hr class="hr-modal">
+                <div class="title-results" style="margin-bottom: 0">
+                    <h5 style="margin: 0">Resultados cerca de ti</h5>
+                </div>
+                <div id="results">
+                    <!-- Aqui se insertan las casillas de autocompletado -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal para Crear Nueva Aventura -->
+<div class="modal fade" id="nuevaAventuraModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel" data-i18n="create_plan_museums">Crear Nuevo Plan de Visita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevaAventura" method="post">
+                    <div class="mb-3">
+                        <label for="nombreItinerario" class="form-label" data-i18n="itinerary_name">Nombre del Itinerario</label>
+                        <input type="text" class="form-control" id="nombreItinerario">
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="create">Crear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="ARCY-PRUEBAS/aventurasProximas.js"></script>
+<script src="js/i18n.js"></script>
+    <script src="js/nuevaAventura.js"></script>
+    <script src="js/itinerariosDes.js"></script>
+    <script src="js/toogle_modal.js"></script>
+    <script src="js/expandir.js"></script>
+    <script src="js/expandir-weekend.js"></script>
+    <script src="ARCY-PRUEBAS/newAventure.js"></script>
+<!--    <script src="js/manipulationDates.js"></script> >>-->
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script type="module" src="ARCY-PRUEBAS/places2.js"></script>
+    <!-- <script type="module" src="js/places.js"></script> -->
+    <script src="js/map.js"></script>
+    <script defer>
+        (g=>{var h,a,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;
+        b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{
+            await (a=m.createElement("script"));
+            e.set("libraries",[...r]+"");
+            for(var k in g) e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);
+            e.set("callback",c+".maps."+q);
+            a.src=`https://maps.${c}apis.com/maps/api/js?`+e;
+            d[q]=f;
+            a.onerror=()=>h=n(Error(p+" could not load."));
+            a.nonce=m.querySelector("script[nonce]")?.nonce||"";
+            m.head.append(a)
+        }));
+        d[l]=(name,opts)=>{
+            r.add(name);
+            return u().then(()=>d[name])
+        };
+    })( {
+        key: "AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw",
+        version: "weekly",
+        libraries: "places",
+        loading: "async"
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+</html>

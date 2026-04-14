@@ -1,0 +1,265 @@
+/* =========================================
+   1. LAYOUT PRINCIPAL Y SCROLL (CORREGIDO)
+   ========================================= */
+body {
+    /* ¡IMPORTANTE! Esto anula el bloqueo de inicio.css para que puedas bajar a los botones */
+    overflow-y: auto !important; 
+    min-height: 100vh;
+}
+
+main {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    max-width: 1000px; 
+    margin: 0 auto; 
+    padding: 20px; 
+    box-sizing: border-box;
+}
+
+/* El título estaba afuera del main, forzamos su centrado aquí */
+.page-title { 
+    display: flex;
+    justify-content: center;
+    width: 100%; 
+    margin: 30px 0 10px 0; 
+}
+
+.h1-title { 
+    font-size: 32px; 
+    font-weight: 800; 
+    color: #1a1a1a; 
+    margin: 0; 
+    text-align: center;
+}
+
+/* =========================================
+   2. PANEL DE INFORMACIÓN (Empieza en...)
+   ========================================= */
+.general-info {
+    width: 100%; 
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    display: flex; 
+    justify-content: space-between; 
+    padding: 20px 25px; 
+    margin-bottom: 30px;
+    box-sizing: border-box;
+}
+
+.cont-ginfo { display: flex; flex-direction: column; }
+.header-o-ginfo { display: flex; align-items: center; gap: 8px; }
+.header-o-ginfo img { width: 24px !important; height: 24px !important; }
+.header-o-ginfo p { margin: 0; color: #08979D; font-weight: 700; }
+.inserted-ginfo { margin: 5px 0 0 32px; font-size: 15px; color: #333; font-weight: 500; }
+
+/* =========================================
+   3. KANBAN Y LÍNEA DE TIEMPO
+   ========================================= */
+.kanban { width: 100%; display: flex; justify-content: center; }
+.column { display: flex; flex-direction: column; width: 100%; max-width: 600px; padding: 0; margin: 0; }
+
+.kanban ol { list-style: none; counter-reset: item; padding-left: 40px; position: relative; }
+.kanban ol::after {
+    content: ''; position: absolute; width: 4px; height: calc(100% - 100px);
+    left: 15px; top: 50px; background: #65B2C6; border-radius: 10px; z-index: 0;
+}
+
+.kanban li { position: relative; counter-increment: item; margin-bottom: 20px; }
+.kanban li::before {
+    content: counter(item); position: absolute; display: flex; justify-content: center; align-items: center;
+    width: 28px; height: 28px; left: -38px; top: 30px; background: white; color: #08979D;
+    font-weight: 800; font-size: 14px; border-radius: 50%; border: 3px solid #08979D; z-index: 10;
+}
+.kanban li.dragging { opacity: 0.8; transform: scale(1.02); }
+.kanban li.dragging::before { background: #08979D; color: white; }
+
+/* =========================================
+   4. TARJETAS DE LOS MUSEOS (ALTURA DINÁMICA)
+   ========================================= */
+.place-about {
+    display: flex !important; 
+    align-items: center !important;
+    gap: 15px !important;
+    background: rgba(255, 255, 255, 0.95) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 15px !important; 
+    padding: 15px !important; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease !important; 
+
+    /* LA CLAVE: Permitir que la tarjeta crezca hacia abajo */
+    height: auto !important; 
+    min-height: 100px !important;
+    max-height: none !important; 
+    width: 100% !important; 
+    box-sizing: border-box !important;
+}
+
+.place-about:hover { box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1) !important; transform: translateY(-2px) !important; }
+
+/* Imagen del museo */
+.img-referente { 
+    flex-shrink: 0 !important; 
+    width: 80px !important; 
+    height: 80px !important; 
+    align-self: flex-start !important; /* Si el texto es largo, la imagen se queda arriba */
+}
+.img-referente img { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 10px !important; }
+
+/* CONTENEDOR DE TEXTO */
+.place-info { 
+    flex-grow: 1 !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 8px !important; 
+    min-width: 0 !important; 
+    height: auto !important; /* Que crezca con el texto */
+}
+
+/* Forzamos que los textos respeten los bordes y ROMPAN la regla de los 18px */
+.info-name, .details-domicilio, .details-horario {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    margin: 0 !important;
+    height: auto !important; /* <-- ESTO ARREGLA EL DESBORDE */
+    line-height: 1.4 !important;
+    display: block !important;
+}
+
+.info-name { font-size: 16px !important; font-weight: 800 !important; color: #1a1a1a !important; }
+.details-domicilio, .details-horario { font-size: 12px !important; color: #666 !important; }
+
+/* Iconos de Mover y Eliminar */
+.favorite-icon { 
+    flex-shrink: 0 !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    gap: 15px !important; 
+    background: transparent !important; 
+    border: none !important; 
+    cursor: pointer !important; 
+    padding: 0 !important;
+    align-self: flex-start !important; /* Mantener los iconos arriba si la tarjeta crece */
+}
+#dragIcon { width: 20px !important; height: 20px !important; opacity: 0.4 !important; cursor: grab !important; }
+#eliminar { width: 22px !important; height: 22px !important; opacity: 0.6 !important; transition: 0.3s !important; }
+#eliminar:hover { opacity: 1 !important; transform: scale(1.1) !important; }
+/* =========================================
+   5. CONTROLES DE TRANSPORTE (CORRECCIÓN COLOR E ICONO)
+   ========================================= */
+.route { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 8px 15px; 
+    margin: 10px 0 20px 40px; 
+    border-radius: 10px;
+    width: calc(100% - 40px); /* Que no se salga del contenedor padre */
+    max-width: 350px;
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Si el texto es largo, lo pasa abajo para no salirse */
+}
+
+.distance-cont, .time-cont { font-size: 13px; font-weight: 700; color: #65B2C6; margin: 0; }
+
+.dropdown { position: relative; }
+
+/* Botones con fondo blanco para que resalte el icono azul */
+.btn-transport, .btn-transport-selected {
+    background-color: white !important; 
+    border: 2px solid #65B2C6 !important; /* Borde azul */
+    border-radius: 8px; 
+    padding: 6px; 
+    cursor: pointer; 
+    display: flex; justify-content: center; align-items: center; 
+    width: 38px; height: 38px;
+    transition: 0.3s;
+}
+
+.btn-transport:hover { background-color: #f0f9fb !important; }
+
+/* ESTO CONVIERTE LA IMAGEN AL TONO AZUL #65B2C6 */
+.transport-img { 
+    width: 20px !important; 
+    height: 20px !important; 
+    filter: invert(69%) sepia(43%) saturate(415%) hue-rotate(143deg) brightness(87%) contrast(87%) !important; 
+}
+
+.content-dropdown { display: none; position: absolute; background: white; border: 1px solid #65B2C6; border-radius: 8px; top: 100%; left: 0; z-index: 100; flex-direction: column; width: 38px; }
+.content-dropdown-show { display: flex; }
+.arrow { display: none; }
+/* =========================================
+   5. CONTROLES DE TRANSPORTE (CORRECCIÓN COLOR E ICONO)
+   ========================================= */
+.route { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 8px 15px; 
+    margin: 10px 0 20px 40px; 
+    border-radius: 10px;
+    width: calc(100% - 40px); /* Que no se salga del contenedor padre */
+    max-width: 350px;
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Si el texto es largo, lo pasa abajo para no salirse */
+}
+
+.distance-cont, .time-cont { font-size: 13px; font-weight: 700; color: #65B2C6; margin: 0; }
+
+.dropdown { position: relative; }
+
+/* Botones con fondo blanco para que resalte el icono azul */
+.btn-transport, .btn-transport-selected {
+    background-color: white !important; 
+    border: 2px solid #65B2C6 !important; /* Borde azul */
+    border-radius: 8px; 
+    padding: 6px; 
+    cursor: pointer; 
+    display: flex; justify-content: center; align-items: center; 
+    width: 38px; height: 38px;
+    transition: 0.3s;
+}
+
+.btn-transport:hover { background-color: #f0f9fb !important; }
+
+/* ESTO CONVIERTE LA IMAGEN AL TONO AZUL #65B2C6 */
+.transport-img { 
+    width: 20px !important; 
+    height: 20px !important; 
+    filter: invert(69%) sepia(43%) saturate(415%) hue-rotate(143deg) brightness(87%) contrast(87%) !important; 
+}
+
+.content-dropdown { display: none; position: absolute; background: white; border: 1px solid #65B2C6; border-radius: 8px; top: 100%; left: 0; z-index: 100; flex-direction: column; width: 38px; }
+.content-dropdown-show { display: flex; }
+.arrow { display: none; }
+
+/* =========================================
+   6. BOTONES INFERIORES Y EXTRAS
+   ========================================= */
+.btn-form { 
+    display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; 
+    width: 100%; margin-top: 40px; padding-bottom: 80px; /* Más padding para asegurar que se vean */
+}
+.btn-save, .btn-cancel {
+    padding: 14px 25px; border-radius: 30px; border: none; font-size: 14px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; 
+    text-decoration: none; transition: 0.3s;
+}
+#btnSave { background: #65B2C6; color: white; flex: 1; min-width: 150px; max-width: 200px; }
+#btnOrg { background: #08979D; color: white; flex: 1; min-width: 200px; max-width: 250px; }
+#btnCancel { background: #D63D6C; color: white; flex: 1; min-width: 120px; max-width: 150px; }
+#btnSave:hover, #btnOrg:hover, #btnCancel:hover { transform: translateY(-3px); filter: brightness(0.9); color: white;}
+
+.item.visited { filter: grayscale(45%); z-index: 50; pointer-events: none; }
+.no-favorites-message { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 30px; text-align: center; }
+

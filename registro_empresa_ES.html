@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Empresa</title>
+    
+    <link rel="stylesheet" href="/styles/normalize.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="styles/styles_register.css">
+    <script> src="js/validation_register.js"</script>
+    <style>
+        body{
+            font-size: 13px!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/assets/icons/Logo.PNG" alt="Logo" class="logo">
+        <p style="margin-top: 8px; font-size: 16px;">Ingresa los datos de la empresa</p>
+        <form action="#" method="post" id="loginFormRegister">
+            <div class="first-part-form">
+                <input type="text" id="name" name="name" placeholder="Nombre" pattern="[a-zA-Z0-9,:]+" title="Solo se permiten letras y números" required>
+                
+                <div class="select-container-category">
+                    <div class="gender-code-container">
+                        <select id="category" name="category" title="Categoría" style="margin-left: 0;">
+                            <option value="Selection">Selecciona una categoría</option>
+                            <option value="Restaurant">Restaurante</option>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Museum">Museo</option>
+                            <option value="Cafe">Cafetería</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="text" id="calle" name="calle" placeholder="Calle" pattern="[a-zA-Z0-9]+" title="Solo se permiten letras y números" required>
+            
+                <input type="number" id="numero" name="numero" placeholder="Número" required>
+            
+                <input type="text" id="colonia" name="colonia" placeholder="Colonia" pattern="[a-zA-Z0-9]+" title="Solo se permiten letras y números" required>
+            
+                <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad" pattern="[a-zA-Z]+" title="Solo se permiten letras" required>
+            
+                <input type="text" id="estado" name="estado" placeholder="Estado" pattern="[a-zA-Z]+" title="Solo se permiten letras" required>
+                <input type="text" id="codigoPostal" name="codigoPostal" pattern="[0-9]{5}" title="Formato válido: 12345" placeholder="Codigo postal" required>
+                <div class="phone-container">
+                    <div class="select-container">
+                        <div class="country-code-container">
+                            <select id="countryCode" name="countryCode">
+                                <option value="+1">US (+1)</option>
+                                <option value="+44">UK (+44)</option>
+                                <option value="+33">FR (+33)</option>
+                                <option value="+81">JP (+81)</option>
+                                <option value="+86">CN (+86)</option>
+                                <option value="+91">IN (+91)</option>
+                                <option value="+52">MX (+52)</option>
+                                <option value="+55">BR (+55)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="tel" id="tel" name="telefono" placeholder="Teléfono" required>
+                </div>
+                <input type="url" id="url" name="url" placeholder="URL de su sitio web (Opcional)">
+
+                <button type="button" id="next">Siguiente</button>
+            </div>
+            <div class="second-part-form">
+
+            </div>
+        </form>
+    </div>
+</body>
+</html>

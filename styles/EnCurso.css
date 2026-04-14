@@ -1,0 +1,171 @@
+/* =========================================
+   ESTILOS GENERALES Y LAYOUT
+   ========================================= */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ocupar toda la pantalla */
+    width: 100%;
+    overflow: hidden; /* Evitar scroll en toda la página para que parezca una App */
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FCFFE7;
+}
+
+main {
+    position: relative;
+    height: calc(100vh - 70px); /* 100% de pantalla menos la altura del navbar */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   PANEL DE INFORMACIÓN (Glassmorphism)
+   ========================================= */
+.general-info {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 90%;
+    max-width: 800px;
+    
+    /* Diseño de Vidrio Esmerilado */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 15px;
+    gap: 10px;
+}
+
+.cont-ginfo {
+    flex: 1;
+    min-width: 150px; /* Evita que colapsen en móviles */
+    display: flex;
+    align-items: center;
+}
+
+.header-o-ginfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.header-o-ginfo img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.scrollable-section {
+    font-size: 13px;
+    color: #333;
+    white-space: nowrap;
+    overflow-x: auto; /* Scroll horizontal si es necesario */
+    scrollbar-width: none; /* Firefox */
+}
+
+.scrollable-section::-webkit-scrollbar {
+    display: none; /* Safari y Chrome */
+}
+
+.scrollable-section b {
+    color: #08979D; /* Teal de Ollin */
+    font-weight: 700;
+}
+
+/* =========================================
+   EL MAPA (La clave para que aparezca)
+   ========================================= */
+#map {
+    flex-grow: 1; /* Ocupa todo el espacio sobrante del 'main' */
+    width: 100%;
+    height: 100%; /* Forzar altura */
+    z-index: 1;
+    /* Dejamos un espacio abajo para que los botones flotantes no tapen controles de Google Maps */
+    padding-bottom: 70px; 
+}
+
+/* =========================================
+   BOTONES INFERIORES (Panel de control)
+   ========================================= */
+.botones {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.create-adventure-link {
+    background-color: #65B2C6; /* Azul base */
+    color: white;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px; /* Pastilla moderna */
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    flex: 1; /* Todos los botones del mismo ancho */
+    text-align: center;
+}
+
+.create-adventure-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Colores específicos por botón */
+#btnOmitir {
+    background-color: #D63D6C; /* Rojo Ollin para Cancelar */
+}
+#btnOmitir:hover { background-color: #b53059; }
+
+#btnQueja {
+    background-color: #f1f1f1; 
+    color: #555;
+}
+#btnQueja:hover { background-color: #e0e0e0; }
+
+#btnLlegar {
+    background-color: #08979D; /* Verde oscuro Ollin para Éxito */
+}
+#btnLlegar:hover { background-color: #055B5C; }
+
+/* =========================================
+   MEDIA QUERIES (Móviles)
+   ========================================= */
+@media (max-width: 768px) {
+    .general-info {
+        flex-direction: column; /* Apilamos la info en móvil */
+        top: 10px;
+        border-radius: 10px;
+    }
+    
+    .botones {
+        flex-direction: column; /* Apilamos los botones en móvil */
+        bottom: 10px;
+        gap: 10px;
+    }
+    
+    .create-adventure-link {
+        width: 100%; /* Botones de ancho completo */
+    }
+}

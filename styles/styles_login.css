@@ -1,0 +1,202 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+    
+}
+
+body {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FCFFE7;
+    text-align: center;
+    font-size: small;
+}
+.container {
+    max-width: 360px;
+    height: 590px;
+    background-color: #FCFFE7;
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerlanguages {
+    max-width: 360px;
+    height: 50px;
+    background-color: #FCFFE7;
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #FCFFE7;
+}
+
+.containerlanguages #Alert {
+    padding-top: 100%;
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.container #Alert {
+    padding-top: 40%;
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.logo {
+    width: 100px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+form{
+    margin-top: 20px;
+}
+
+
+input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #FCFFE7;
+    background-color: #EFEDED;
+    color: #757575;
+}
+
+input:focus, input:hover{
+    border: 1px solid var(--cblue) !important;
+    background-color: var(--cgray) !important;
+    outline: 1px solid var(--cblue) !important; 
+}
+
+h1{
+    font-size: medium;
+    font-weight: normal;
+}
+
+.registration-containter{
+    font-size: x-small;
+    margin-top: 30px;
+}
+
+
+.registration-containter button{
+    background: none;
+    border: none;
+    font-size: 10px;
+    color: #65B2C6;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 1px;
+    cursor: pointer;
+    padding: 4px 13px;
+}
+
+.registration-containter button:hover{
+    background: #C0CBCD;
+    border: none;
+    border-radius: 10px 10px 0 0;
+    font-size: 10px;
+    padding: 4px 13px;
+    color: #65B2C6;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 1px;
+    cursor: pointer;
+}
+
+.link-container{
+    text-align: center;
+}
+
+.link-container a{
+    display: inline-block;
+    flex-direction: row;
+    background-color: #65B2C6;
+    border: none;
+    padding: 3px 18px;
+    color: white;
+    font-size: 10px;
+    text-decoration: none;
+    margin: 0;
+}
+
+.link-container #turist{
+    border-radius: 10px 0 0 10px;
+    margin-right: -1px;
+}
+.link-container #company{
+    border-radius: 0 10px 10px 0;
+    margin-left: -1px;
+}
+
+
+.registration-button:hover .link-container {
+    display: block;
+}
+
+.registration-button{
+    display: inline-block;
+}
+
+.link-container{
+    display: none;
+}
+
+
+#togglePassword{
+    position: absolute;
+    top: 28.8%;
+    right: 8%;
+    transform: translateY(285%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#password{
+    padding-right: 30px;
+}
+
+#next{
+    background-color: #65B2C6;
+    border: none;
+    padding: 6px 18px;
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: small;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+#next:hover {
+    background-color: #3b6873;
+}
+
+#recuperation{
+    position: absolute;
+    bottom: 330px;
+    left: 7%;
+    color: #65B2C6;
+    font-size: x-small;
+}
+
+
+
+
+

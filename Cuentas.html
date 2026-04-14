@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Administrador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <link rel="stylesheet" href="styles/administrador.css">
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span> 
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo">
+        </div>
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p>Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="#" class="btn-sidebar"> 
+                        <img src="assets/icons/itinerarioIcono.png" class="sidebar-img"> Mi aventura de hoy 
+                    </a>
+                    <a href="#" class="btn-sidebar"> 
+                        <img src="assets/icons/checked.png" class="sidebar-img"> Aventuras guardadas 
+                    </a>
+                    <a href="#" class="btn-sidebar"> 
+                        <img src="assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> Lugares favoritos 
+                    </a>
+                    <div class="dropdown-lang">
+                        <button class="btn-sidebar" id="langSelector">
+                            <img src="assets/icons/idiomasIcon.png" class="sidebar-img">
+                            Lenguaje <img src="assets/icons/Polygon 4.png" class="sidebar-fav">
+                        </button>
+                        <div class="content-dropdown-lang" id="content-dropdown-lang">
+                            <button class="btn-sidebar" id="Espanol">
+                                <img src="assets/icons/espana.png" class="sidebar-img">
+                                Español
+                            </button>
+                            <button class="btn-sidebar" id="English">
+                                <img src="assets/icons/usa.png" class="sidebar-img">
+                                English
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="perfilTurista.html" class="btn-sidebar"> 
+                        <img src="assets/icons/engraneIcon.png" class="sidebar-img"> Cuenta 
+                    </a>
+                    <a href="#" class="btn-sidebar"> 
+                        <img src="assets/icons/Bandera.png" class="sidebar-img" style="border-radius: 0;"> Enviar comentarios <br>de la aplicación
+                    </a>
+                    <a href="#" class="btn-sidebar"> 
+                        <img src="assets/icons/cerrarIcono.png" class="sidebar-img"> Cerrar Sesión 
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div>  
+    </header>
+    <main> 
+        <h1 class="titleAP" style="padding-left: 5%; font-size: 25px; font-weight: bold;">Cuentas</h1>
+        <!-- Add this inside the <main> tag in your HTML file -->
+        <div class="account-section container mt-4">
+            <div class="list-group" id="lista-usuarios">
+                <!--Aquí se agregaran los usurios con respecto a la base de datos-->
+            </div>
+            <div class="d-flex gap-4 d-md-flex justify-content-md-start mt-4" id="botones">
+                <a href="/crear_usuario" class="btn btn-primary me-md-2" id="BtnTurista" type="button">Crear Turista</a>
+                <a href="/crear_empresa" class="btn btn-secondary" id="BtnEmpresa" type="button">Crear Empresa</a>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Ventana modal de SearchBox -->
+    <div class="container-modal" id="cModalSearchBox">
+        <div class="content-modal">
+            <!-- Barra de busqueda -->  
+            <div class="container-search-box">         
+                <!-- Boton regresar/cerrar -->
+                <button type="button" id="btnClose" class="btn-icon" aria-label="Regresar">
+                    <img src="assets/icons/flechaBack.png" alt="Regresar">
+                </button>
+                <!-- Input Barra de busqueda -->
+                <input class="form-control-search-box" id="SearchBox" type="text" placeholder="Busca un lugar o categoría">
+                <!-- Boton borrar busqueda -->
+                <button type="button" id="btnClear" class="btn-icon" aria-label="Borrar"
+                onclick="document.getElementById('SearchBox').value='' ">
+                <img src="assets/icons/borrarIconNegro.png" width="30px" height="30px" alt="Borrar">
+                </button>
+            </div>
+            <!-- Resultados patrocinados -->
+            <div class="container-results" id="containerSponsored">
+                <hr class="hr-modal">
+                <div class="title-results">
+                    <h5 style="margin: 0">Patrocinados</h5>
+                    <img src="assets/icons/promocionNegroIcon.png" width="16px" height="16px" style="margin-left: 4px;" alt="Patrocinados">
+                </div>
+                <!-- Botones insertados -->
+                <!-- Tendran esta estructura -->
+                <!--
+                    <button type="button" class="btn-sponsored">
+                        <div class="container-info-sponsored">
+                        <div class="" style="align-items: center;">
+                            <img src="/assets/icons/promocionNegroIcon.png" width="32px" height="32px" style="margin:0px 4px;">
+                        </div>
+
+                        <div class="sponsored-place-info">
+                            <div class="sponsored-name">Siete sopas</div>
+                            <div class="sponsored-data">
+                            <div class="sponsored-type">Restaurante |</div>
+                            <div class="sponsored-direction">| Av. 56, San Rafael</div>
+                            </div>
+                            <div class="sponsored-schedules">
+                            <div class="sponsored-open" style="color: green;">Abierto</div>
+                            <div class="sponsored-hour">cierra a la 1 a.m.</div>
+                            </div>
+                        </div>
+                        </div>
+                    </button>
+                    
+                -->
+                    
+            </div>
+            <!-- Resultados de API Places -->
+            <div class="container-results" id="containerResultsPlaces">
+                <hr class="hr-modal">
+                <div class="title-results" style="margin-bottom: 0">
+                    <h5 style="margin: 0">Resultados cerca de ti</h5>
+                </div>
+                <div id="results">
+                    <!-- Aqui se insertan las casillas de autocompletado -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="js/toogle_modal.js"></script> -->
+    <script src="js/expandir.js"></script>
+    <script src="js/expandir-weekend.js"></script>
+    <!-- <script src="js/manipulationDates.js"></script> -->
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script type="module" src="js/places2.js"></script>
+    <!-- <script type="module" src="js/places.js"></script> -->
+    <!-- <script src="js/map.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    
+<script>
+const server = "https://ollin-backend-production.up.railway.app"
+
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch(`${server}/api/usuarioTurista`)
+        .then(response => response.json())
+        .then(data => {
+        const lista = document.getElementById('lista-usuarios');
+        data.forEach(usuario => {
+            // Crear los elementos HTML para cada usuario
+            const listItem = document.createElement('div');
+            listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+
+            // Añadir nombre de usuario
+            listItem.innerHTML = `
+            <div class="d-flex align-items-center">
+                <img src="assets/icons/Perfil.png" class="rounded-circle me-3" style="width:32px; height:32px;">
+                <div>
+                <div class="nameUser">${usuario.Nombre} ${usuario.Apellido}</div>
+                <div><span class="badge bg-primary rounded-pill" id="tipo">Turista</span></div>
+                </div>
+            </div>
+            <a href="/actualizar?userId=${usuario.id}">
+                <img src="assets/icons/editarIcono.png" style="width:24px; height:24px;" alt="Editar">
+            </a>
+            `;
+            
+            // Añadir el elemento a la lista
+            lista.appendChild(listItem);
+        });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+</body>
+</html>

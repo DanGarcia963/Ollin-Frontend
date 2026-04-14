@@ -1,0 +1,251 @@
+:root {
+    --primary: #65B2C6; /* Tu azul */
+    --primary-dark: #4a8a9a;
+    --accent: #D63D6C;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --text-main: #2c3e50;
+    --text-muted: #7f8c8d;
+    --bg-gradient: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);
+    --input-bg: #ffffff;
+    --border-color: #dcdde1;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Mantenemos los círculos de fondo decorativos */
+.bg-circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.c1 { width: 400px; height: 400px; background: rgba(101, 178, 198, 0.3); top: -100px; left: -100px; }
+.c2 { width: 500px; height: 500px; background: rgba(214, 61, 108, 0.1); bottom: -150px; right: -100px; }
+
+/* Contenedor principal que rodea la tarjeta */
+.main-wrapper {
+    width: 100%;
+    /* --- CAMBIO 1: Aumentado para permitir una tarjeta más ancha --- */
+    max-width: 500px; /* Antes era 500px, ahora es casi el doble */
+    padding: 20px;
+    z-index: 10;
+}
+
+/* Selector de Idioma (lo mantenemos arriba a la derecha) */
+.containerlanguages {
+    margin-bottom: 20px;
+}
+
+.lang-switcher {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+#lang-select {
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: var(--primary-dark);
+    cursor: pointer;
+    outline: none;
+}
+
+/* --- CAMBIO 2: Tarjeta de Login (Mucho más grande) --- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 35px; /* Bordes más curvos para un look premium */
+    /* Aumentamos dramáticamente el padding (espacio interno) */
+    padding: 50px 50px; /* Antes era 50px 40px */
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.brand-header {
+    text-align: center;
+    /* --- CAMBIO 3: Más espacio después de la cabecera --- */
+    margin-bottom: 30px; /* Antes era 40px */
+}
+
+/* --- CAMBIO 4: LOGO MUCHO MÁS GRANDE --- */
+.logo {
+    width: 180px; /* Antes era 110px. ¡Más del doble de ancho! */
+    margin-bottom: 25px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+}
+
+h1 {
+    /* --- CAMBIO 5: Título más grande --- */
+    font-size: 1.6rem; /* Antes era 1.6rem */
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Grupo de Inputs (se adaptan al nuevo tamaño de la tarjeta) */
+.input-group {
+    margin-bottom: 30px; /* Más espacio entre grupos */
+    display: flex;
+    flex-direction: column;
+}
+
+.static-label {
+    /* --- CAMBIO 6: Etiquetas más grandes y legibles --- */
+    font-size: 0.9rem; /* Antes era 0.9rem */
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 12px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    /* --- CAMBIO 7: Cuadros de texto más altos --- */
+    padding: 15px 15px; /* Antes era 15px */
+    border: 2px solid var(--border-color);
+    border-radius: 15px; /* Bordes más suaves */
+    background-color: var(--input-bg);
+    font-size: 0.9rem; /* Texto más grande dentro del input */
+    transition: all 0.3s ease;
+    color: var(--text-main);
+}
+
+ input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 5px rgba(101, 178, 198, 0.15);
+}
+
+/* Password & Ojo */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* --- CAMBIO 8: Icono del ojo un poco más grande --- */
+    width: 22px; /* Antes era 22px */
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+#recuperation {
+    display: block;
+    margin-top: 15px;
+    /* --- CAMBIO 9: Link de recuperación más grande --- */
+    font-size: 0.8rem; /* Antes era 0.8rem */
+    color: var(--primary-dark);
+    text-decoration: none;
+    text-align: right;
+    font-weight: 500;
+}
+
+#recuperation:hover {
+    text-decoration: underline;
+}
+
+/* --- CAMBIO 10: Botón Iniciar Sesión (Imponente) --- */
+#next {
+    width: 100%;
+    /* Mucho más alto y con texto más grande */
+    padding: 16px; /* Antes era 16px */
+    margin-top: 25px;
+    background: var(--primary);
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem; /* Antes era 1.1rem */
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 15px 30px rgba(101, 178, 198, 0.3);
+    transition: all 0.3s ease;
+}
+
+#next:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(101, 178, 198, 0.4);
+}
+
+/* Registro */
+.registration-container {
+    margin-top: 30px; /* Más espacio antes del footer */
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.registration-container p {
+    /* --- CAMBIO 11: Texto de registro más grande --- */
+    font-size: 1rem; /* Antes era 0.9rem */
+    color: var(--text-muted);
+}
+
+.register-link {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 700;
+    /* --- CAMBIO 12: Link de registro más grande --- */
+    font-size: 1.1rem; /* Antes era 1rem */
+    display: inline-block;
+    margin-top: 12px;
+}
+
+/* Ajustes para móviles (volvemos a un tamaño manejable) */
+@media (max-width: 600px) {
+    .glass-card {
+        padding: 40px 20px;
+    }
+    .main-wrapper {
+        max-width: 100%;
+    }
+    .logo {
+        width: 180px;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Permite que la tarjeta crezca si hay muchos campos y añade espacio abajo */
+body {
+    height: auto;
+    min-height: 100vh;
+    padding: 50px 0; /* Espacio para que no pegue a los bordes al hacer scroll */
+    overflow-y: auto; /* Permite scroll si el formulario es muy largo */
+}
+
+.main-wrapper {
+    margin: auto;
+}

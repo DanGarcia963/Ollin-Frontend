@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="museums">Listado de Museos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/complementInicio.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/stylesfav.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <link rel="stylesheet" href="styles/Aventuras_proximas.css">
+    <script src="ARCY-PRUEBAS/admin.js"></script>
+        <style>
+    .scrollbar-hide {
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    /* Mostrar scrollbar solo al hacer hover */
+    .hover\\:scrollbar-default:hover {
+    scrollbar-width: auto; /* Firefox */
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    }
+
+    .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
+    background-color: transparent;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Ahora boton de regresar -->
+            <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/inicio'">
+                <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
+            </button>
+            
+            
+        </div>
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div>   
+    </header>
+    <main class="min-w-md max-w-full flexitems-center mx-auto px-4 py-8
+    scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default"> 
+        <h1 class="titleAP" data-i18n="museums">Museos</h1>
+
+        <div class="museums-controls flex items-center justify-between mb-4">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar" id="searchMuseoInput"  placeholder="Buscar museo por nombre...">
+                <img src="assets/icons/lupaGoogl.png" id="search-box">
+                <img src="assets/icons/filtroIcono.png" alt="Filter" id="filter-icon">
+            </div>
+        </div>
+
+        <div id="filters-expanded" class="filters-expanded">
+            <div id="contenedorMamalonFiltros">
+                <div>
+                    <b>Alcaldía</b>
+                    <div id="recommendedFilters">
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-ao" data-alcaldia="Álvaro Obregón"> 
+                        <label for="alcaldia-ao">Álvaro Obregón</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-azc" data-alcaldia="Azcapotzalco"> 
+                        <label for="alcaldia-azc">Azcapotzalco</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-bj" data-alcaldia="Benito Juarez"> 
+                        <label for="alcaldia-bj">Benito Juárez</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-coy" data-alcaldia="Coyoacán"> 
+                        <label for="alcaldia-coy">Coyoacán</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-cm" data-alcaldia="Cuajimalpa de Morelos"> 
+                        <label for="alcaldia-cm">Cuajimalpa de Morelos</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-cua" data-alcaldia="Cuauhtémoc"> 
+                        <label for="alcaldia-cua">Cuauhtémoc</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-gam" data-alcaldia="Gustavo A. Madero"> 
+                        <label for="alcaldia-gam">Gustavo A. Madero</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-izt" data-alcaldia="Iztacalco"> 
+                        <label for="alcaldia-izt">Iztacalco</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-iztapa" data-alcaldia="Iztapalapa"> 
+                        <label for="alcaldia-iztapa">Iztapalapa</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-mh" data-alcaldia="Miguel Hidalgo"> 
+                        <label for="alcaldia-mh">Miguel Hidalgo</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-ma" data-alcaldia="Milpa Alta"> 
+                        <label for="alcaldia-ma">Milpa Alta</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-tl" data-alcaldia="Tláhuac"> 
+                        <label for="alcaldia-tl">Tláhuac</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-tlal" data-alcaldia="Tlalpan"> 
+                        <label for="alcaldia-tlal">Tlalpan</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-vc" data-alcaldia="Venustiano Carranza"> 
+                        <label for="alcaldia-vc">Venustiano Carranza</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-xoc" data-alcaldia="Xochimilco"> 
+                        <label for="alcaldia-xoc">Xochimilco</label>
+                    </div>
+                    </div>
+
+                <div>
+                    <b data-i18n="more_filters">Filtros avanzados</b>
+                    <div id="moreFilters">
+
+                    <div>
+                        <input type="checkbox" id="filterAlwaysFree" class="checkbox-button">
+                        <label for="filterAlwaysFree">Siempre gratis</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="filterHasServices" class="checkbox-button">
+                        <label for="filterHasServices">Tienen servicios</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="filterHasDiscounts" class="checkbox-button">
+                        <label for="filterHasDiscounts">Cuenta con descuentos</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="filter-abierto-ahora" class="checkbox-button">
+                        <label for="filter-abierto-ahora">Abiertos ahora</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="filter-abre-hoy" class="checkbox-button">
+                        <label for="filter-abre-hoy">Abre hoy</label>
+                    </div>
+
+                    <div>
+                        <input type="number" id="filter-precio-max" placeholder="Precio máximo ($)">
+                    </div>
+
+                    </div>
+                </div>
+
+                            <div>
+                <b>Cercanía</b>
+<select id="filterDistanceKm" >
+    <option value="">-- Selecciona distancia --</option>
+    <option value="1">1 km</option>
+    <option value="5">5 km</option>
+    <option value="10">10 km</option>
+    <option value="50">50 km</option>
+</select>
+
+                </div>
+
+
+                </div>
+            </div>
+            <div id="filtersSummit">
+                <button type="button" id="filterSend" class="filtersSummit">Aplicar filtros</button>
+                <button type="button" id="filterErase" class="filtersSummit">Borrar filtros</button>
+            </div>
+        </div>
+
+<div id="viewMoreCard" class="viewMoreCard hidden">
+  <div class="vm-card">
+
+    <div class="vm-header">
+      <h2 id="vm-nombre"></h2>
+      <img id="vm-image" src="" alt="Imagen del museo">
+      <img id="vm-image2" src="" alt="Imagen del museo">
+      <button id="vm-cerrar">✕</button>
+    </div>
+
+    <div class="vm-body" id="vm-body"></div>
+
+  </div>
+</div>
+
+        <div id="museodes" class="scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+            <!-- Las tarjetas de lugares favoritos se insertarán aquí mediante JavaScript -->
+        </div>
+
+        <!-- Mensaje y botón que se muestran si no hay lugares favoritos -->
+        <div id="no-favorites-message" style="display: none;">
+            <p>No hay lugares favoritos agregados aún.</p>
+            <button onclick="window.location.href='/inicio'">Ir a agregar</button>
+        </div>
+
+        <!-- Contenedor oculto para el servicio de Google Maps -->
+        <div id="map" style="display: none;"></div>
+    </main>
+<!-- Modal para Crear Nueva Aventura -->
+<div class="modal fade" id="nuevaAventuraModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Selecciona un itinerario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" id="itinerariosDisponibles">
+          <!-- Aquí se insertan los itinerarios dinámicamente -->
+        </ul>
+        <button class="create-adventure-link">Agregar a nuevo Plan de Visita</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newPlanModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Crear Nuevo Plan de Visita</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+            <form id="formNuevaAventura" method="post">
+                <div class="mb-3">
+                    <label for="nombreItinerario" class="form-label" data-i18n="itinerary_name">Nombre del Itinerario</label>
+                    <input type="text" class="form-control" id="nombreItinerario">
+                </div>
+                <button type="submit" class="btn btn-primary" data-i18n="create">Crear</button>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+    <script src="js/toogle_modal.js"></script>
+    <script src="js/expandir.js"></script>
+    <script src="js/expandir-weekend.js"></script>
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/botones.js"></script>
+    <script src="js/goinit.js"></script>
+    <script src="js/i18n.js"></script>
+    <script  src="js/musdes.js"></script> <!-- Tu archivo JavaScript que maneja la lógica -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/map.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--<script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw&loading=async&callback=InitMap&libraries=places&v=weekly" defer
+    ></script>-->
+    <script defer>
+        (g=>{var h,a,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(var k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]=(name,opts)=>{r.add(name);return u().then(()=>d[name])};})( {
+          key: "AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw",
+          version: "weekly",
+          libraries: "places",
+          loading: "async"
+      } );
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+</html>

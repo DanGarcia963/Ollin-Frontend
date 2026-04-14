@@ -1,0 +1,60 @@
+/* ============================= */
+/* LAYOUT: HEADER FIJO + SCROLL SOLO EN MAIN */
+/* ============================= */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* evita scroll global */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Header fijo arriba */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Ajuste específico para tu navbar */
+.navbar {
+  height: 52px; /* altura real de tu barra */
+}
+
+/* Main ocupa el espacio restante y es el único scrolleable */
+main {
+  margin-top: 52px; /* misma altura que la navbar */
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* =========================
+   SELECTOR DE IDIOMA
+========================= */
+/*
+.containerlanguages{
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+}
+
+.lang-switcher{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+#lang-select{
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--cgray);
+}
+    */

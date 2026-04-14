@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Quejas</title>
+    
+    <link rel="stylesheet" href="/styles/normalize.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="styles/styles_register.css">
+    <script> src="js/validation_register.js"</script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    <style>
+        body{
+            font-size: 13px!important;
+        }
+        .logo-container {
+            display: block;
+            transform: translateX(30%);
+            align-items: center;
+        }
+        .inlin{
+            display: flex;
+        }
+
+
+        h1 {
+            font-style: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="inlin">
+        <div class="logo-container"> 
+            <a onclick="window.location.href='/inicio'">
+                <img src="/assets/icons/flechaBack.png" style="left: 50%;" width="25px" height="25px" align-item="left" alt="FB" class="FB">
+            </a>
+            <img style="align-items: center;" class="logo"src="/assets/icons/Logo.PNG" alt="Logo" > 
+            </div>
+
+        </div>
+            <h1 style="font-style: bold;">TourTales</h1>
+
+        <p style="margin-top: 8px; font-size: 16px;">Formulario de comentarios de la aplicación</p>
+        <b id=""></b>
+        <form action="#" method="post" id="FormQuejas">
+                <div class="select-container-category">
+                    <div class="gender-code-container">
+                        <select id="seleccion" name="category" title="Categoría" style="margin-left: 0;">
+                            <option value="Error">Selecciona un error ▼</option>
+                            <option value="Problemas de Carga">Problemas de Carga</option>
+                            <option value="Error en el sistema">Error en el sistema</option>
+                           </select>
+                        </div>
+                           <br>
+                           <div class="gender-code-container">
+                           <label for="comentario">Comentario:</label>
+        <textarea style="align-items: center;" id="comentario" name="comentario" placeholder="Describe aquí el error de la aplicación, o bien en que aspecto la mejorarías" rows="9" cols="50"></textarea>
+        <br>
+    </div>
+
+     
+        <div class="gender-code-container">
+            <button id="btnGuardar" type="button" onclick="enviarComentario()">Enviar</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function enviarComentario() {
+            var seleccion = document.getElementById("seleccion").value;
+            var comentario = document.getElementById("comentario").value;
+            if(seleccion=='Error')
+            {
+                 showAlert('Especifica el tipo de error');
+            }
+            else{
+                console.log("Experiencia seleccionada: " + seleccion);
+            console.log("Comentario: " + comentario);
+            showDone('');
+            }
+           
+        }
+        function showAlert(message) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: message,
+                                });
+                            }
+
+                            function showDone(message) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Queja enviada con exito, en espera de ser atendida",
+                                    showConfirmButton: true,
+                                    
+                                });
+                            }
+    </script>
+    <script src="js/quejaFetch.js"></script>
+</body>
+</html>

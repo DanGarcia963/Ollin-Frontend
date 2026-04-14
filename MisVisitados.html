@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="visited_museums">Mis Visitados</title>
+    <script defer src="js/i18n.js"></script>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/stylesfav.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <link rel="stylesheet" href="styles/Aventuras_finalizadas.css">
+    <script src="ARCY-PRUEBAS/admin.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+        
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Ahora boton de regresar -->
+            <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/inicio'">
+                <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
+            </button>
+            
+            
+        </div>
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div> 
+    </header>
+    <main class="max-w-7xl mx-auto px-4 py-8 scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- ================= SECCIÓN 1 ================= -->
+        <section class="flex flex-col gap-6">
+
+            <!-- Header -->
+            <div class="p-6">
+                <div class="bg-mauve-900 rounded-xl overflow-hidden shadow-lg border border-mauve-700 p-4">
+                    <h1 class="titleAP" data-i18n="my_visited">Mis Visitados</h1>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div id="visides"
+                class="flex snap-x snap-mandatory lg:flex-col gap-6 p-6
+                overflow-x-auto lg:overflow-x-visible
+                overflow-y-hidden lg:overflow-y-auto
+                scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+                <!-- Cards dinámicas -->
+            </div>
+
+        </section>
+
+        <!-- ================= SECCIÓN 2 ================= -->
+        <section class="flex flex-col gap-6">
+
+            <!-- Header -->
+            <div class="p-6">
+                <div class="bg-mauve-900 rounded-xl overflow-hidden shadow-lg border border-mauve-700 p-4">
+                    <h1 class="titleAP" data-i18n="visitedPlans">Mis Planes Visitados</h1>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div id="containerItinerarios"
+                class="flex snap-x snap-mandatory lg:flex-col gap-6 p-6
+                overflow-x-auto lg:overflow-x-visible
+                overflow-y-hidden lg:overflow-y-auto
+                scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+                <!-- Cards dinámicas -->
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Mensaje vacío -->
+    <div id="no-favorites-message" class="hidden text-center mt-8">
+        <p data-i18n="no_visited_museums">No hay Museos visitados aún.</p>
+        <button data-i18n="add" onclick="window.location.href='/inicio'"
+            class="mt-4 px-4 py-2 bg-red-700 rounded-lg">
+            Ir a agregar
+        </button>
+    </div>
+
+
+    <!-- Google Maps oculto -->
+    <div id="map" class="hidden"></div>
+
+</main>
+
+    <script src="js/toogle_modal.js"></script>
+    <script src="js/expandir.js"></script>
+    <script src="js/expandir-weekend.js"></script>
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/botones.js"></script>
+    <script type="module" src="ARCY-imports/lugarVisitado.js"></script>
+    <script src="js/goinit.js"></script>
+    <script src="js/i18n.js"></script>
+    <script  src="js/visdes.js"></script> <!-- Tu archivo JavaScript que maneja la lógica -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/map.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw&loading=async&callback=InitMap&libraries=places&v=weekly" defer
+    ></script>
+</body>
+</html>

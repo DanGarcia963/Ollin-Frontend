@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de cuenta | Ollin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/login.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/ARCY-PRUEBAS/nuevacon.js"></script>
+    <script defer src="js/i18n.js"></script>
+</head>
+<body>
+    <div class="bg-circles">
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+    </div>
+
+    <div class="main-wrapper">
+                <div class="containerlanguages">
+            <div class="lang-switcher">
+                <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                <select id="lang-select">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="it">Italiano</option>
+                    <option value="fr">Francés</option>
+                </select>
+            </div>
+        </div>
+        <div class="glass-card">
+            <div class="brand-header">
+                <img src="/assets/icons/Logo.PNG" alt="Logo" class="logo">
+                <h1 data-i18n="recoveraccess">Recuperar acceso</h1>
+                <p data-i18n="introduceemail" style="color: var(--text-muted); margin-top: 10px; font-size: 1.1rem;">
+                    Introduce tu correo para restablecer tu contraseña
+                </p>
+            </div>
+
+            <form id="recuperar" action="#" method="post" novalidate>
+                <div class="input-group">
+                    <label for="email" class="static-label" data-i18n="email_placeholder">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <button type="submit" id="next" data-i18n="button_next">Siguiente</button>
+                <div class="registration-container">
+                    <a href="/" class="register-link" data-i18n="button_backLogIn">← Volver al inicio de sesión</a>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/Hide.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="favorite_museums">Mis favoritos</title>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/stylesfav.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <script src="ARCY-PRUEBAS/admin.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Ahora boton de regresar -->
+            <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/inicio'">
+                <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
+            </button>
+            
+            
+        </div>
+
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div>   
+    </header>
+    <main> 
+        <h1 class="titleAP" data-i18n="favorites">Mis Favoritos</h1>
+
+        <div id="favodes">
+            <!-- Las tarjetas de lugares favoritos se insertarán aquí mediante JavaScript -->
+        </div>
+
+        <!-- Mensaje y botón que se muestran si no hay lugares favoritos -->
+        <div id="no-favorites-message" style="display: none;">
+            <p>No hay lugares favoritos agregados aún.</p>
+            <button onclick="window.location.href='/inicio'">Ir a agregar</button>
+        </div>
+
+        <!-- Contenedor oculto para el servicio de Google Maps -->
+        <div id="map" style="display: none;"></div>
+    </main>
+
+    <script src="js/toogle_modal.js"></script>
+    <script src="js/expandir.js"></script>
+    <script src="js/expandir-weekend.js"></script>
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/botones.js"></script>
+    <script type="module" src="ARCY-imports/lugarFavorito.js"></script>
+    <script src="js/goinit.js"></script>
+    <script src="js/i18n.js"></script>
+    <script  src="js/favdes.js"></script> <!-- Tu archivo JavaScript que maneja la lógica -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/map.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw&loading=async&callback=InitMap&libraries=places&v=weekly" defer
+    ></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="register">Registro de Usuario | Ollin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/login.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <script defer src="js/i18n.js"></script>
+</head>
+<body>
+    <div class="bg-circles">
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="containerlanguages">
+            <div class="lang-switcher">
+                <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                <select id="lang-select">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="it">Italiano</option>
+                    <option value="fr">Francés</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="brand-header">
+                <img src="/assets/icons/Logo.PNG" alt="Logo" class="logo">
+                <h1 data-i18n="enter_your_details">Ingresa tus datos</h1>
+            </div>
+
+            <form action="#" method="get" id="loginFormRegister">
+                
+                <div class="input-group">
+                    <label class="static-label" data-i18n="name_placeholder">Nombre</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="static-label" data-i18n="lastname_placeholder">Apellido</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="static-label" data-i18n="email_placeholder">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="static-label" data-i18n="password_placeholder">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" required>
+                        <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar" id="togglePassword" class="eye-icon">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="static-label" data-i18n="confirm_password">Confirmar Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="passwordRE" name="passwordRE" required>
+                        <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar" id="togglePasswordRE" class="eye-icon">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="static-label" for="birthdate" data-i18n="birthdate_placeholder">Fecha de nacimiento</label>
+                    <input type="date" id="birthdate">
+                </div>
+
+                <button type="submit" id="next" data-i18n="button_register">Siguiente</button>
+                
+                <div class="registration-container">
+                    <p data-i18n="accountexist">¿Ya tienes una cuenta?</p>
+                    <a href="/" class="register-link">Inicia sesión aquí</a>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
+    <script src="js/Hide.js"></script>
+    <script src="js/validation_register.js"></script>
+</body>
+</html>

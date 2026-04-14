@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Aventura</title>
+    <link rel="stylesheet" href="/styles/normalize.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/styles_barra.css">
+    <link rel="stylesheet" href="/styles/editarAventura.css">
+    <script defer src="js/i18n.js"></script>
+    <script src="ARCY-PRUEBAS/admin.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar" >
+            <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
+
+            <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
+
+            <div class="containerlanguages">
+                <!-- Selector de idioma -->
+                <div class="lang-switcher">
+                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="it">Italiano</option>
+                        <option value="fr">Frances</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Ahora boton de regresar -->
+            <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/aventuras_proximas'">
+                <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
+            </button>
+        </div>
+        <div class="page-title">
+            <h2 class="h1-title" id="adventureName"></h2>
+        </div>
+        <div class="container-modal-sidebar" id="modalSidebar">
+            <div id="sidebar" class="sidebar">
+                <div class="user">
+                    <p data-i18n="greeting_hello">Hola, </p><b id="nombreUsuario"> NOMBRE </b> 
+                </div>
+                <div class="sidebar-text">
+                    <a href="/museums" class="btn-sidebar"> 
+                        <img src="./assets/icons/museum_icon_white.png" class="sidebar-img"> <span data-i18n="museums">Museos</span>
+                    </a>
+                    <a href="/aventuras_proximas" class="btn-sidebar"> 
+                        <img src="./assets/icons/itinerarioIcono.png" class="sidebar-img"> <span data-i18n="visit_plans">Planes de Visita</span>
+                    </a>
+                    <a href="/MisFavoritos" class="btn-sidebar"> 
+                        <img src="./assets/icons/favoritosBlancoRosa.png" class="sidebar-img"> <span data-i18n="favorite_museums">Museos favoritos</span>
+                    </a>
+                    <a href="/MisVisitados" class="btn-sidebar"> 
+                        <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
+                    </a>
+                    
+                </div>
+
+                <div class="sidebar-text" style="margin-top: auto;">
+                    <a href="/perfilTurista" class="btn-sidebar"> 
+                        <img src="./assets/icons/engraneIcon.png" class="sidebar-img"> <span data-i18n="account">Cuenta</span>
+                    </a>
+                    <a href="#" class="btn-sidebar" id="cerrarSesion"> 
+                        <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
+                    </a>
+                </div>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+            </div>
+        </div> 
+    </header>
+    <main>
+        <div class="general-info">
+            <div class="cont-ginfo">
+                <div class="header-o-ginfo">
+                    <img src="./assets/icons/origenIcon.png" width="24px" height="24px">
+                    <p style="margin-top: 4px;"><b data-i18n="start">Empieza en:</b></p>
+                </div>
+                <p id="origin" class="inserted-ginfo">Tu ubicación</p>
+            </div>
+            <div class="cont-ginfo">
+                <div class="header-o-ginfo">
+                    <img src="./assets/icons/reloj3.png" width="24px" height="24px">
+                    <p style="margin: 4px 0 0 4px;"><b data-i18n="duration">Duración:</b></p>
+                </div>
+                <p id="length" class="inserted-ginfo" style="text-align: end;"><div id="duracionTotal"></div></p>
+            </div>
+        </div>
+        <div class="kanban">
+            <ol class="column" id="placesList">
+                <!-- Aqui se insertan los lugares-->
+                
+                
+            </ol>
+        </div>
+        <div class="btn-form" style="display: flex !important;">
+            <button type="button" class="btn-save" id="btnSave">
+                <b data-i18n="button_save">Guardar cambios</b>
+            </button>
+            <button type="button" class="btn-save" id="btnOrg">
+                <b data-i18n="button_organize">Organizar Plan de Visita</b>
+            </button>
+            <a href="/aventuras_proximas" class="btn-cancel" id="btnCancel">
+                <b data-i18n="button_cancel">Cancelar</b> 
+            </a>          
+        </div>
+        <div id="auxPlaces" style="display: none;"></div>
+    </main>
+    <script type="module" src="js/jquery-3.7.1.min.js"></script>
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/DragDropTouch.js"></script>
+    <script type="module" src="/js/dragNdrop.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <script type="module" src="./js/editarAventura.js"></script>
+            <script type="module" src="./js/pruebaOrdenar.js"></script>
+    <script type="module" src="./js/routesEditAdvn.js"></script>        
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDooG38M5nHQ27rkwNWU5X-lX-rDjJFQCw&callback=initAutocomplete&libraries=places&v=weekly"
+        
+        defer
+    ></script>
+    
+</body>
+</html>

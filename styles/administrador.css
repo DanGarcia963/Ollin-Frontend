@@ -1,0 +1,63 @@
+.account-section .list-group-item {
+    background-color: #f8f9fa; /* Light grey background */
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: add some shadow for depth */
+}
+
+.account-section .list-group-item .material-icons {
+    color: #007bff; /* Bootstrap primary color for the edit icon */
+}
+
+.account-section .badge {
+    font-size: 0.8em; /* Smaller badge text */
+}
+
+/* Buttons at the bottom */
+.account-section .btn {
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded edges for the buttons */
+}
+
+#BtnTurista{
+    /*Color del boton #65B2C6*/
+    background-color: #65B2C6;
+    border-color: #65B2C6;
+    /*Letras negritas*/
+    font-weight: bold;
+}
+
+#BtnEmpresa{
+    /*Color del boton #D57275*/
+    background-color: #D57275;
+    border-color: #D57275;
+    /*Letras negritas*/
+    font-weight: bold;
+}
+
+#botones{
+    /*Justificar al centro*/
+    text-align: center;
+    justify-content: center;
+}
+
+.nameUser{
+    font-weight: bold;
+}
+
+.titleAP{
+    padding-top: 3%;
+}
+
+#tipo{
+    /*Color del borde y del background transparente*/
+    border-color: transparent;
+    background-color: transparent !important;
+    /*COlor de letras negras*/
+    color: black;
+    /*Letras no negritas*/
+    font-weight: normal;
+}

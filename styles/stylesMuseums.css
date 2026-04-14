@@ -1,0 +1,1081 @@
+#map {
+  /*overflow: auto!important;*/
+  height: 100%;
+  z-index: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* NUEVO: Fondo con degradado suave inspirado en el Login */
+    background: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);   
+    overflow: hidden; 
+}
+
+main{
+  position: relative;
+}
+
+.container2 {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+}
+
+.imageL {
+    margin-left: 21px;
+    margin-right: 6px;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.container-1 {
+    border-radius: 10px;
+    background-color: #D5C2BC; 
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    width: 123px;
+    height: 32px;
+    margin-left: 6px;
+    margin-right: 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.container-2 {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #D5C2BC; 
+    border-radius: 10px;
+    display: flex;
+    width: 123px;
+    height: 32px;
+    margin-left: 4px;
+    margin-right: 18px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.icon{
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.flecha-abajo{
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.container-text{
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.Profile{
+    width: 51px;
+    height: 51px;
+    flex-shrink: 0;
+    border-radius: 51px;
+    margin-left: 133.4px;
+}
+
+.user {
+    width: 172px;
+    height: 80px;
+    flex-shrink: 0;
+    color: #FFF;
+    font-family: 'Montserrat', sans-serif;
+    /* NUEVO: Texto de usuario más estilizado */
+    font-size: 26px; 
+    font-weight: 600; 
+    margin: 32px 0;
+}
+
+.sidebar-text{
+    width: 172px;
+    color: #FFF;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    white-space: nowrap;
+    bottom: 50px;
+}
+
+.btn-sidebar {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  width: 100%; /* NUEVO: Para que ocupe todo el espacio del menú */
+  color: white;
+  margin-bottom: 10px;
+  /* NUEVO: Más espacio interno para que parezca un botón moderno */
+  padding: 12px 15px; 
+  outline: none !important;
+  /* NUEVO: Fondo transparente por defecto */
+  background-color: transparent; 
+  border-radius: 12px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* NUEVO: Efecto al pasar el mouse (se ilumina y se mueve a la derecha) */
+.btn-sidebar:hover {
+  background-color: rgba(255, 255, 255, 0.15); 
+  transform: translateX(8px); 
+}
+
+.btn-sidebar:active {
+  outline-color: transparent !important; 
+  text-decoration: none !important;
+  background-color: rgba(255, 255, 255, 0.25);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.01);
+  border-radius: 12px;
+}
+
+
+
+.sidebar-img{
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 22px;
+    margin-right: 4%;
+}
+
+.sidebar-fav{
+    margin: 2px 0 0 4%;
+    width: 10.273px;
+    height: 9px;
+}
+
+#openBtn {
+    font-size: 30px;
+    cursor: pointer;
+    /* Forzamos que su altura de línea sea normal para no descuadrar el centrado */
+    line-height: 1; 
+    /* Lo mostramos como flex item si es necesario forzar su comportamiento */
+    display: flex; 
+    align-items: center;
+}
+
+.container-modal-sidebar{
+  display: flex; 
+  width: 100%;
+  height: 100vh;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  justify-content: start;
+  align-items:start;
+  z-index: 100;
+  -webkit-backdrop-filter: blur(2px); 
+  backdrop-filter: blur(2px);
+  opacity: 0; 
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+/*#sidebar {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  z-index: 150;
+  top: 0;
+  left: 0;
+  border-radius: 0px 25px 25px 0px;
+  background: rgba(10, 110, 115, 0.85); 
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 10px 0 30px rgba(0,0,0,0.15);
+  transition: 0.5s;
+  padding: 60px 24px 15vw 24px;
+}*/
+
+.closeBtn {
+  padding:0;
+  text-decoration: none;
+  font-size: 25px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
+}
+
+.closeBtn:hover {
+  color: black;
+}
+
+#filters{
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 15%;
+  height: 5%;
+  position: absolute;
+  top: 1%;
+  left: 84%;
+  border-radius: 10px 10px 10px 10px;
+  background-color:  #055B5C;
+  transition: 0.5s;
+  padding: 7px 0px 7px 0px;
+}
+
+.filterBtn {
+  padding:0;
+  text-decoration: none;
+  font-size: 14px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+  background: none;
+  border: none;
+}
+
+.filterBtn:hover {
+  color: white;
+  background: none;
+  border: none;
+}
+
+#filtelBtn{
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 30px;
+  margin-left: 0px;
+  cursor: pointer;
+}
+
+#filters-expanded {
+  width: 85%;
+  min-height: 89%;
+  position: absolute;
+  z-index: 9000;
+  top: 7%;
+  left: 9%;
+  border-radius: 10px 10px 10px 10px;
+  transition: 0.5s;
+  padding: 7px 0px 7px 0px;
+  background-color: #C0CBCD;
+  display: none;
+  flex-direction: column;
+  text-align: center;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+#contenedorMamalonFiltros{
+  height: 500px;
+  overflow-x: overlay;
+}
+
+.viewMoreCard {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.vm-card {
+    /* CAMBIO VISUAL: Blanco translúcido en lugar de gris oscuro */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    border-radius: 24px; /* Más redondo */
+    padding: 24px 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.15);
+    display: flex;
+    flex-direction: column;
+    animation: fadeUp .25s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.vm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.vm-header img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.vm-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #243435;
+}
+
+#vm-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.vm-body {
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.vm-body section {
+    margin-bottom: 22px;
+}
+
+.vm-body h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    color: #1f2f30;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    padding-bottom: 4px;
+}
+
+.vm-body p {
+    margin: 4px 0;
+    font-size: .92rem;
+    line-height: 1.35;
+    color: #2b3b3c;
+}
+
+.vm-body p b {
+    color: #1a2a2b;
+}
+
+.hidden {
+    display: none;
+}
+
+#filterOptions::-webkit-scrollbar {
+  width: 10px;
+}
+
+#filterOptions::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 15px;
+}
+
+#filterOptions::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;
+  border-radius: 20px;
+  border: 3px solid white;
+} 
+
+#filterOptions{
+  overflow-y: scroll;
+  padding: 5px;
+  text-align: left;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#filterOptions div {
+  flex-basis: 100%;
+}
+
+@media (min-width: 600px) {
+  #filterOptions div {
+      flex-basis: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  #filterOptions div {
+      flex-basis: 33.33%;
+  }
+}
+
+.filtersSummit{
+  margin: 4px;
+  border-radius: 10px;
+  width: 140px;
+  height: 22px;
+  border: none;
+  color: white
+}
+
+#filterSend{
+  background-color:#D63D6C;
+}
+
+#filterErase{
+  color: black;
+  background-color:#f1f1f1;
+}
+
+.noInfo{
+  padding-left: 10px;
+}
+
+#closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 30px;
+  margin-left: 54px;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-size: 9px; 
+}
+
+.dropdown button {
+  background-color: #D5C2BC; 
+  color: #000000; 
+  border: none; 
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dropdown-Text1{ font-size: 11px; }
+.dropdown-Text2{ font-size: 16px; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px; 
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 8px 12px; 
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.content-dropdown-lang{
+  list-style: none;
+  display: block;
+  width: 100%;
+  padding: 0;
+  opacity: 0;
+  transition: 0.2;
+}
+
+.Msg-recomendar{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+.card {
+  display: none;
+  padding-left: 2px;
+  width: 320px !important;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: auto;
+  justify-content: space-between;
+  transition: height 0.5s ease; 
+  /* NUEVO: Efecto Vidrio para la tarjeta que sale sobre el mapa */
+  background: rgba(255, 255, 255, 0.90) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px !important;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.btn-sponsored.expanded {
+  width: 312px;
+  height: 542px !important;
+}
+
+#ToogleExpandir{
+  width: 30px;
+  position: relative;
+  left: 45%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.place-favorite, .favorito{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.favorito{
+  position: relative;
+  right: 3px;
+}
+
+#favorito, #favorito1, #check, #itinerario, #flecha, #ToogleHorario{
+  cursor: pointer;
+}
+
+#selectorItinerario{
+  a{
+    padding-inline: 0;
+    overflow: auto;
+  }
+  .dropdown-menu.show{
+    width: 104%;
+  }
+} 
+.dropdown-menu{
+  padding-inline: 8px;
+}
+#selectorItinerario.dropdown-toggle::after{
+    display: none !important;
+}
+
+.info-add, .place-favorite, .info-calification, .details-domicilio, .details-horario, .details-phone, .details-site, .details-score{
+  display: flex;
+  flex-direction: row;
+  height: 18px;
+  margin: 0px;
+  font-size: 12px;
+  padding-bottom: 4px;
+}
+
+.details-score{
+  display: flex;
+  font-size: 16px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.img-referente, .img-referente1{
+  align-self: auto;
+  display: flex;
+  align-items: center;
+}
+
+.place-comentario{
+  align-items: flex-end;
+}
+
+.info-name{
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  justify-content: start;
+  max-width: 190px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-bottom: 20px;
+}
+
+.place-about, .place-comentario{
+  width: 100%;
+  max-width: 472px;
+  margin: 0;
+  padding: 0px;
+  justify-content: start;
+  display: flex;
+  position: relative;
+  bottom: inherit;
+}
+
+.comentario-user{
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.place-comentario{
+  align-items: center;
+  max-width: 300px;
+  padding-top: 16px;
+}
+
+.place-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 14px;
+  margin-left: 5px;
+  font-size: 12px;
+  width: 250px;
+}
+
+.place-favorite{
+  width: 50px;
+  height: 65px;
+}
+
+.info-more, .info-horario{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 14px;
+  margin: 0px;
+  font-size: 12px;
+}
+
+.comentario-texto{
+  font-size: 12px;
+  margin: 0px;
+  padding: 0px;
+  justify-content: start;
+  display: flex;
+  position: relative;
+  bottom: inherit;
+}
+
+.place-header-about{
+  margin-bottom: 10px;
+  block-size: auto;
+  max-width: 95%;
+  padding-left: 1.5%;
+  justify-content: start;
+  display: none;
+}
+
+.header-name{
+  display: flex;
+  align-items: center;
+  font-size: 177%;
+  font-weight: bold;
+  text-align: center;
+  max-width: 71%;
+  hyphens: auto;
+  line-height:1em;
+}
+
+.place-body-details{
+  display: none;
+  width: 90%;
+  padding-left: 3%;
+  margin: 0;
+  justify-content: space-between;
+  position: relative;
+}
+
+.body-details{
+  max-width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.body-button-left, .body-button-right{
+  padding-block: 20px;
+  max-width: 12%;
+  display: flex;
+  align-items: center!important;
+  flex-wrap: wrap;
+}
+
+.site-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1em;
+}
+
+.photos{
+  display: none;
+}
+
+.subtitle{
+  padding-left: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.divisor, .divisor1{
+  margin: 3%;
+  border: 1px solid #ddd; /* CAMBIO: Gris claro para el divisor en lugar de negro oscuro */
+  display: none;
+  height: 1px;
+  color: #ddd;
+  background-color: #ddd;
+}
+
+.comments{
+  display: none;
+}
+
+.more-direction{
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.comentario-texto{
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.favorite-icon{
+  display: flex;
+  align-items: center!important;
+  flex-wrap: wrap;
+}
+
+.details-domicilio{
+  block-size: auto;
+  line-height:1.2em;
+  white-space: initial;
+}
+
+.weekend-text{
+  display: none;
+  min-height: 140px;
+  block-size: auto;
+  min-width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.photos{
+  max-width: 99%;
+  justify-content: start;
+  padding-left: 1.5%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.details-site{
+  block-size: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.details-horario{
+  block-size: auto;
+}
+
+.container-photos{
+  display: -webkit-inline-box;
+  width: 100%;
+  margin: 0;
+  padding: 0px;
+  justify-content: start;
+  position: relative;
+  bottom: inherit;
+  overflow-x: scroll;
+}
+
+#button-calificacion{
+    margin-left: 15px;
+    margin-bottom: 20px;
+    padding-left: 6px;
+    background-color: #65B2C6;
+    height: 29px !important;
+    width: 158px !important;
+    color: white; /* CAMBIO: Texto blanco */
+    font-size: 14px;
+    border-radius: 30px;
+    cursor: pointer;  
+    outline:none;
+    border: none;
+    box-shadow: 0 4px 10px rgba(101, 178, 198, 0.2); /* CAMBIO: Sombrita */
+}
+
+.comments{
+  flex-direction: column;
+}
+
+.card-expandida{
+  max-width: 312px;
+  overflow-y: scroll;
+}
+
+.comentario, .comentario1, .comentario2, .comentario3, .comentario4{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  padding-left: 2px;
+  width: 278px !important;
+  justify-content: start;
+  position: relative;
+  /* CAMBIO VISUAL: Blanco en lugar de gris feo */
+  background-color: #ffffff !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+}
+
+.comentario-perfil{
+  max-width: 15%;
+  display: flex;
+  align-items: center!important;
+  flex-wrap: wrap;
+}
+
+.horario-text{
+  line-height: 1em;
+}
+
+.user-dates{
+  display: flex;
+  justify-content: space-between;
+}
+
+.comentario-contenido{
+  padding-top: 6px;
+  max-width: 76%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.comentario-name{
+  display: block;
+  max-width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comentario-completo{
+  display: flex;
+  line-height: 1em;
+  font-size: 12px;
+  padding-bottom: 6px;
+  flex-direction: column;
+}
+
+.card-expandida::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card-expandida::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.card-expandida::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;    
+  border-radius: 20px;       
+}
+
+.container-photos::-webkit-scrollbar {
+  width: 10px;               
+}
+  
+.container-photos::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+  
+.container-photos::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;    
+  border-radius: 10px;
+}
+
+.divisor1{
+  margin-top: 0%;
+}
+
+.more-type{
+  max-width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.horario-detalles{
+  display: flex;
+  justify-content: space-between;
+}
+
+.star {
+  color: #ccc;
+}
+
+.btn.btn-primary.dropdown-toggle{
+  height: 158px;
+}
+
+.btn-group-vertical>.btn, .btn-group>.btn {
+  flex: 0.52 !important;
+}
+
+.dropdown-menu.show {
+  background-color: #65b2c6 !important;
+  border: none; /* CAMBIO */
+  border-radius: 12px; /* CAMBIO */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* CAMBIO */
+}
+
+.visitado{
+  height: 1px;
+  display: none;
+  color: red;
+  font-weight: bold;
+  position: static;
+  transform: translate(8%, -5000%);
+}
+
+.header-img{
+  display: grid;
+  align-items: center;
+}
+
+.checkbox-button {
+  display: none; 
+}
+
+.checkbox-button + label {
+  display: inline-block; 
+  padding: 8px 14px; /* CAMBIO: Un poco más grandes */
+  margin: 4px; 
+  background-color: white; /* CAMBIO */
+  color: #333; 
+  border: 1px solid #ddd; 
+  border-radius: 20px; /* CAMBIO: Más redondos */
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  font-size: 13px;
+}
+
+.checkbox-button:checked + label {
+  background-color: #65B2C6; /* CAMBIO: Azul de Ollin en vez del rosa fuerte */
+  color: white; 
+  border-color: #65B2C6; 
+}
+
+#recommendedFilters, #moreFilters{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.navbar {
+    background: #08979D;
+    /* Ajustamos el padding para dar espacio vertical pero mantener el centrado */
+    padding: 15px 25px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    
+    /* Flexbox es la clave para el centrado */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Esta línea es la que centra TODO verticalmente */
+    
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    color: white; 
+    
+    /* Añadimos un min-height para asegurar que haya espacio suficiente */
+    min-height: 70px; 
+}
+
+.img-nav {
+    height: 6
+    0px; /* Ajusta a tu gusto */
+    margin: 0 auto; /* Si quieres que el logo esté centrado */
+}
+
+.containerlanguages {
+    /* Si lo necesitas para posicionamiento */
+    position: relative; 
+}
+
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre 'IDIOMA:' y el select */
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.lang-switcher label {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9); /* Blanco un poco suave */
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+#lang-select {
+    padding: 6px 12px;
+    border-radius: 20px; /* Bordes redondeados modernos */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
+    
+    /* El truco principal: fondo translúcido y texto blanco */
+    background-color: rgba(0, 0, 0, 0.15); 
+    color: white;
+    
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    
+    /* Esto es para quitar la flechita fea por defecto de algunos navegadores y poner una más sutil */
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Imagen de una flechita blanca hacia abajo (SVG en Base64) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px auto;
+    padding-right: 30px; /* Espacio para que el texto no pise la flechita */
+}
+/* Efecto al pasar el mouse por encima del select */
+#lang-select:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto cuando haces click en el select (cuando se abre) */
+#lang-select:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Estilo para las opciones desplegables (las `<option>`) */
+/* Nota: Los estilos de los <option> son limitados en algunos navegadores, pero esto ayuda a que el fondo sea oscuro */
+#lang-select option {
+    background-color: rgba(8, 151, 157, 0.95); /* Color de tu navbar */
+    color: white;
+    font-weight: normal;
+}

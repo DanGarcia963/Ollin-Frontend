@@ -1,0 +1,33 @@
+# Redirecciones principales (Turistas)
+/                             /index.html                          200
+/recuperarContrasena          /cambiar_contraseña.html                200
+/registrar                    /registro_turista_ES.html               200
+/recuperacion                 /recuperacion_de_cuenta_ES.html         200
+/inicio                       /inicio.html                            200
+/experience                   /Experience.html                        200
+/museums                      /Museums.html                           200
+/singleRoute                  /SingleRoute.html                       200
+/MisFavoritos                 /MisFavoritos.html                      200
+/MisVisitados                 /MisVisitados.html                      200
+/cuenta_verificada            /Cuenta_verificada.html                 200
+/perfilTurista                /perfilTurista.html                     200
+/cuenta_creada                /cuenta_creada.html                     200
+/aventuras_proximas           /Aventuras_proximas.html                200
+/aventuras_pasadas            /aventuras_pasadas.html                 200
+/despedida                    /despedida.html                         200
+
+# Redirecciones de Administradores
+/LogInAdmin                   /login_Admin.html                       200
+/registroAdmin                /registro_Admin.html                    200
+/inicioAdmin                  /inicioAdmin.html                       200
+/museosAdmin                  /MuseumsAdmin.html                      200
+/gestionUsers                 /gestionUsers.html                      200
+/recuperarContrasenaAdmin     /recuperacion_de_cuenta_Admin.html      200
+/recuperacionContrasenaAdmin  /cambiar_contraseña_Admin.html          200
+/cuentaAdmin                  /perfilAdministrador.html               200
+/cuentas                      /cuentas.html                           200
+/crear_usuario                /crearUsuario.html                      200
+/crear_empresa                /crearEmpresa.html                      200
+/actualizar                   /updateAdministrador.html               200
+/editar_aventura              /editarAventura.html                    200
+/EnCurso                      /AventuraEnCurso.html                   200

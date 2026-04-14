@@ -1,0 +1,544 @@
+/* =========================================
+   ESTILOS GENERALES Y LAYOUT
+   ========================================= */
+
+body {
+    margin: 0;
+    height: 100%;
+    overflow-y: scroll;
+    /* Fondo con el degradado de Ollin */
+    background: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);   
+}
+
+main {
+    /* Forzamos el espaciado superior para que el navbar no tape el contenido */
+    padding-top: 100px !important; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =========================================
+   TÍTULO PRINCIPAL (Como en Mis Visitados)
+   ========================================= */
+
+/* Nota: En tu HTML el título está envuelto en un div con clases de Tailwind bg-mauve-900.
+   El CSS matará ese estilo para imponer el de Ollin */
+.titleAP {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: left;
+    margin: 0; /* Reseteamos margen */
+    padding: 0;
+}
+
+/* Contenedor del título (Para sobreescribir el estilo raro que tenía en el HTML) */
+.bg-mauve-900 {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px; /* Alineado con el grid de tarjetas */
+}
+
+/* =========================================
+   GRID DE ITINERARIOS
+   ========================================= */
+
+#containerItinerarios {
+    display: grid;
+    gap: 25px;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 1200px; /* Ancho máximo para pantallas grandes */
+    justify-content: center; 
+}
+
+/* 1 columna en móvil */
+@media (max-width: 699px) {
+    #containerItinerarios { grid-template-columns: 1fr; }
+}
+
+/* 2 columnas */
+@media (min-width: 700px) and (max-width: 1023px) {
+    #containerItinerarios { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 3 columnas */
+@media (min-width: 1024px) and (max-width: 1399px) {
+    #containerItinerarios { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 4 columnas en pantallas grandes */
+@media (min-width: 1400px) {
+    #containerItinerarios { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* =========================================
+   TARJETAS DE ITINERARIOS (Glassmorphism)
+   ========================================= */
+
+.cardsAP {
+    display: flex;
+    flex-direction: column;
+    width: 290px; /* Un poco más estilizada */
+    height: auto;
+    position: relative;
+    padding: 15px;
+    
+    /* Efecto Vidrio Esmerilado */
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    
+    transition: all 0.3s ease;
+}
+
+.cardsAP:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Cabecera de la tarjeta */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.HeaderComplete {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardName {
+    font-size: 18px;
+    font-weight: 700;
+    color: #08979D; /* Color principal */
+    margin: 0;
+}
+
+.cardDate {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Icono de eliminar */
+.deleteIcon {
+    position: absolute;
+    top: 15px; 
+    right: 15px; 
+    cursor: pointer; 
+    width: 20px; 
+    height: 20px;
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+.deleteIcon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Galería de imágenes en la tarjeta */
+.cardImages {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 15px;
+    gap: 5px;
+    height: 120px; /* Altura fija para la galería */
+}
+
+.cardImageLarge {
+    flex: 2;
+    border-radius: 10px;
+    object-fit: cover;
+    height: 100%;
+}
+
+.cardImagesSmall, .cardImagesSmall2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 100%;
+}
+
+.cardImageSmall {
+    width: 100%;
+    height: calc(50% - 2.5px);
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* Botones dentro de la tarjeta */
+.cardButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.cardButton {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.continue {
+    background-color: #65B2C6;
+    box-shadow: 0 4px 10px rgba(101, 178, 198, 0.3);
+}
+
+.continue:hover {
+    background-color: #4a9bb0;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.finish {
+    background-color: #D63D6C;
+    box-shadow: 0 4px 10px rgba(214, 61, 108, 0.3);
+}
+
+.finish:hover {
+    background-color: #b53059;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* =========================================
+   MENSAJE VACÍO Y BOTÓN CREAR
+   ========================================= */
+
+#no-favorites-message {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    text-align: center;
+    color: #555;
+    margin-top: 40px;
+    width: 90%;
+    max-width: 400px;
+}
+
+#no-favorites-message p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.create-adventure-container {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.create-adventure-link {
+    background-color: #08979D;
+    color: white;
+    padding: 14px 35px;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px; /* Botón tipo pastilla moderno */
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(8, 151, 157, 0.3);
+}
+
+.create-adventure-link:hover {
+    background-color: #055B5C;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(8, 151, 157, 0.4);
+}
+
+/* =========================================
+   ESTILOS DEL MODAL (Crear Nueva Aventura)
+   ========================================= */
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    background-color: transparent; /* Quitamos el fondo sólido */
+    border-bottom: 1px solid #eee;
+    color: #1a1a1a;
+    padding: 20px 25px;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: #08979D;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body .form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.modal-body .form-control:focus {
+    border-color: #65B2C6;
+    box-shadow: 0 0 0 3px rgba(101, 178, 198, 0.2);
+    background-color: white;
+}
+
+.modal-body .btn-primary {
+    background-color: #65B2C6;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 700;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+.modal-body .btn-primary:hover {
+    background-color: #4a9bb0;
+}
+
+/* Badges de Estado */
+.status-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-new { background: #FFDF8F; color: #856404; }
+.status-progress { background: #C4DCAB; color: #3d492a; }
+.status-finished { background: #FFB49C; color: #721c24; }
+
+/* Ajuste de ubicación */
+.card-location-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cardLocation {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Estilo para la tarjeta vacía */
+.empty-state-body {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.add-place-btn-modern {
+    background: #65B2C6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px auto 0;
+    transition: 0.3s;
+}
+
+/* Badges de Estado */
+.status-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-new { background: #FFDF8F; color: #856404; }
+.status-progress { background: #C4DCAB; color: #3d492a; }
+.status-finished { background: #FFB49C; color: #721c24; }
+
+/* Ajuste de ubicación */
+.card-location-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cardLocation {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Estilo para la tarjeta vacía */
+.empty-state-body {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.add-place-btn-modern {
+    background: #65B2C6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px auto 0;
+    transition: 0.3s;
+}
+
+/* Badges de Estado */
+.status-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-new { background: #FFDF8F; color: #856404; }
+.status-progress { background: #C4DCAB; color: #3d492a; }
+.status-finished { background: #FFB49C; color: #721c24; }
+
+/* Ajuste de ubicación */
+.card-location-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cardLocation {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Estilo para la tarjeta vacía */
+.empty-state-body {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.add-place-btn-modern {
+    background: #65B2C6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px auto 0;
+    transition: 0.3s;
+}
+
+.add-place-btn-modern img { width: 20px; }
+.add-place-btn-modern:hover { transform: scale(1.05); background: #08979D; }
+
+/* --- 1. SEPARACIÓN DE BADGE Y X --- */
+.card-badges {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.status-badge {
+    position: static !important; /* Quitamos el absolute que causaba el amontonamiento */
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.deleteIcon {
+    position: static !important; /* Quitamos el absolute */
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* --- 2. ICONO DE UBICACIÓN MÁS PEQUEÑO --- */
+.card-location-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.cardLocationIcon {
+    width: 18px !important; /* ¡Mucho más pequeño! */
+    height: auto;
+}
+
+.cardLocation {
+    font-size: 12px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- 3. BOTÓN DE CREAR (DESPEGAR DEL FINAL) --- */
+.create-adventure-container {
+    margin: 60px auto !important; /* Le damos mucho aire abajo */
+    display: flex;
+    justify-content: center;
+    padding-bottom: 40px;
+}
+
+/* --- 4. ESTILO DEL BOTÓN EDITAR --- */
+.edit-btn {
+    background-color: #65B2C6 !important;
+}
+
+/* --- 5. CORRECCIÓN ANUNCIO NOCHE DE MUSEOS (Página Principal) --- */
+/* Si este es el ID o clase del banner negro que se encogió */
+.anuncio-noche-museos, .banner-status {
+    width: 90% !important;
+    max-width: 1200px;
+    min-height: 100px; /* Aseguramos que no se colapse */
+    margin: 20px auto !important;
+    padding: 20px;
+    font-size: 1.2rem;
+}

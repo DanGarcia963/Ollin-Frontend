@@ -1,0 +1,189 @@
+/* =========================================
+   1. LAYOUT PRINCIPAL (Perfil del Turista)
+   ========================================= */
+body {
+    background: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    overflow-y: auto !important;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px; 
+    box-sizing: border-box;
+    width: 100% !important; /* FORZAMOS QUE OCUPE TODA LA PANTALLA */
+}
+
+/* =========================================
+   2. TÍTULO DE LA PÁGINA (Centrado Forzado)
+   ========================================= */
+.page-title {
+    width: 100% !important;
+    display: block !important; /* Block es mejor para centrar texto que Flex en este caso */
+    text-align: center !important; /* Alineación forzada */
+    margin: 15px auto 25px auto !important; 
+}
+
+.h1-title {
+    font-size: 28px !important; 
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+    margin: 0 !important;
+    text-align: center !important;
+    display: block !important;
+}
+/* =========================================
+   3. TARJETA DE DATOS (Más Compacta)
+   ========================================= */
+.container-data {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px; /* Un poco más angosta para que luzca más fina */
+    
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    
+    padding: 20px 25px; /* Padding interno mucho menor (antes era 30px) */
+    margin-bottom: 20px;
+}
+
+/* Cabecera (Nombre y Tipo "Turista") */
+.userH {
+    text-align: center;
+    margin-bottom: 15px; /* Reducido */
+    padding-bottom: 15px; /* Reducido */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.userH #name {
+    font-size: 20px; /* Letra ajustada (antes 24px) */
+    font-weight: 800;
+    color: #08979D; 
+    margin: 0 0 4px 0;
+}
+
+.userH #type {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   4. FORMULARIO Y CAMPOS DE TEXTO
+   ========================================= */
+.form-profile {
+    margin-bottom: 10px; /* Inputs más pegaditos entre sí */
+}
+
+.label-profile {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 4px; /* Título más pegado al input */
+    display: block;
+}
+
+.container-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px; /* Bordes ligeramente más finos */
+    padding: 2px 12px; /* Altura del input más delgada */
+    transition: 0.3s;
+}
+
+.container-input:focus-within {
+    border-color: #65B2C6;
+    box-shadow: 0 0 0 3px rgba(101, 178, 198, 0.2);
+}
+
+.nombre-container, .lastname-container, .password-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-profile {
+    width: 100%;
+    border: none !important;
+    background: transparent !important;
+    padding: 8px 0; /* Input más delgado (antes 10px) */
+    font-size: 14px; /* Letra un poco más ajustada */
+    color: #1a1a1a;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.input-profile:disabled { color: #888; background: transparent !important; }
+
+/* Botón de editar (El lapicito) */
+.btn-icon {
+    background: transparent; border: none; cursor: pointer;
+    padding: 4px; display: flex; align-items: center; justify-content: center;
+    transition: 0.2s; border-radius: 50%;
+}
+.btn-icon img { width: 18px !important; height: 18px !important; } /* Lapicito más chico */
+.btn-icon:hover:not(:disabled) { background-color: rgba(101, 178, 198, 0.1); transform: scale(1.1); }
+.btn-icon:disabled { opacity: 0.4; cursor: not-allowed; }
+
+#togglePassword, #togglePasswordRE, #toggleCurrentPassword {
+    cursor: pointer; opacity: 0.6; transition: 0.2s; padding: 4px; width: 18px; height: 18px;
+}
+#togglePassword:hover { opacity: 1; }
+
+/* =========================================
+   5. BOTONES DE ACCIÓN (Guardar/Cancelar)
+   ========================================= */
+.btn-form-profile { display: flex; gap: 15px; margin-top: 10px; }
+.btn-save, .btn-cancel {
+    flex: 1; padding: 10px; border-radius: 30px; border: none;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; text-align: center;
+}
+.btn-save { background-color: #65B2C6; color: white; }
+.btn-save:hover { background-color: #4a9bb0; transform: translateY(-2px); }
+.btn-cancel { background-color: #f1f1f1; color: #333; }
+.btn-cancel:hover { background-color: #e2e2e2; transform: translateY(-2px); }
+
+/* =========================================
+   6. BOTÓN BORRAR CUENTA
+   ========================================= */
+.container-delete { margin-top: 15px; display: flex; justify-content: center; } /* Separación reducida */
+
+.btn-deleteAcc {
+    background-color: #D63D6C; color: white; border: none; border-radius: 12px;
+    padding: 12px 18px; /* Botón más delgado */
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(214, 61, 108, 0.2);
+}
+.btn-deleteAcc h3 { font-size: 14px; font-weight: 700; margin: 0; }
+.btn-deleteAcc img { width: 20px !important; height: 20px !important; filter: brightness(0) invert(1); }
+.btn-deleteAcc:hover { background-color: #b53059; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(214, 61, 108, 0.3); }
+
+/* =========================================
+   7. MODALES
+   ========================================= */
+.container-modal {
+    display: none; width: 100%; height: 100vh; position: fixed; top: 0; left: 0;
+    justify-content: center; align-items: center; z-index: 1000;
+    background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+}
+.container-modal.active { display: flex; }
+.content-modal {
+    background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 25px;
+    width: 90%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+}
