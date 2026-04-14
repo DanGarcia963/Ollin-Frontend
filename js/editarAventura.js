@@ -1,7 +1,7 @@
 import { calcDistTime } from "./routesEditAdvn.js";
 import { getIndividualDistTime } from "./dragNdrop.js";
 import { updateItemDurationDistance } from "./dragNdrop.js";
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 let geocoder;
 function editarAventura(lugares,userCoords,durations){

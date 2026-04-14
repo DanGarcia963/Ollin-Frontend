@@ -1,6 +1,6 @@
 import { dragNdrop } from "./dragNdrop.js";
 import { editarAventura } from "./editarAventura.js";
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 let mapa;
 let geocoder;

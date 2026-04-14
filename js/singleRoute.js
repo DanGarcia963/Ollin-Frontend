@@ -1,6 +1,6 @@
 import { getUserLocation } from "../ARCY-imports/getUserLocation.js"
 import { rutaIti } from "../ARCY-imports/rutas.js"
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 let mapa;
 let directionsService

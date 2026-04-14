@@ -1,4 +1,4 @@
-const server = "https://ollin-backend-production.up.railway.app"
+const server = "https://ollin-backend-production-d68e.up.railway.app"
 async function fetchLoadUsers() {
   try {
       const response = await fetch(`${server}/api/usuarioTurista`, {

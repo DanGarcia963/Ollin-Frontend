@@ -1,6 +1,6 @@
 // Verificar carga del JS
 console.log('connect_login_Admin.js cargado')
-const server = "https://ollin-backend-production.up.railway.app"
+const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 document.addEventListener('DOMContentLoaded', async function () {
   console.log('DOM Cargado')

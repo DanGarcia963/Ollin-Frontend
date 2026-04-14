@@ -1,7 +1,7 @@
 
 console.log("iniciandodespli");
 
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 // Define la URL de la API para obtener lugares favoritos
 const API_URL = `${server}/api/lugarFavorito/obtenerLugaresFavoritos`;

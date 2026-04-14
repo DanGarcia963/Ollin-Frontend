@@ -1,4 +1,4 @@
-const server = "https://ollin-backend-production.up.railway.app"
+const server = "https://ollin-backend-production-d68e.up.railway.app"
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('login').addEventListener('submit', async (e) => {
     e.preventDefault()

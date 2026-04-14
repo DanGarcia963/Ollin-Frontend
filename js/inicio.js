@@ -1,5 +1,5 @@
 console.log("Inicio.js cargado");
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 async function fetchRecommendedMuseums() {
     try {

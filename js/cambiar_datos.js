@@ -1,6 +1,6 @@
 let modal
 let idTurista
-//const server = "https://ollin-backend-production.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 function esperarUsuario() {
     return new Promise(resolve => {
         const interval = setInterval(() => {
