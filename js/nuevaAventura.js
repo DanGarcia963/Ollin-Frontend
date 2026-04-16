@@ -8,7 +8,7 @@ document.querySelector('.create-adventure-link').addEventListener('click', funct
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('formNuevaAventura');
-    const createButton = form.querySelector('button[type="submit"]');
+    const createButton = document.getElementById('btnCrearAventura');
 
     createButton.addEventListener('click', function (event) {
         if (validateForm()) {
