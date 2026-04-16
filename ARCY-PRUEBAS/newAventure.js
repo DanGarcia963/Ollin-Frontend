@@ -1,4 +1,3 @@
-const server = "https://ollin-backend-production-d68e.up.railway.app"
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("btnCrearAventura").addEventListener("click", async function(e) {
       e.preventDefault();
