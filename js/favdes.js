@@ -1,4 +1,4 @@
-
+import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
 console.log("iniciandodespli");
 
 //const server = "https://ollin-backend-production-d68e.up.railway.app"
@@ -164,8 +164,6 @@ function generateStars(rating) {
 
 
 async function displayFavorites() {
-
-        setTimeout(async () => {
       
           const nombreUsuario = document.getElementById("nombreUsuario");
           const idTurista = nombreUsuario.getAttribute('data-id-turista');
@@ -193,8 +191,6 @@ async function displayFavorites() {
       </div>
     `;
   }
-          
-        }, 250); 
       
 }
 
@@ -269,5 +265,12 @@ function removeFavorite(idLugar, idTurista) {
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOMContentLoaded, inicializando pantalla de favoritos");
     await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible
-    displayFavorites();
+    showLoading("Cargando favoritos..."); // Mostrar el indicador de carga
+    try{
+      await displayFavorites();
+    } catch (error) {
+      console.error('Error al inicializar pantalla de favoritos:', error);
+    } finally {
+      hideLoading(); // Ocultar el indicador de carga
+    }
   });

@@ -1,5 +1,5 @@
 //const server = "https://ollin-backend-production-d68e.up.railway.app"
-
+import { hideLoading, showLoading } from "../ARCY-imports/loading";
 const API_URL = `${server}/api/itinerario/obtenerItinerarios`;
 const API_URL1 = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${server}/api/lugarItinerario/editarEstadoLugarItinerario`;
@@ -50,7 +50,6 @@ async function fetchItineraryPlaces1(idPlan) {
 // Función modificada para mostrar los lugares favoritos
 async function displayFavorites() {
     
-    setTimeout(async () => {
         const nombreUsuario = document.getElementById("nombreUsuario");
 
         console.log("Prueba de arcy 1: " + nombreUsuario)
@@ -93,7 +92,6 @@ async function displayFavorites() {
         } else {
             document.getElementById("no-favorites-message").style.display = "block";
         }
-    }, 250);
 }
 
 
@@ -180,7 +178,16 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
 document.addEventListener('DOMContentLoaded', async function () {
     console.log("DOMContentLoaded, inicializando pantalla de itinerarios");
     await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible 
-    displayFavorites();
+    showLoading("Cargando planes de visita...")
+    try{
+    await displayFavorites();
+    }
+    catch(e){
+        console.error('Error al inicializar pantalla de planes de visita:', error);
+    }
+    finally{
+        hideLoading();
+    }
 });
 
 // Función para crear una cookie y redirigir (Boton editar)

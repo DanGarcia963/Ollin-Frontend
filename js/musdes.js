@@ -1,6 +1,5 @@
 //const server = "https://ollin-backend-production-d68e.up.railway.app"
-
-
+import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
 
 
 const API_URL = `${server}/api/lugar/`;
@@ -639,9 +638,17 @@ function applyAllFilters() {
         });
     }
 
-
-    // Render final
+   // Render final
+    showLoading("Aplicando filtros...");
+    const CURRENT_LIMIT = 10;
+    try {
     displayFavorites(CURRENT_LIMIT, result);
+    }catch(e){
+        console.error("Error aplicando filtros:", e);
+    }
+    finally {
+    hideLoading();
+    }
 }
 
 // Evento boton aplicar filtros
@@ -1355,12 +1362,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    CURRENT_LIMIT = 10;
+    // 🔥 VARIABLES GLOBALES
+
+    showLoading("Cargando museos...");
+    var CURRENT_LIMIT = 10;
     const STEP = 10;
-
+    try{
     await displayFavorites(CURRENT_LIMIT);
-    initUserLocation();
+    } catch (e) {
+        console.error("Error al cargar museos:", e);
+        const container = document.getElementById('museodes');
+        container.innerHTML = '<div class="error-message">Error al cargar los museos. Por favor, intenta recargar la página.</div>';
+    }
+    finally {
+    
+    hideLoading();
 
+    }
+    initUserLocation();
+    // 🔥 BOTONES
     const showMoreBtn = document.getElementById("showMoreBtn");
     const showLessBtn = document.getElementById("showLessBtn");
 
@@ -1368,7 +1388,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showMoreBtn.addEventListener("click", async () => {
         CURRENT_LIMIT += STEP;
+        showLoading("Cargando más museos...");
+        try{
         await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
+        }
+        catch (e) {
+            console.error("Error al mostrar más museos:", e);
+            const container = document.getElementById('museodes');
+            container.innerHTML = '<div class="error-message">Error al cargar más museos. Por favor, intenta recargar la página.</div>';
+        }
+        finally {
+            hideLoading();
+        }
 
         showLessBtn.style.display = "inline-block";
 
@@ -1379,7 +1410,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showLessBtn.addEventListener("click", async () => {
         CURRENT_LIMIT = 10;
+        showLoading("Mostrando menos museos...");
+        try{
         await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
+        } catch (e) {
+            console.error("Error al mostrar menos museos:", e);
+            const container = document.getElementById('museodes');
+            container.innerHTML = '<div class="error-message">Error al mostrar los museos. Por favor, intenta recargar la página.</div>';
+        }
+        finally {
+            hideLoading();
+        }
 
         showMoreBtn.style.display = "inline-block";
         showLessBtn.style.display = "none";
