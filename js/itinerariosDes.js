@@ -1,5 +1,5 @@
 //const server = "https://ollin-backend-production-d68e.up.railway.app"
-import { hideLoading, showLoading } from "../ARCY-imports/loading";
+import { hideLoading, showLoading } from "../ARCY-imports/loading.js";
 const API_URL = `${server}/api/itinerario/obtenerItinerarios`;
 const API_URL1 = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${server}/api/lugarItinerario/editarEstadoLugarItinerario`;
