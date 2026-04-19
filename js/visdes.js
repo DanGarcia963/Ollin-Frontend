@@ -494,3 +494,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayVisit();
     displayVisitPlans();
   });
+
+  window.crearCookieYRedirigir = crearCookieYRedirigir;
+window.crearCookieYedit = crearCookieYedit;

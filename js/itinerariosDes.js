@@ -417,3 +417,9 @@ function createEmptyItineraryCard(itinerario) {
 function getDeleteButtonHTML(idItinerario) {
     return `<img src="assets/icons/eliminarIcon.png" alt="Eliminar" class="deleteIcon" onclick="deleteItinerary('${idItinerario}')">`;
 }
+
+window.crearCookieYRedirigir = crearCookieYRedirigir;
+window.crearCookieYedit = crearCookieYedit;
+window.finalizeItinerary = finalizeItinerary;
+window.deleteItinerary = deleteItinerary;
+window.goToMuseums = goToMuseums;
