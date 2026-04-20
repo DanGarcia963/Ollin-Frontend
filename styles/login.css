@@ -1,5 +1,5 @@
 :root {
-    --primary: #65B2C6; /* Tu azul */
+    --primary: #65B2C6;
     --primary-dark: #4a8a9a;
     --accent: #D63D6C;
     --glass-bg: rgba(255, 255, 255, 0.85);
@@ -10,29 +10,125 @@
     --border-color: #dcdde1;
 }
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+}
+
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
+    margin: 0;
     font-family: "Montserrat", sans-serif;
     background: var(--bg-gradient);
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
+    overflow-x: hidden;
+    padding: 24px 16px;
 }
 
-/* Mantenemos los círculos de fondo decorativos */
+main {
+    display: block;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+a {
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    border-style: none;
+    max-width: 100%;
+    display: block;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+
+textarea {
+    overflow: auto;
+}
+
+[type="checkbox"],
+[type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+[type="search"] {
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
+}
+
+[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+}
+
+/* Fondo decorativo */
 .bg-circles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    inset: 0;
     z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
 }
 
 .circle {
@@ -41,21 +137,32 @@ body {
     filter: blur(80px);
 }
 
-.c1 { width: 400px; height: 400px; background: rgba(101, 178, 198, 0.3); top: -100px; left: -100px; }
-.c2 { width: 500px; height: 500px; background: rgba(214, 61, 108, 0.1); bottom: -150px; right: -100px; }
+.c1 {
+    width: clamp(220px, 35vw, 420px);
+    height: clamp(220px, 35vw, 420px);
+    background: rgba(101, 178, 198, 0.3);
+    top: -120px;
+    left: -120px;
+}
 
-/* Contenedor principal que rodea la tarjeta */
+.c2 {
+    width: clamp(260px, 40vw, 520px);
+    height: clamp(260px, 40vw, 520px);
+    background: rgba(214, 61, 108, 0.1);
+    bottom: -180px;
+    right: -140px;
+}
+
+/* Contenedor principal */
 .main-wrapper {
-    width: 100%;
-    /* --- CAMBIO 1: Aumentado para permitir una tarjeta más ancha --- */
-    max-width: 500px; /* Antes era 500px, ahora es casi el doble */
-    padding: 20px;
+    width: min(100%, 460px);
+    margin: auto;
     z-index: 10;
 }
 
-/* Selector de Idioma (lo mantenemos arriba a la derecha) */
 .containerlanguages {
-    margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 14px;
 }
 
 .lang-switcher {
@@ -63,8 +170,9 @@ body {
     justify-content: flex-end;
     align-items: center;
     gap: 10px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
+    flex-wrap: wrap;
 }
 
 #lang-select {
@@ -76,176 +184,222 @@ body {
     outline: none;
 }
 
-/* --- CAMBIO 2: Tarjeta de Login (Mucho más grande) --- */
+/* Tarjeta */
 .glass-card {
+    width: 100%;
     background: var(--glass-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 35px; /* Bordes más curvos para un look premium */
-    /* Aumentamos dramáticamente el padding (espacio interno) */
-    padding: 50px 50px; /* Antes era 50px 40px */
-    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+    border-radius: 28px;
+    padding: clamp(24px, 5vw, 48px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
 }
 
 .brand-header {
     text-align: center;
-    /* --- CAMBIO 3: Más espacio después de la cabecera --- */
-    margin-bottom: 30px; /* Antes era 40px */
+    margin-bottom: 26px;
 }
 
-/* --- CAMBIO 4: LOGO MUCHO MÁS GRANDE --- */
 .logo {
-    width: 180px; /* Antes era 110px. ¡Más del doble de ancho! */
-    margin-bottom: 25px;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    width: clamp(120px, 42vw, 180px);
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 18px;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
 }
 
 h1 {
-    /* --- CAMBIO 5: Título más grande --- */
-    font-size: 1.6rem; /* Antes era 1.6rem */
+    font-size: clamp(1.35rem, 3.8vw, 1.8rem);
     font-weight: 700;
     color: var(--text-main);
+    line-height: 1.2;
 }
 
-/* Grupo de Inputs (se adaptan al nuevo tamaño de la tarjeta) */
-.input-group {
-    margin-bottom: 30px; /* Más espacio entre grupos */
-    display: flex;
-    flex-direction: column;
+/* Formularios */
+form {
+    width: 100%;
 }
 
 .static-label {
-    /* --- CAMBIO 6: Etiquetas más grandes y legibles --- */
-    font-size: 0.9rem; /* Antes era 0.9rem */
+    display: block;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-main);
-    margin-bottom: 12px;
-    display: block;
+    margin-bottom: 10px;
 }
 
 input {
     width: 100%;
-    /* --- CAMBIO 7: Cuadros de texto más altos --- */
-    padding: 15px 15px; /* Antes era 15px */
+    padding: 14px 15px;
     border: 2px solid var(--border-color);
-    border-radius: 15px; /* Bordes más suaves */
+    border-radius: 14px;
     background-color: var(--input-bg);
-    font-size: 0.9rem; /* Texto más grande dentro del input */
-    transition: all 0.3s ease;
+    font-size: 16px;
+    transition: all 0.25s ease;
     color: var(--text-main);
-}
-
- input:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 5px rgba(101, 178, 198, 0.15);
 }
 
-/* Password & Ojo */
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(101, 178, 198, 0.15);
+}
+
+/* Espaciado general entre campos */
+form > .input-group,
+form > label,
+form > .password-wrapper {
+    margin-bottom: 16px;
+}
+
+/* Password */
 .password-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.eye-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    /* --- CAMBIO 8: Icono del ojo un poco más grande --- */
-    width: 22px; /* Antes era 22px */
-    cursor: pointer;
-    opacity: 0.6;
+.password-wrapper input {
+    padding-right: 52px;
 }
 
+.eye-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    opacity: 0.65;
+}
+
+/* Link recuperar */
 #recuperation {
     display: block;
-    margin-top: 15px;
-    /* --- CAMBIO 9: Link de recuperación más grande --- */
-    font-size: 0.8rem; /* Antes era 0.8rem */
+    margin-top: 12px;
+    font-size: 0.85rem;
     color: var(--primary-dark);
     text-decoration: none;
     text-align: right;
     font-weight: 500;
+    word-break: break-word;
 }
 
 #recuperation:hover {
     text-decoration: underline;
 }
 
-/* --- CAMBIO 10: Botón Iniciar Sesión (Imponente) --- */
+/* Botón */
 #next {
     width: 100%;
-    /* Mucho más alto y con texto más grande */
-    padding: 16px; /* Antes era 16px */
-    margin-top: 25px;
+    margin-top: 22px;
+    padding: 15px 16px;
     background: var(--primary);
     border: none;
-    border-radius: 15px;
-    font-size: 1.1rem; /* Antes era 1.1rem */
-    font-weight: 500;
-    letter-spacing: 1px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
     cursor: pointer;
-    box-shadow: 0 15px 30px rgba(101, 178, 198, 0.3);
-    transition: all 0.3s ease;
+    box-shadow: 0 12px 26px rgba(101, 178, 198, 0.28);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 #next:hover {
     background: var(--primary-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(101, 178, 198, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(101, 178, 198, 0.35);
 }
 
-/* Registro */
+/* Registro / Login footer */
 .registration-container {
-    margin-top: 30px; /* Más espacio antes del footer */
+    margin-top: 24px;
     text-align: center;
     border-top: 1px solid #eee;
-    padding-top: 10px;
+    padding-top: 14px;
 }
 
 .registration-container p {
-    /* --- CAMBIO 11: Texto de registro más grande --- */
-    font-size: 1rem; /* Antes era 0.9rem */
+    font-size: 0.95rem;
     color: var(--text-muted);
+    margin: 0;
 }
 
 .register-link {
     color: var(--primary-dark);
     text-decoration: none;
     font-weight: 700;
-    /* --- CAMBIO 12: Link de registro más grande --- */
-    font-size: 1.1rem; /* Antes era 1rem */
+    font-size: 1rem;
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
-/* Ajustes para móviles (volvemos a un tamaño manejable) */
+.register-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
-    .glass-card {
-        padding: 40px 20px;
+    body {
+        padding: 18px 12px;
+        align-items: flex-start;
     }
+
     .main-wrapper {
+        width: 100%;
         max-width: 100%;
+        margin: 0;
     }
-    .logo {
-        width: 180px;
+
+    .glass-card {
+        border-radius: 22px;
+        padding: 22px 18px;
     }
-    h1 {
-        font-size: 1.8rem;
+
+    .brand-header {
+        margin-bottom: 20px;
+    }
+
+    .lang-switcher {
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    #recuperation {
+        text-align: center;
     }
 }
 
-/* Permite que la tarjeta crezca si hay muchos campos y añade espacio abajo */
-body {
-    height: auto;
-    min-height: 100vh;
-    padding: 50px 0; /* Espacio para que no pegue a los bordes al hacer scroll */
-    overflow-y: auto; /* Permite scroll si el formulario es muy largo */
+@media (max-width: 380px) {
+    .glass-card {
+        padding: 18px 14px;
+    }
+
+    input {
+        padding: 13px 14px;
+    }
+
+    #next {
+        padding: 14px;
+        font-size: 0.98rem;
+    }
+
+    .registration-container {
+        margin-top: 20px;
+    }
 }
 
-.main-wrapper {
-    margin: auto;
+.brand-header p {
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+    .brand-header p {
+        font-size: 0.95rem;
+    }
 }

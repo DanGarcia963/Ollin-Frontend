@@ -188,5 +188,5 @@ export const updateHTML = (placeInfo) => {
   cerrarHorario()
 
   comprobarSiLugarEsFavorito(placeInfo.placeID)
-  comprobarSiLugarEstaVisitado(placeInfo.placeID)
+
 }

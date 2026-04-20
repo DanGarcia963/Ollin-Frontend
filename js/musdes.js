@@ -524,40 +524,6 @@ function generateStars(rating) {
     return starsHtml;
 }
 
-/* dentro de esta funcion se imprimen todos los museos
-async function displayFavorites() {
-    const favoritePlaces = await fetchPlaces();
-    const museumContainer = document.getElementById('museodes');
-    museumContainer.innerHTML = '';
-  
-    for (const place of favoritePlaces) {
-      let placeInfo = null;
-      const storedId   = place["ID MUSEO"];
-      const storedName = place["NombreMuseo"];
-  
-      // 1) Intento con el placeId de la BD
-      try {
-        placeInfo = await getInfo(storedId);
-      } catch (e) {
-        // 2) Si no existe el ID, caigo a buscar por nombre
-        if (e.message.includes('NOT_FOUND')) {
-          try {
-            placeInfo = await getInfoByName(storedName);
-          } catch (e2) {
-            // 3) Si tampoco hay resultados por nombre, lo ignoramos
-            console.warn(`No se encontró info para "${storedName}", lo ignoramos.`);
-            continue;
-          }
-        } else {
-          // Otros errores (red, quota, etc.) también los ignoramos para no romper el bucle
-          console.error(`Error inesperado en getInfo(${storedId}):`, e);
-          continue;
-        }
-      }
-      museumContainer.innerHTML += createMuseumCard(placeInfo);
-    }
-}*/
-
 // Normaliza texto para comparaciones
 function normalizeText(text) {
     return text
@@ -640,7 +606,7 @@ function applyAllFilters() {
 
    // Render final
     showLoading("Aplicando filtros...");
-    const CURRENT_LIMIT = 10;
+    const CURRENT_LIMIT = 3;
     try {
     displayFavorites(CURRENT_LIMIT, result);
     }catch(e){
@@ -1365,7 +1331,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 🔥 VARIABLES GLOBALES
 
     showLoading("Cargando museos...");
-    var CURRENT_LIMIT = 10;
+    var CURRENT_LIMIT = 3;
     const STEP = 10;
     try{
     await displayFavorites(CURRENT_LIMIT);
@@ -1409,7 +1375,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     showLessBtn.addEventListener("click", async () => {
-        CURRENT_LIMIT = 10;
+        CURRENT_LIMIT = 3;
         showLoading("Mostrando menos museos...");
         try{
         await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);

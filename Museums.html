@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="museums">Listado de Museos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/complementInicio.css">
-    <link rel="stylesheet" href="styles/inicio.css">
-    <link rel="stylesheet" href="styles/stylesfav.css">
-    <link rel="stylesheet" href="styles/styles_barra.css">
-    <link rel="stylesheet" href="styles/Aventuras_proximas.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/museums.css">
     <link rel="stylesheet" href="/styles/loadingOverlay.css">
     <script src="ARCY-PRUEBAS/admin.js"></script>
         <style>
@@ -48,7 +43,6 @@
     <header>
         <div class="navbar" >
             <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
-
             <img src="assets/icons/Logo.PNG" class="img-nav" alt="Logo" id="logoImage">
             <div class="containerlanguages">
                 <!-- Selector de idioma -->
@@ -65,9 +59,7 @@
             <!-- Ahora boton de regresar -->
             <button type="button" id="btnTriggerSB" class="btn-icon" onclick="window.location.href='/inicio'">
                 <img src="assets/icons/regresar.png" alt="Buscar" class="img-nav">
-            </button>
-            
-            
+            </button>     
         </div>
 
         <div class="container-modal-sidebar" id="modalSidebar">
@@ -88,7 +80,6 @@
                     <a href="/MisVisitados" class="btn-sidebar"> 
                         <img src="./assets/icons/checked.png" class="sidebar-img"> <span data-i18n="visited_museums">Museos Visitados</span>
                     </a>
-                    
                 </div>
 
                 <div class="sidebar-text" style="margin-top: auto;">
@@ -218,19 +209,16 @@
                     </div>
                 </div>
 
-                            <div>
-                <b>Cercanía</b>
-<select id="filterDistanceKm" >
-    <option value="">-- Selecciona distancia --</option>
-    <option value="1">1 km</option>
-    <option value="5">5 km</option>
-    <option value="10">10 km</option>
-    <option value="50">50 km</option>
-</select>
-
+                <div>
+                    <b>Cercanía</b>
+                    <select id="filterDistanceKm" >
+                        <option value="">-- Selecciona distancia --</option>
+                        <option value="1">1 km</option>
+                        <option value="5">5 km</option>
+                        <option value="10">10 km</option>
+                        <option value="50">50 km</option>
+                    </select>
                 </div>
-
-
                 </div>
             </div>
             <div id="filtersSummit">
@@ -239,25 +227,24 @@
             </div>
         </div>
 
-<div id="viewMoreCard" class="viewMoreCard hidden">
-  <div class="vm-card">
+        <div id="viewMoreCard" class="viewMoreCard hidden">
+        <div class="vm-card">
 
-    <div class="vm-header">
-      <h2 id="vm-nombre"></h2>
-      <img id="vm-image" src="" alt="Imagen del museo">
-      <img id="vm-image2" src="" alt="Imagen del museo">
-      <button id="vm-cerrar">✕</button>
-    </div>
+            <div class="vm-header">
+            <h2 id="vm-nombre"></h2>
+            <img id="vm-image" src="" alt="Imagen del museo">
+            <img id="vm-image2" src="" alt="Imagen del museo">
+            <button id="vm-cerrar">✕</button>
+            </div>
 
-    <div class="vm-body" id="vm-body"></div>
+            <div class="vm-body" id="vm-body"></div>
 
-  </div>
-</div>
+        </div>
+        </div>
 
         <div id="museodes" class="scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
             <!-- Las tarjetas de lugares favoritos se insertarán aquí mediante JavaScript -->
         </div>
-        
         <div id="pagination" class="pagination">
             <!-- Botones de paginación se insertarán aquí mediante JavaScript -->
              <button id="showMoreBtn" class="pagination-button" style="display: none;">Mostrar más</button>
@@ -309,14 +296,11 @@
     </div>
   </div>
 </div>
-    <script src="js/toogle_modal.js"></script>
-    <script src="js/expandir.js"></script>
-    <script src="js/expandir-weekend.js"></script>
+
     <script type="module" src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/botones.js"></script>
     <script src="js/goinit.js"></script>
     <script src="js/i18n.js"></script>
-    <script type="module" src="js/musdes.js"></script> <!-- Tu archivo JavaScript que maneja la lógica -->
+    <script type="module" src="js/musdes.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/map.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
