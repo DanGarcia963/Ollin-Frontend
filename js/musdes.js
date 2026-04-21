@@ -1120,7 +1120,7 @@ function esperarUsuario() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded',async () => {
     await esperarUsuario();
   const select = document.getElementById('lang-select');
   const saved = localStorage.getItem('lang') || 'es';
