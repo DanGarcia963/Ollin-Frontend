@@ -1120,190 +1120,206 @@ function esperarUsuario() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-        await esperarUsuario();
-    const select = document.getElementById('lang-select');
-    const saved = localStorage.getItem('lang') || 'es';
-    select.value = saved;
-    console.log('Idioma seleccionado:', saved);
-  const container = document.getElementById('museodes'); // Asegúrate de usar el ID real de tu contenedor
+document.addEventListener('DOMContentLoaded', () => {
+    await esperarUsuario();
+  const select = document.getElementById('lang-select');
+  const saved = localStorage.getItem('lang') || 'es';
+  select.value = saved;
 
+  const container = document.getElementById('museodes');
+  const itinerariosDisponibles = document.getElementById('itinerariosDisponibles');
+  const formNuevaAventura = document.getElementById('formNuevaAventura');
+  const createAdventureLink = document.querySelector('.create-adventure-link');
+
+  let selectedMuseum = null; // 🔥 estado global temporal
+
+  // =========================
+  // CLICK EN CARDS (delegación)
+  // =========================
   container.addEventListener('click', async function(event) {
-      if (event.target.id === 'tuBotonAgregar') {
-          //const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
-          const idMuseo = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-          const nombreMuseo=event.target.closest('.favorite-card').querySelector('.info-name').textContent.trim();
-            var modal = new bootstrap.Modal(document.getElementById('nuevaAventuraModal'));
-            modal.show();
-        displayIninerary();
-            document.getElementById('itinerariosDisponibles').addEventListener('click', async (event) => {
-        if (event.target && event.target.matches("button.dropdown-item")) {
-            // Extraer el índice del ID del botón
-            const buttonId = event.target.id;
-            const index = buttonId.split('-')[1];
-            const itinerarioButton = document.getElementById(`itinerarioID-${index}`);
 
-            if (itinerarioButton) {
-                const idPlan = itinerarioButton.getAttribute('data-id-itinerario');
-                const nombreItinerario = itinerarioButton.getAttribute('data-nombre-itinerario');
-                
-                await addPlaceToItinerary(idPlan, idMuseo, nombreMuseo);
-                showDone(nombreMuseo, nombreItinerario);
-                modal.hide();
-            }
-        }
-        
+    // ===== AGREGAR A ITINERARIO =====
+    if (event.target.id === 'tuBotonAgregar') {
+      const card = event.target.closest('.favorite-card');
 
-    });
-    document.querySelector('.create-adventure-link').addEventListener('click', function() {
-        var modal = new bootstrap.Modal(document.getElementById('newPlanModal'));
-        modal.show();
-        document.getElementById('formNuevaAventura').addEventListener('submit', async (e) => {
-        e.preventDefault();
+      selectedMuseum = {
+        idMuseo: card.querySelector('.info-name').getAttribute('data-placeid'),
+        nombreMuseo: card.querySelector('.info-name').textContent.trim()
+      };
 
-        // Obtener el valor del itinerario y el id del turista
-        const nombreItinerario = document.getElementById('nombreItinerario').value;
-        const nombreUsuario = document.getElementById("nombreUsuario");
-        const idTurista = nombreUsuario.dataset.idTurista; // Obtener el id del turista
+      const modal = new bootstrap.Modal(document.getElementById('nuevaAventuraModal'));
+      modal.show();
 
-        // Validar que los campos no estén vacíos
-        if (!nombreItinerario.trim() || !idTurista.trim()) {
-            return; // Detener la ejecución si alguno de los campos está vacío
-        }
+      displayIninerary();
+    }
 
-        if (nombreItinerario.trim().length < 5 || nombreItinerario.trim().length > 15) {
-            return;
-        }
-        // Realizar la petición fetch para enviar los datos
-        try {
-            const res = await fetch(`${server}/api/itinerario/crearItinerario`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Nombre: nombreItinerario,
-                    id_Turista: idTurista
-                })
-            });
+    // ===== VIEW MORE =====
+    if (event.target.id === 'ViewMoreBtn') {
+      const idLugar = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .getAttribute('data-placeid');
 
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
+      const infoLugar = await getInfo(idLugar);
+      const museum = await fetchPlaces().then(places =>
+        places.find(p => p["ID MUSEO"] === idLugar)
+      );
 
-        const { id_Plan: idPlan, mensaje } = await res.json();
+      abrirViewMore(museum, infoLugar);
+    }
 
-        // Llamamos a tu función pasando el idPlan recién creado
-        await addPlaceToItinerary(idPlan, idMuseo, nombreMuseo);
-        showDone(nombreMuseo, nombreItinerario);
+    // ===== IR A RUTA =====
+    if (event.target.id === 'agreIti') {
+      const idLugar = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .getAttribute('data-placeid');
 
-            setTimeout(function() {
-                window.location.reload();
-            }, 1000);
+      window.location.href = `/singleRoute?placeId=${idLugar}`;
+    }
 
-        } catch (error) {
-            console.error('Hubo un problema con la petición Fetch:', error);
-        }
-        });
-    });
+    // ===== FAVORITOS =====
+    if (event.target.id === 'tuBotonFavoritos') {
+      const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
+      const idLugar = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .getAttribute('data-placeid');
+      const nombreMuseo = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .textContent.trim();
 
-      }
-      if(event.target.id === 'ViewMoreBtn') {
-            const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-            const infoLugar = await getInfo(idLugar);
-            const museum = await fetchPlaces().then(places => places.find(p => p["ID MUSEO"] === idLugar));
-            abrirViewMore(museum, infoLugar, );
-      }
-
-      if (event.target.id === 'agreIti') {
-          const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-          window.location.href = `/singleRoute?placeId=${idLugar}`;
-      }
-
-      if(event.target.id ==='tuBotonFavoritos')
-      {
-        if(event.target.getAttribute('data-favorite') !== 'true') {
-        const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
-        const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-        const nombreMuseo=event.target.closest('.favorite-card').querySelector('.info-name').textContent.trim();
+      if (event.target.getAttribute('data-favorite') !== 'true') {
         Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción agregara este Museo a Favoritos",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#65B2C6",
-            cancelButtonColor: "#D63D6C",
-            confirmButtonText: "Estoy seguro",
-            cancelButtonText: "Regresar"
+          title: "¿Estás seguro?",
+          text: "Esta acción agregara este Museo a Favoritos",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#65B2C6",
+          cancelButtonColor: "#D63D6C",
+          confirmButtonText: "Estoy seguro",
+          cancelButtonText: "Regresar"
         }).then((result) => {
-            if (result.isConfirmed) {
-               
-                addFavorite(idLugar, nombreMuseo, idTurista);
-            }
+          if (result.isConfirmed) {
+            addFavorite(idLugar, nombreMuseo, idTurista);
+          }
         });
-        }
-        else {
-        const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
-        const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
+      } else {
         Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción eliminará este Museo de Favoritos",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#65B2C6",
-            cancelButtonColor: "#D63D6C",
-            confirmButtonText: "Estoy seguro",
-            cancelButtonText: "Regresar"
+          title: "¿Estás seguro?",
+          text: "Esta acción eliminará este Museo de Favoritos",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#65B2C6",
+          cancelButtonColor: "#D63D6C",
+          confirmButtonText: "Estoy seguro",
+          cancelButtonText: "Regresar"
         }).then((result) => {
-            if (result.isConfirmed) {
-                removeFavorite(idLugar, idTurista);
-            }
+          if (result.isConfirmed) {
+            removeFavorite(idLugar, idTurista);
+          }
         });
-        }
       }
+    }
 
-      if(event.target.id ==='tuBotonVisitados')
-      {
-        if(event.target.getAttribute('data-visited') !== 'true') {
-        const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
-        const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-        const nombreMuseo=event.target.closest('.favorite-card').querySelector('.info-name').textContent.trim();
+    // ===== VISITADOS =====
+    if (event.target.id === 'tuBotonVisitados') {
+      const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
+      const idLugar = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .getAttribute('data-placeid');
+      const nombreMuseo = event.target.closest('.favorite-card')
+        .querySelector('.info-name')
+        .textContent.trim();
+
+      if (event.target.getAttribute('data-visited') !== 'true') {
         Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción agregara este Museo a Visitados",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#65B2C6",
-            cancelButtonColor: "#D63D6C",
-            confirmButtonText: "Estoy seguro",
-            cancelButtonText: "Regresar"
+          title: "¿Estás seguro?",
+          text: "Esta acción agregara este Museo a Visitados",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#65B2C6",
+          cancelButtonColor: "#D63D6C",
+          confirmButtonText: "Estoy seguro",
+          cancelButtonText: "Regresar"
         }).then((result) => {
-            if (result.isConfirmed) {
-               
-                addVisit(idLugar, nombreMuseo, idTurista);
-            }
+          if (result.isConfirmed) {
+            addVisit(idLugar, nombreMuseo, idTurista);
+          }
         });
-        }
-        else {
-            const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
-            const idLugar = event.target.closest('.favorite-card').querySelector('.info-name').getAttribute('data-placeid');
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Esta acción eliminará este Museo de Visitados",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#65B2C6",
-                cancelButtonColor: "#D63D6C",
-                confirmButtonText: "Estoy seguro",
-                cancelButtonText: "Regresar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    removeVisit(idLugar, idTurista);
-                }
-            });
-        }        
+      } else {
+        Swal.fire({
+          title: "¿Estás seguro?",
+          text: "Esta acción eliminará este Museo de Visitados",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#65B2C6",
+          cancelButtonColor: "#D63D6C",
+          confirmButtonText: "Estoy seguro",
+          cancelButtonText: "Regresar"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            removeVisit(idLugar, idTurista);
+          }
+        });
       }
+    }
+  });
 
+  // =========================
+  // SELECCIONAR ITINERARIO
+  // =========================
+  itinerariosDisponibles.addEventListener('click', async (event) => {
+    const button = event.target.closest('button.dropdown-item');
+    if (!button || !selectedMuseum) return;
+
+    const idPlan = button.dataset.idItinerario;
+    const nombreItinerario = button.dataset.nombreItinerario;
+
+    await addPlaceToItinerary(idPlan, selectedMuseum.idMuseo, selectedMuseum.nombreMuseo);
+    showDone(selectedMuseum.nombreMuseo, nombreItinerario);
+
+    bootstrap.Modal.getInstance(document.getElementById('nuevaAventuraModal')).hide();
+    selectedMuseum = null;
+  });
+
+  // =========================
+  // CREAR NUEVO ITINERARIO
+  // =========================
+  createAdventureLink.addEventListener('click', () => {
+    const modal = new bootstrap.Modal(document.getElementById('newPlanModal'));
+    modal.show();
+  });
+
+  formNuevaAventura.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!selectedMuseum) return;
+
+    const nombreItinerario = document.getElementById('nombreItinerario').value;
+    const idTurista = document.getElementById("nombreUsuario").dataset.idTurista;
+
+    if (!nombreItinerario.trim() || nombreItinerario.length < 5 || nombreItinerario.length > 15) {
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:1234/api/itinerario/crearItinerario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          Nombre: nombreItinerario,
+          id_Turista: idTurista
+        })
+      });
+
+      const { id_Plan } = await res.json();
+
+      await addPlaceToItinerary(id_Plan, selectedMuseum.idMuseo, selectedMuseum.nombreMuseo);
+      showDone(selectedMuseum.nombreMuseo, nombreItinerario);
+
+      setTimeout(() => window.location.reload(), 1000);
+
+    } catch (error) {
+      console.error('Error creando itinerario:', error);
+    }
   });
 });
 

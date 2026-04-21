@@ -1,6 +1,9 @@
+import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
 console.log("iniciandodespli");
 
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
+let CURRENT_RENDER_TOKEN = 0;
+let ALL_FAVORITES =[]
+
 
 // Define la URL de la API para obtener lugares favoritos
 const API_URL = `${server}/api/lugarVisitado/obtenerLugaresVisitados`;
@@ -20,17 +23,6 @@ async function fetchVisitPlaces(idTurista) {
     } catch (error) {
         console.error('Error fetching favorite places:', error);
     }
-}
-
-function esperarUsuario() {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (window.usuarioLogueado) {
-                clearInterval(interval);
-                resolve(window.usuarioLogueado);
-            }
-        }, 50);
-    });
 }
 
 async function fetchItineraryPlaces(id_Turista) {
@@ -192,44 +184,75 @@ function generateStars(rating) {
 }
 
 
-async function displayVisit() {
-
-        setTimeout(async () => {
-      
+async function displayVisit(maxMuseos = CURRENT_LIMIT) {
+          const renderToken = ++CURRENT_RENDER_TOKEN;
           const nombreUsuario = document.getElementById("nombreUsuario");
           const idTurista = nombreUsuario.getAttribute('data-id-turista');        
-          const visitPlaces = await fetchVisitPlaces(idTurista);
-          console.log(visitPlaces[0])
+          ALL_FAVORITES = await fetchVisitPlaces(idTurista);
+          console.log(ALL_FAVORITES)
+
           const visitContainer = document.getElementById('visides'); 
-  if (visitPlaces && visitPlaces.length > 0) {
-    visitContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas tarjetas
-    /* codigo para imprimir todos los museos visitados
-    for (const place of visitPlaces) {
-        const placeInfo = await getInfo(place["ID MUSEO"]);
-        const visitCardHtml = createVisitCard(placeInfo);
-        visitContainer.innerHTML += visitCardHtml;
-      }*/
-     //codigo para solo imprimir un museo visitado
-        const place = visitPlaces[0]; // o el índice que quieras
-        const placeInfo = await getInfo(place["ID MUSEO"]);
-        const visitCardHtml = createVisitCard(placeInfo);
-        visitContainer.innerHTML += visitCardHtml;
-  } else {
-    visitContainer.innerHTML = `
-      <div class="no-favorites-message">
-        <p data-i18n="no_visited_museums">No hay museos visitados agregados aún.</p>
-        <button data-i18n="add" onclick="location.href='/museums'">Ir a agregar</button>
-      </div>
-    `;
-  }
-          
-        }, 250); 
+          visitContainer.innerHTML='';
+
+          if(!ALL_FAVORITES || ALL_FAVORITES.length === 0){
+            visitContainer.innerHTML=`
+            <div class="no-favorites-message">
+                <p data-i18n="no_visited_museums">No hay museos visitados agregados aún.</p>
+                <button data-i18n="add" onclick="location.href='/museums'">Ir a agregar</button>
+            </div>
+            `;
+            return;
+          }
+          let count = 0;
+          const renderedIds = new Set();
+
+          for (const place of ALL_FAVORITES){
+            if(renderToken !== CURRENT_RENDER_TOKEN){
+                return;
+            }
+            if(count >= maxMuseos) break;
+
+            const storedId = place["ID MUSEO"]
+
+            if(renderedIds.has(storedId)){
+                continue;
+            }
+            renderedIds.add(storedId);
+
+                    let placeInfo = null;
+                const storedName = place["NombreMuseo"];
+
+                try {
+                    placeInfo = await getInfo(storedId);
+                } catch (e) {
+                if (e.message.includes('NOT_FOUND')) {
+                try {
+                    placeInfo = await getInfoByName(storedName);
+                } catch (e2) {
+                    console.warn(`No se encontró info para "${storedName}"`);
+                    continue;
+                }
+                } else {
+                    console.error(`Error en getInfo(${storedId}):`, e);
+                    continue;
+                }
+            }
+            if (renderToken !== CURRENT_RENDER_TOKEN) return;
+
+            const visitCardHtml = createVisitCard(placeInfo);
+
+            if (renderToken !== CURRENT_RENDER_TOKEN) return;
+
+            visitContainer.insertAdjacentHTML("beforeend", visitCardHtml)
+
+            count ++;
+
+          }
       
 }
 
 async function displayVisitPlans() {
     
-    setTimeout(async () => {
         const nombreUsuario = document.getElementById("nombreUsuario");
 
         console.log("Prueba de arcy 1: " + nombreUsuario)
@@ -276,7 +299,29 @@ async function displayVisitPlans() {
             </div>
           `;
         }
-    }, 250);
+}
+
+async function crearCookieYRedirigir(index, buttonText) {
+    const NomItim = document.getElementById(`NombreItinerario-${index}`);
+    const ItID = NomItim.getAttribute("dataset-NomItim");
+
+    if (buttonText === 'Comenzar') {
+        await updateItineraryState(ItID);
+    }
+
+    // Continuar con la redirección
+    document.cookie = "miDato=" + ItID + ";path=/";
+    console.log("El Id itinerario es:", ItID);
+    window.location.href = 'EnCurso';
+}
+
+// Función para crear una cookie y editar
+function crearCookieYedit(index) {
+    const NomItim = document.getElementById(`NombreItinerario-${index}`);
+    const ItID = NomItim.getAttribute("dataset-NomItim");
+    document.cookie = "miDato=" + ItID + ";path=/";
+    console.log("El Id itinerario es:", ItID);
+    window.location.href = 'editar_aventura';
 }
 
 function createItineraryCard(itinerario, index, placeName, photoUrls) {
@@ -373,28 +418,6 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
     `;
 }
 
-async function crearCookieYRedirigir(index, buttonText) {
-    const NomItim = document.getElementById(`NombreItinerario-${index}`);
-    const ItID = NomItim.getAttribute("dataset-NomItim");
-
-    if (buttonText === 'Comenzar') {
-        await updateItineraryState(ItID);
-    }
-
-    // Continuar con la redirección
-    document.cookie = "miDato=" + ItID + ";path=/";
-    console.log("El Id itinerario es:", ItID);
-    window.location.href = 'EnCurso';
-}
-
-// Función para crear una cookie y editar
-function crearCookieYedit(index) {
-    const NomItim = document.getElementById(`NombreItinerario-${index}`);
-    const ItID = NomItim.getAttribute("dataset-NomItim");
-    document.cookie = "miDato=" + ItID + ";path=/";
-    console.log("El Id itinerario es:", ItID);
-    window.location.href = 'editar_aventura';
-}
 
 function createEmptyItineraryCard(itinerario) {
     console.log(itinerario.fecha_Creacion,itinerario.ID)
@@ -486,13 +509,78 @@ function removeVisit(idLugar, idTurista) {
   });
 }
 
+function esperarUsuario() {
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (window.usuarioLogueado) {
+                clearInterval(interval);
+                resolve(window.usuarioLogueado);
+            }
+        }, 50);
+    });
+}
 
 // Inicializar la pantalla de favoritos cuando el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', async () => {
+    await esperarUsuario()
     console.log("DOMContentLoaded, inicializando pantalla de favoritos");
-    await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible
-    displayVisit();
-    displayVisitPlans();
+    let CURRENT_LIMIT = 3;
+    const STEP = 10;
+    showLoading("Cargando historial de visitas...")
+    try{
+    await displayVisit(CURRENT_LIMIT);
+    await displayVisitPlans();
+    } catch (error) {
+      console.error('Error al inicializar pantalla de historial de visitas:', error);
+    } finally {
+      hideLoading(); // Ocultar el indicador de carga
+    }
+
+const showMoreBtn = document.getElementById("showMoreBtn");
+    const showLessBtn = document.getElementById("showLessBtn");
+
+    showMoreBtn.style.display = "inline-block";
+    showLessBtn.style.display = "none";
+
+    showMoreBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT += STEP;
+
+        showLoading("Cargando más favoritos...");
+
+        try {
+            await displayVisit(CURRENT_LIMIT);
+            await displayVisitPlans();
+        } catch (e) {
+            console.error("Error al mostrar más favoritos:", e);
+        } finally {
+            hideLoading();
+        }
+
+        showLessBtn.style.display = "inline-block";
+
+        if (CURRENT_LIMIT >= ALL_FAVORITES.length) {
+            showMoreBtn.style.display = "none";
+        }
+    });
+
+    showLessBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT = 3;
+
+        showLoading("Mostrando menos favoritos...");
+
+        try {
+            await displayVisit(CURRENT_LIMIT);
+            await displayVisitPlans();
+        } catch (e) {
+            console.error("Error al mostrar menos favoritos:", e);
+        } finally {
+            hideLoading();
+        }
+
+        showMoreBtn.style.display = "inline-block";
+        showLessBtn.style.display = "none";
+    });
+
   });
 
   window.crearCookieYRedirigir = crearCookieYRedirigir;

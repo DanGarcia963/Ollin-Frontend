@@ -1,7 +1,9 @@
 import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
-console.log("iniciandodespli");
 
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
+let CURRENT_RENDER_TOKEN = 0;
+let ALL_FAVORITES =[]
+console.log("iniciandodespliegue");
+
 
 // Define la URL de la API para obtener lugares favoritos
 const API_URL = `${server}/api/lugarFavorito/obtenerLugaresFavoritos`;
@@ -22,57 +24,72 @@ async function fetchFavoritePlaces(idTurista) {
     }
 }
 
-function esperarUsuario() {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (window.usuarioLogueado) {
-                clearInterval(interval);
-                resolve(window.usuarioLogueado);
-            }
-        }, 50);
-    });
-}
-
 // Función para obtener la información de un lugar sin utilizar el mapa
 async function getInfo(placeId) {
-  console.log("getInfo llamada con place:", placeId);
 
-  const { Place } = await google.maps.importLibrary('places');
-  const place = new Place({ id: placeId, requestedLanguage: 'es' });
-  await place.fetchFields({
-    fields: [
-      'displayName',
-      'formattedAddress',
-      'rating',
-      'regularOpeningHours',
-      'internationalPhoneNumber',
-      'reviews',
-      'photos',
-      'types'
-    ]
-  });
-  const imgWidth = 1000;
-  const imgHeight = 1000;
-  const photoUrls = place.photos
-    ? place.photos.map(photo =>
-        photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-      )
-    : null;
-  return {
-    name: place.displayName,
-    type: place.types,
-    placeID: place.id,
-    address: place.formattedAddress,
-    rating: place.rating,
-    opening_hours: place.regularOpeningHours?.weekdayText || null,
-    phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
-    reviews: place.reviews?.length ? place.reviews : null,
-    photoUrls,
-    type: place.types
-  };
+    const { Place } = await google.maps.importLibrary('places');
+    const place = new Place({ id: placeId, requestedLanguage: 'es' });
+
+    await place.fetchFields({
+        fields: [
+            'displayName',
+            'formattedAddress',
+            'rating',
+            'regularOpeningHours',
+            'internationalPhoneNumber',
+            'reviews',
+            'photos',
+            'types',
+            'location' 
+        ]
+    });
+
+    const imgWidth = 1000;
+    const imgHeight = 1000;
+    const photoUrls = place.photos
+        ? place.photos.map(photo =>
+            photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
+        )
+        : null;
+
+
+    const lat = place.location?.lat();
+    const lng = place.location?.lng();
+
+    if (lat === undefined || lng === undefined) {
+        console.warn('No se pudo obtener coordenadas para el lugar:', place);
+    }
+
+    return {
+        name: place.displayName,
+        type: place.types,
+        placeID: place.id,
+        address: place.formattedAddress,
+        rating: place.rating,
+        opening_hours: place.regularOpeningHours?.weekdayText || null,
+        phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
+        reviews: place.reviews?.length ? place.reviews : null,
+        photoUrls,
+        coordinates: {
+            lat,
+            lng
+        }
+    };
 }
-  
 
+  // Busca información de un museo por su nombre
+  async function getInfoByName(name) {
+    const { Place } = await google.maps.importLibrary('places');
+    // Solo pedimos el place_id para no sobrecargar la llamada
+    const results = await Place.searchByText({
+      textQuery: name,
+      fields: ['place_id']
+    });
+    if (!results.length) throw new Error('NoPlaceFound');
+    // Reusa getInfo para cargar el resto de campos
+    return getInfo(results[0].place_id);
+  }
+  
   function createFavoriteCard(placeInfo) {
     // Parse JSON if necessary
     if (typeof placeInfo === 'string') {
@@ -163,40 +180,78 @@ function generateStars(rating) {
 }
 
 
-async function displayFavorites() {
-      
-          const nombreUsuario = document.getElementById("nombreUsuario");
-          const idTurista = nombreUsuario.getAttribute('data-id-turista');
-          
-          const favoritePlaces = await fetchFavoritePlaces(idTurista);
-          console.log(favoritePlaces[0])
-          const favoritesContainer = document.getElementById('favodes');
-  
-  if (favoritePlaces && favoritePlaces.length > 0) {
-    favoritesContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas tarjetas
-    /*for (const place of favoritePlaces) {
-        const placeInfo = await getInfo(place["ID MUSEO"]);
-        const favoriteCardHtml = createFavoriteCard(placeInfo);
-        favoritesContainer.innerHTML += favoriteCardHtml;
-      }*/
-        const place = favoritePlaces[0]; // o el índice que quieras
-        const placeInfo = await getInfo(place["ID MUSEO"]);
-        const favoriteCardHtml = createFavoriteCard(placeInfo);
-        favoritesContainer.innerHTML += favoriteCardHtml;
-  } else {
-    favoritesContainer.innerHTML = `
-      <div class="no-favorites-message">
-        <p data-i18n="no_favorite_museums">No hay lugares favoritos agregados aún.</p>
-        <button data-i18n="add" onclick="location.href='/inicio'">Ir a agregar</button>
-      </div>
-    `;
-  }
-      
+async function displayFavorites(maxMuseos = CURRENT_LIMIT) {
+    const renderToken = ++CURRENT_RENDER_TOKEN;
+
+    const nombreUsuario = document.getElementById("nombreUsuario");
+    const idTurista = nombreUsuario.getAttribute('data-id-turista');
+
+    ALL_FAVORITES = await fetchFavoritePlaces(idTurista);
+
+    console.log(ALL_FAVORITES)
+
+    const favoritesContainer = document.getElementById('favodes');
+    favoritesContainer.innerHTML = '';
+
+    if (!ALL_FAVORITES || ALL_FAVORITES.length === 0) {
+        favoritesContainer.innerHTML = `
+            <div class="no-favorites-message">
+                <p data-i18n="no_favorite_museums">No hay lugares favoritos agregados aún.</p>
+                <button onclick="location.href='/museums'">Ir a agregar</button>
+            </div>
+        `;
+        return;
+    }
+
+    let count = 0;
+    const renderedIds = new Set();
+
+    for (const place of ALL_FAVORITES) {
+
+        if (renderToken !== CURRENT_RENDER_TOKEN) {
+            return;
+        }
+        if (count >= maxMuseos) break;
+
+        const storedId = place["ID MUSEO"];
+
+
+        if (renderedIds.has(storedId)) {
+            continue;
+        }
+        renderedIds.add(storedId);
+
+        let placeInfo = null;
+                const storedName = place["NombreMuseo"];
+
+        try {
+            placeInfo = await getInfo(storedId);
+        } catch (e) {
+            if (e.message.includes('NOT_FOUND')) {
+                try {
+                    placeInfo = await getInfoByName(storedName);
+                } catch (e2) {
+                    console.warn(`No se encontró info para "${storedName}"`);
+                    continue;
+                }
+            } else {
+                console.error(`Error en getInfo(${storedId}):`, e);
+                continue;
+            }
+        }
+
+        if (renderToken !== CURRENT_RENDER_TOKEN) return;
+
+        const favoriteCardHtml = createFavoriteCard(placeInfo, place);
+
+        if (renderToken !== CURRENT_RENDER_TOKEN) return;
+
+        // Mejor que innerHTML +=
+        favoritesContainer.insertAdjacentHTML("beforeend", favoriteCardHtml);
+
+        count++;
+    }
 }
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('favodes'); // Asegúrate de usar el ID real de tu contenedor
@@ -260,17 +315,87 @@ function removeFavorite(idLugar, idTurista) {
   });
 }
 
+function esperarUsuario() {
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (window.usuarioLogueado) {
+                clearInterval(interval);
+                resolve(window.usuarioLogueado);
+            }
+        }, 50);
+    });
+}
+
+
 
 // Inicializar la pantalla de favoritos cuando el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("DOMContentLoaded, inicializando pantalla de favoritos");
-    await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible
-    showLoading("Cargando favoritos..."); // Mostrar el indicador de carga
-    try{
-      await displayFavorites();
+    await esperarUsuario();
+    
+    console.log("Inicializando pantalla de favoritos");
+
+    let CURRENT_LIMIT = 3;
+    const STEP = 10;
+
+    showLoading("Cargando favoritos...");
+
+    try {
+
+        await displayFavorites(CURRENT_LIMIT); // usa internamente fetch o puedes adaptarla
     } catch (error) {
-      console.error('Error al inicializar pantalla de favoritos:', error);
+        console.error('Error al cargar favoritos:', error);
+
+        const container = document.getElementById('favodes');
+        container.innerHTML = `
+            <div class="error-message">
+                Error al cargar los favoritos. Intenta recargar la página.
+            </div>
+        `;
     } finally {
-      hideLoading(); // Ocultar el indicador de carga
+        hideLoading();
     }
-  });
+
+    // 🔥 BOTONES
+    const showMoreBtn = document.getElementById("showMoreBtn");
+    const showLessBtn = document.getElementById("showLessBtn");
+
+    showMoreBtn.style.display = "inline-block";
+    showLessBtn.style.display = "none";
+
+    showMoreBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT += STEP;
+
+        showLoading("Cargando más favoritos...");
+
+        try {
+            await displayFavorites(CURRENT_LIMIT);
+        } catch (e) {
+            console.error("Error al mostrar más favoritos:", e);
+        } finally {
+            hideLoading();
+        }
+
+        showLessBtn.style.display = "inline-block";
+
+        if (CURRENT_LIMIT >= ALL_FAVORITES.length) {
+            showMoreBtn.style.display = "none";
+        }
+    });
+
+    showLessBtn.addEventListener("click", async () => {
+        CURRENT_LIMIT = 3;
+
+        showLoading("Mostrando menos favoritos...");
+
+        try {
+            await displayFavorites(CURRENT_LIMIT);
+        } catch (e) {
+            console.error("Error al mostrar menos favoritos:", e);
+        } finally {
+            hideLoading();
+        }
+
+        showMoreBtn.style.display = "inline-block";
+        showLessBtn.style.display = "none";
+    });
+});

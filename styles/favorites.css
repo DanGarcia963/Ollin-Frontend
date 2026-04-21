@@ -417,7 +417,7 @@ html {
     transform: scale(1.1);
 }
 
-.favorite-card {
+.favorite-card, .visit-card {
   display: grid;
   grid-template-columns: 90px 1fr;
   gap: 14px;
@@ -437,7 +437,7 @@ html {
 }
 
 /* Efecto hover: se eleva y se vuelve más opaca */
-.favorite-card:hover{
+.favorite-card:hover, .visit-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
     background-color: rgba(255, 255, 255, 1);
@@ -588,6 +588,12 @@ html {
         margin: 0; /* Elimina cualquier margen exterior */
         padding: 5px; /* Ajusta el padding interior */
         box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+    }
+    .visit-card {
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+        box-sizing: border-box;
     }
 }
 #filters-expanded {
@@ -832,7 +838,6 @@ main::-webkit-scrollbar {
     background-color: #4a9bb0;
 }
 
-
 #favodes, #visides,#museodes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
@@ -840,7 +845,7 @@ main::-webkit-scrollbar {
   justify-items: center;
 }
 
-.favorite-card {
+.favorite-card,.visit-card {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
@@ -853,7 +858,7 @@ main::-webkit-scrollbar {
     padding: 0 10px;
   }
 
-  .favorite-card {
+  .favorite-card, .visit-card {
     min-width: 0;
     width: 100%;
     grid-template-columns: 76px 1fr;
@@ -897,7 +902,7 @@ main {
 }
 
 /* El contenedor de museos sí scrollea */
-  #favodes, #visides,#museodes {
+#favodes,#museodes {
   flex: 1;
   min-height: 0;           /* importante para que overflow funcione dentro de flex */
   overflow-y: auto;

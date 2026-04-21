@@ -1,5 +1,5 @@
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
 import { hideLoading, showLoading } from "../ARCY-imports/loading.js";
+
 const API_URL = `${server}/api/itinerario/obtenerItinerarios`;
 const API_URL1 = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${server}/api/lugarItinerario/editarEstadoLugarItinerario`;
@@ -18,17 +18,6 @@ async function fetchItineraryPlaces(id_Turista) {
     } catch (error) {
         console.error('Error fetching favorite places:', error);
     }
-}
-
-function esperarUsuario() {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (window.usuarioLogueado) {
-                clearInterval(interval);
-                resolve(window.usuarioLogueado);
-            }
-        }, 50);
-    });
 }
 
 async function fetchItineraryPlaces1(idPlan) {
@@ -51,9 +40,6 @@ async function fetchItineraryPlaces1(idPlan) {
 async function displayFavorites() {
     
         const nombreUsuario = document.getElementById("nombreUsuario");
-
-        console.log("Prueba de arcy 1: " + nombreUsuario)
-        console.log("Prueba de arcy 2: " + nombreUsuario.dataset.idTurista)
         const itinerarios = await fetchItineraryPlaces(nombreUsuario.dataset.idTurista);
         const itinerariesContainer = document.getElementById('containerItinerarios');
 
@@ -171,7 +157,16 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
 }
 
 
-
+function esperarUsuario() {
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (window.usuarioLogueado) {
+                clearInterval(interval);
+                resolve(window.usuarioLogueado);
+            }
+        }, 50);
+    });
+}
 
 
 // Evento al cargar el documento

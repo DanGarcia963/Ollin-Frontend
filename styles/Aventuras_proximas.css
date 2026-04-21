@@ -1,40 +1,797 @@
+:root{
+    --cpink: #D63D6C;
+    --coral: #D57275;
+    --pale: #D5C2BC;
+    --cgray: #C0CBCD;
+    --cblue: #65B2C6;
+    --cwhite: #EFEDED;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../assets/fonts/Montserrat-Bold.ttf");
+    font-weight: bold;
+    font-style: bold;
+}
+
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    background-color: var(--cwhite);
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    border-radius: 32px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 300ms ease;
+    flex-shrink: 0;
+    color: white;
+}
+
+.btn-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-icon:active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.img-nav{
+    width: 50px;
+    height: 50px;
+    margin: 0 !important;
+}
+
+.navbar {
+    height: 52px;
+    flex-shrink: 0;
+    background-color: #08979D;
+    padding: 0 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+p{
+    margin: 0;
+}
+
+
+/*inicio.css*/
+main{
+  position: relative;
+}
+
+/* Modal / tarjeta de detalles expandida */
+.viewMoreCard {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.vm-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    border-radius: 24px;
+    padding: 24px 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.15);
+    display: flex;
+    flex-direction: column;
+    animation: fadeUp .25s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.vm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.vm-header img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.vm-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #243435;
+}
+
+#vm-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.vm-body {
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.vm-body section {
+    margin-bottom: 22px;
+}
+
+.vm-body h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    color: #1f2f30;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    padding-bottom: 4px;
+}
+
+.vm-body p {
+    margin: 4px 0;
+    font-size: .92rem;
+    line-height: 1.35;
+    color: #2b3b3c;
+}
+
+.vm-body p b {
+    color: #1a2a2b;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Filtros */
+#filters-expanded {
+    width: 85%;
+    min-height: 89%;
+    position: absolute;
+    z-index: 9000;
+    top: 7%;
+    left: 9%;
+    border-radius: 10px;
+    transition: 0.5s;
+    padding: 7px 0;
+    background-color: #C0CBCD;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out;
+}
+
+#contenedorMamalonFiltros{
+  height: 500px;
+  overflow-x: overlay;
+}
+
+#filterOptions{
+  overflow-y: scroll;
+  padding: 5px;
+  text-align: left;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#filterOptions::-webkit-scrollbar {
+  width: 10px;
+}
+
+#filterOptions::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 15px;
+}
+
+#filterOptions::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;
+  border-radius: 20px;
+  border: 3px solid white;
+}
+
+#filterOptions div {
+  flex-basis: 100%;
+}
+
+@media (min-width: 600px) {
+  #filterOptions div {
+      flex-basis: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  #filterOptions div {
+      flex-basis: 33.33%;
+  }
+}
+
+.filtersSummit{
+  margin: 4px;
+  border-radius: 10px;
+  width: 140px;
+  height: 22px;
+  border: none;
+  color: white;
+}
+
+#filterSend{
+  background-color:#D63D6C;
+}
+
+#filterErase{
+  color: black;
+  background-color:#f1f1f1;
+}
+
+.noInfo{
+  padding-left: 10px;
+}
+
+/* Dropdowns que no son del header */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-size: 9px;
+}
+
+.dropdown button {
+  background-color: #D5C2BC;
+  color: #000000;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dropdown-Text1{ font-size: 11px; }
+.dropdown-Text2{ font-size: 16px; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 8px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.content-dropdown-lang{
+  list-style: none;
+  display: block;
+  width: 100%;
+  padding: 0;
+  opacity: 0;
+  transition: 0.2;
+}
+
+.Msg-recomendar{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+/* Tarjeta patrocinada / expandida */
+.card {
+  display: none;
+  padding-left: 2px;
+  width: 320px !important;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: auto;
+  justify-content: space-between;
+  transition: height 0.5s ease;
+  background: rgba(255, 255, 255, 0.90) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px !important;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.btn-sponsored.expanded {
+  width: 312px;
+  height: 542px !important;
+}
+
+#ToogleExpandir{
+  width: 30px;
+  position: relative;
+  left: 45%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* Detalles de lugar */
+.place-favorite, .favorito{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.favorito{
+  position: relative;
+  right: 3px;
+}
+
+#favorito, #favorito1, #check, #itinerario, #flecha, #ToogleHorario{
+  cursor: pointer;
+}
+
+#selectorItinerario.dropdown-toggle::after{
+    display: none !important;
+}
+
+.dropdown-menu{
+  padding-inline: 8px;
+}
+
+.dropdown-menu.show {
+  background-color: #65b2c6 !important;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.info-add, .place-favorite, .info-calification, .details-domicilio, .details-horario, .details-phone, .details-site, .details-score{
+  display: flex;
+  flex-direction: row;
+  height: 18px;
+  margin: 0;
+  font-size: 12px;
+  padding-bottom: 4px;
+}
+
+.details-score{
+  display: flex;
+  font-size: 16px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.img-referente, .img-referente1{
+  align-self: auto;
+  display: flex;
+  align-items: center;
+}
+
+.place-comentario{
+  align-items: center;
+  max-width: 300px;
+  padding-top: 16px;
+}
+
+.info-name{
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  justify-content: start;
+  max-width: 190px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-bottom: 20px;
+}
+
+.place-about, .place-comentario{
+  width: 100%;
+  max-width: 472px;
+  margin: 0;
+  padding: 0;
+  justify-content: start;
+  display: flex;
+  position: relative;
+  bottom: inherit;
+}
+
+.comentario-user{
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.place-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 14px;
+  margin-left: 5px;
+  font-size: 12px;
+  width: 250px;
+}
+
+.place-favorite{
+  width: 50px;
+  height: 65px;
+}
+
+.info-more, .info-horario{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 14px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.comentario-texto{
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  justify-content: start;
+  position: relative;
+  bottom: inherit;
+}
+
+.place-header-about{
+  margin-bottom: 10px;
+  block-size: auto;
+  max-width: 95%;
+  padding-left: 1.5%;
+  justify-content: start;
+  display: none;
+}
+
+.header-name{
+  display: flex;
+  align-items: center;
+  font-size: 177%;
+  font-weight: bold;
+  text-align: center;
+  max-width: 71%;
+  hyphens: auto;
+  line-height: 1em;
+}
+
+.place-body-details{
+  display: none;
+  width: 90%;
+  padding-left: 3%;
+  margin: 0;
+  justify-content: space-between;
+  position: relative;
+}
+
+.body-details{
+  max-width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.body-button-left, .body-button-right{
+  padding-block: 20px;
+  max-width: 12%;
+  display: flex;
+  align-items: center !important;
+  flex-wrap: wrap;
+}
+
+.site-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1em;
+}
+
+.photos{
+  max-width: 99%;
+  justify-content: start;
+  padding-left: 1.5%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.subtitle{
+  padding-left: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.divisor, .divisor1{
+  margin: 3%;
+  border: 1px solid #ddd;
+  display: none;
+  height: 1px;
+  color: #ddd;
+  background-color: #ddd;
+}
+
+.comments{
+  display: none;
+  flex-direction: column;
+}
+
+.more-direction{
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.favorite-icon{
+  display: flex;
+  align-items: center !important;
+  flex-wrap: wrap;
+}
+
+.details-domicilio{
+  block-size: auto;
+  line-height: 1.2em;
+  white-space: initial;
+}
+
+.weekend-text{
+  min-height: 140px;
+  block-size: auto;
+  min-width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container-photos{
+  display: -webkit-inline-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: start;
+  position: relative;
+  bottom: inherit;
+  overflow-x: scroll;
+}
+
+#button-calificacion{
+    margin-left: 15px;
+    margin-bottom: 20px;
+    padding-left: 6px;
+    background-color: #65B2C6;
+    height: 29px !important;
+    width: 158px !important;
+    color: white;
+    font-size: 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px 10px rgba(101, 178, 198, 0.2);
+}
+
+.card-expandida{
+  max-width: 312px;
+  overflow-y: scroll;
+}
+
+.comentario, .comentario1, .comentario2, .comentario3, .comentario4{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  padding-left: 2px;
+  width: 278px !important;
+  justify-content: start;
+  position: relative;
+  background-color: #ffffff !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.comentario-perfil{
+  max-width: 15%;
+  display: flex;
+  align-items: center !important;
+  flex-wrap: wrap;
+}
+
+.horario-text{
+  line-height: 1em;
+}
+
+.user-dates{
+  display: flex;
+  justify-content: space-between;
+}
+
+.comentario-contenido{
+  padding-top: 6px;
+  max-width: 76%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.comentario-name{
+  display: block;
+  max-width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comentario-completo{
+  display: flex;
+  line-height: 1em;
+  font-size: 12px;
+  padding-bottom: 6px;
+  flex-direction: column;
+}
+
+.card-expandida::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card-expandida::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.card-expandida::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;
+  border-radius: 20px;
+}
+
+.container-photos::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container-photos::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.container-photos::-webkit-scrollbar-thumb {
+  background-color: #C0CBCD;
+  border-radius: 10px;
+}
+
+.divisor1{
+  margin-top: 0%;
+}
+
+.more-type{
+  max-width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.horario-detalles{
+  display: flex;
+  justify-content: space-between;
+}
+
+.star {
+  color: #ccc;
+}
+
+.btn.btn-primary.dropdown-toggle{
+  height: 158px;
+}
+
+.btn-group-vertical>.btn, .btn-group>.btn {
+  flex: 0.52 !important;
+}
+
+.visitado{
+  height: 1px;
+  display: none;
+  color: red;
+  font-weight: bold;
+  position: static;
+  transform: translate(8%, -5000%);
+}
+
+.header-img{
+  display: grid;
+  align-items: center;
+}
+
+.checkbox-button {
+  display: none;
+}
+
+.checkbox-button + label {
+  display: inline-block;
+  padding: 8px 14px;
+  margin: 4px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.checkbox-button:checked + label {
+  background-color: #65B2C6;
+  color: white;
+  border-color: #65B2C6;
+}
+
+#recommendedFilters, #moreFilters{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+/*Aventuras_proximas.css*/
 /* =========================================
    ESTILOS GENERALES Y LAYOUT
    ========================================= */
-
 body {
     margin: 0;
     height: 100%;
     overflow-y: scroll;
-    /* Fondo con el degradado de Ollin */
-    background: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);   
+    background: linear-gradient(135deg, #FCFFE7 0%, #d5eef5 100%);
 }
 
 main {
-    /* Forzamos el espaciado superior para que el navbar no tape el contenido */
-    padding-top: 100px !important; 
+    padding-top: 100px !important;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* =========================================
-   TÍTULO PRINCIPAL (Como en Mis Visitados)
-   ========================================= */
 
-/* Nota: En tu HTML el título está envuelto en un div con clases de Tailwind bg-mauve-900.
-   El CSS matará ese estilo para imponer el de Ollin */
-.titleAP {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #1a1a1a;
-    text-align: left;
-    margin: 0; /* Reseteamos margen */
-    padding: 0;
-}
 
-/* Contenedor del título (Para sobreescribir el estilo raro que tenía en el HTML) */
 .bg-mauve-900 {
     background: transparent !important;
     border: none !important;
@@ -42,62 +799,47 @@ main {
     padding: 0 !important;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 1200px; /* Alineado con el grid de tarjetas */
+    max-width: 1200px;
 }
-
-/* =========================================
-   GRID DE ITINERARIOS
-   ========================================= */
 
 #containerItinerarios {
     display: grid;
     gap: 25px;
     margin-bottom: 40px;
     width: 100%;
-    max-width: 1200px; /* Ancho máximo para pantallas grandes */
-    justify-content: center; 
+    max-width: 1200px;
+    justify-content: center;
 }
 
-/* 1 columna en móvil */
 @media (max-width: 699px) {
     #containerItinerarios { grid-template-columns: 1fr; }
 }
 
-/* 2 columnas */
 @media (min-width: 700px) and (max-width: 1023px) {
     #containerItinerarios { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* 3 columnas */
 @media (min-width: 1024px) and (max-width: 1399px) {
     #containerItinerarios { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* 4 columnas en pantallas grandes */
 @media (min-width: 1400px) {
     #containerItinerarios { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* =========================================
-   TARJETAS DE ITINERARIOS (Glassmorphism)
-   ========================================= */
-
 .cardsAP {
     display: flex;
     flex-direction: column;
-    width: 290px; /* Un poco más estilizada */
+    width: 290px;
     height: auto;
     position: relative;
     padding: 15px;
-    
-    /* Efecto Vidrio Esmerilado */
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-    
     transition: all 0.3s ease;
 }
 
@@ -107,7 +849,6 @@ main {
     background-color: rgba(255, 255, 255, 1);
 }
 
-/* Cabecera de la tarjeta */
 .cardHeader {
     display: flex;
     justify-content: space-between;
@@ -115,17 +856,10 @@ main {
     margin-bottom: 12px;
 }
 
-.HeaderComplete {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .cardName {
     font-size: 18px;
     font-weight: 700;
-    color: #08979D; /* Color principal */
+    color: #08979D;
     margin: 0;
 }
 
@@ -135,16 +869,34 @@ main {
     margin-top: 4px;
 }
 
-/* Icono de eliminar */
+.card-badges {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.status-badge {
+    position: static !important;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-new { background: #FFDF8F; color: #856404; }
+.status-progress { background: #C4DCAB; color: #3d492a; }
+.status-finished { background: #FFB49C; color: #721c24; }
+
 .deleteIcon {
-    position: absolute;
-    top: 15px; 
-    right: 15px; 
-    cursor: pointer; 
-    width: 20px; 
-    height: 20px;
-    opacity: 0.5;
+    position: static !important;
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer;
     transition: 0.2s;
+    opacity: 0.5;
 }
 
 .deleteIcon:hover {
@@ -152,13 +904,12 @@ main {
     transform: scale(1.1);
 }
 
-/* Galería de imágenes en la tarjeta */
 .cardImages {
     display: flex;
     flex-wrap: nowrap;
     margin-bottom: 15px;
     gap: 5px;
-    height: 120px; /* Altura fija para la galería */
+    height: 120px;
 }
 
 .cardImageLarge {
@@ -168,7 +919,7 @@ main {
     height: 100%;
 }
 
-.cardImagesSmall, .cardImagesSmall2 {
+.cardImagesSmall {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -183,7 +934,26 @@ main {
     object-fit: cover;
 }
 
-/* Botones dentro de la tarjeta */
+.card-location-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.cardLocationIcon {
+    width: 18px !important;
+    height: auto;
+}
+
+.cardLocation {
+    font-size: 12px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .cardButtons {
     display: flex;
     gap: 10px;
@@ -229,9 +999,9 @@ main {
     color: white;
 }
 
-/* =========================================
-   MENSAJE VACÍO Y BOTÓN CREAR
-   ========================================= */
+.edit-btn {
+    background-color: #65B2C6 !important;
+}
 
 #no-favorites-message {
     background: rgba(255, 255, 255, 0.8);
@@ -254,8 +1024,10 @@ main {
 }
 
 .create-adventure-container {
-    margin-top: 30px;
-    margin-bottom: 50px;
+    margin: 60px auto !important;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 40px;
 }
 
 .create-adventure-link {
@@ -265,7 +1037,7 @@ main {
     font-size: 16px;
     font-weight: 700;
     border: none;
-    border-radius: 30px; /* Botón tipo pastilla moderno */
+    border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 5px 15px rgba(8, 151, 157, 0.3);
@@ -277,9 +1049,33 @@ main {
     box-shadow: 0 8px 20px rgba(8, 151, 157, 0.4);
 }
 
-/* =========================================
-   ESTILOS DEL MODAL (Crear Nueva Aventura)
-   ========================================= */
+.empty-state-body {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.add-place-btn-modern {
+    background: #65B2C6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px auto 0;
+    transition: 0.3s;
+}
+
+.add-place-btn-modern img {
+    width: 20px;
+}
+
+.add-place-btn-modern:hover {
+    transform: scale(1.05);
+    background: #08979D;
+}
 
 .modal-content {
     background-color: rgba(255, 255, 255, 0.95);
@@ -290,7 +1086,7 @@ main {
 }
 
 .modal-header {
-    background-color: transparent; /* Quitamos el fondo sólido */
+    background-color: transparent;
     border-bottom: 1px solid #eee;
     color: #1a1a1a;
     padding: 20px 25px;
@@ -331,214 +1127,86 @@ main {
 .modal-body .btn-primary:hover {
     background-color: #4a9bb0;
 }
-
-/* Badges de Estado */
-.status-badge {
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
+html, body{
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* evita que scrollee toda la página */
 }
 
-.status-new { background: #FFDF8F; color: #856404; }
-.status-progress { background: #C4DCAB; color: #3d492a; }
-.status-finished { background: #FFB49C; color: #721c24; }
-
-/* Ajuste de ubicación */
-.card-location-info {
+body{
     display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 5px;
+    flex-direction: column;
 }
 
-.cardLocation {
-    font-size: 12px;
-    color: #666;
-}
-
-/* Estilo para la tarjeta vacía */
-.empty-state-body {
-    text-align: center;
-    padding: 20px 0;
-}
-
-.add-place-btn-modern {
-    background: #65B2C6;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
+main{
+    flex: 1;
+    min-height: 0;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px auto 0;
-    transition: 0.3s;
-}
-
-/* Badges de Estado */
-.status-badge {
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.status-new { background: #FFDF8F; color: #856404; }
-.status-progress { background: #C4DCAB; color: #3d492a; }
-.status-finished { background: #FFB49C; color: #721c24; }
-
-/* Ajuste de ubicación */
-.card-location-info {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-.cardLocation {
-    font-size: 12px;
-    color: #666;
-}
-
-/* Estilo para la tarjeta vacía */
-.empty-state-body {
-    text-align: center;
-    padding: 20px 0;
-}
-
-.add-place-btn-modern {
-    background: #65B2C6;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px auto 0;
-    transition: 0.3s;
-}
-
-/* Badges de Estado */
-.status-badge {
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.status-new { background: #FFDF8F; color: #856404; }
-.status-progress { background: #C4DCAB; color: #3d492a; }
-.status-finished { background: #FFB49C; color: #721c24; }
-
-/* Ajuste de ubicación */
-.card-location-info {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-.cardLocation {
-    font-size: 12px;
-    color: #666;
-}
-
-/* Estilo para la tarjeta vacía */
-.empty-state-body {
-    text-align: center;
-    padding: 20px 0;
-}
-
-.add-place-btn-modern {
-    background: #65B2C6;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px auto 0;
-    transition: 0.3s;
-}
-
-.add-place-btn-modern img { width: 20px; }
-.add-place-btn-modern:hover { transform: scale(1.05); background: #08979D; }
-
-/* --- 1. SEPARACIÓN DE BADGE Y X --- */
-.card-badges {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.status-badge {
-    position: static !important; /* Quitamos el absolute que causaba el amontonamiento */
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.deleteIcon {
-    position: static !important; /* Quitamos el absolute */
-    width: 18px !important;
-    height: 18px !important;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-/* --- 2. ICONO DE UBICACIÓN MÁS PEQUEÑO --- */
-.card-location-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.cardLocationIcon {
-    width: 18px !important; /* ¡Mucho más pequeño! */
-    height: auto;
-}
-
-.cardLocation {
-    font-size: 12px;
-    color: #555;
-    white-space: nowrap;
+    flex-direction: column;
     overflow: hidden;
-    text-overflow: ellipsis;
+    padding-top: 100px !important;
+    box-sizing: border-box;
 }
 
-/* --- 3. BOTÓN DE CREAR (DESPEGAR DEL FINAL) --- */
-.create-adventure-container {
-    margin: 60px auto !important; /* Le damos mucho aire abajo */
+main > section{
+    flex: 1;
+    min-height: 0;
     display: flex;
-    justify-content: center;
-    padding-bottom: 40px;
+    flex-direction: column;
+    width: 100%;
 }
 
-/* --- 4. ESTILO DEL BOTÓN EDITAR --- */
-.edit-btn {
-    background-color: #65B2C6 !important;
+#containerItinerarios {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    display: grid;
+    gap: 25px;
+    align-content: start;
+
+    flex: 1;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 10px 12px 10px 10px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
-/* --- 5. CORRECCIÓN ANUNCIO NOCHE DE MUSEOS (Página Principal) --- */
-/* Si este es el ID o clase del banner negro que se encogió */
-.anuncio-noche-museos, .banner-status {
-    width: 90% !important;
-    max-width: 1200px;
-    min-height: 100px; /* Aseguramos que no se colapse */
-    margin: 20px auto !important;
-    padding: 20px;
-    font-size: 1.2rem;
+main {
+    max-width: none !important;
+    width: 100%;
+}
+
+.titleAP{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px; /* Estilo de título grande Montserrat bold de referencia */
+  font-weight: 700; /* Extra bold */
+  color: #1a1a1a; /* Un color negro/carbón oscuro estándar */
+  text-align: left; /* Montserrat bold en la referencia está alineado a la izquierda */
+  margin-top: 30px; /* Espacio *después* de arreglar el padding general */
+  margin-bottom: 25px; /* Espacio hacia el contenido de abajo (buscador) */
+  margin-left: 20px; /* Espacio desde el borde izquierdo */
+  margin-right: 20px; /* Espacio desde el borde derecho */
+
+  /* Re-aplicamos y ajustamos otras propiedades para limpiar restricciones antiguas */
+  display: block;
+  justify-content: start; /* Si sigue siendo flex item, esto es redundant, pero lo dejamos */
+  max-width: none;
+  overflow: visible;
+  white-space: normal;
+}
+
+.titleAP {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    width: 100%;
+    margin: 24px 0 18px;
+    padding: 0 12px;
+    display: block;
 }
