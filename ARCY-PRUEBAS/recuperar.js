@@ -3,7 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('passwordRecover');
     const password = document.getElementById('password');
     const passwordRE = document.getElementById('passwordRE');
-    const valorToken = obtenerValorCookie("rct");
+    const params = new URLSearchParams(window.location.search);
+    const valorToken = params.get("token") || obtenerValorCookie("rct");
+
+if (!valorToken) {
+    showErrorAlert("No se encontró el token");
+    return;
+}
   
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -20,21 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         Token: valorToken
                     })
                 });
-  
-                if (!response.ok) {
-                    throw new Error('La respuesta de la API no fue exitosa.');
-                }
-  
+
                 const resultado = await response.json();
-  
-                // Elimina la cookie almacenada con el propósito de recuperar contraseña
-                document.cookie = 'rct=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  
-                if (resultado.redirect) {
-                    showSuccessAlert('Se cambió la contraseña correctamente.');
-                } else {
-                    showErrorAlert('Hubo un problema al cambiar la contraseña.');
+
+                if (!response.ok || resultado.status === 'error' || resultado.status === 400 || resultado.status === 401) {
+                    throw new Error(resultado.message || 'Error al cambiar la contraseña');
                 }
+
+                showSuccessAlert('Se cambió correctamente la contraseña.');
             } catch (error) {
                 showErrorAlert(error.message);
             }
