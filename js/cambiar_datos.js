@@ -580,9 +580,13 @@ function deleteAcc(idTurista){
     const userId = urlParams.get('userId');
     console.log('ID del usuario a eliminar:', idTurista);
 
-fetch(`${server}/api/deleteUsuario/${idTurista}`, {
-    method: 'DELETE'
-})
+fetch(`${server}/api/deleteUsuario/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+          id: idTurista
+      })
+  })
 .then(async res => {
     const data = await res.json();
 
