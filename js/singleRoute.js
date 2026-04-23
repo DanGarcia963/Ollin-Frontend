@@ -27,7 +27,7 @@ const mostrarValores = async () => {
     const placeID = new URLSearchParams(window.location.search).get('placeId');
     const placeInfo =  await getInfo(placeID);
     const userLocation = await getUserLocation();
-    console.log("Place Info:", placeInfo);
+    
 
     const NombreLugarOrigen = document.getElementById('nombreLugarOrigen');
     const NombreLugar = document.getElementById('nombreLugar');
@@ -35,8 +35,7 @@ const mostrarValores = async () => {
     NombreLugar.textContent = placeInfo.name;
     NombreLugar.dataset.latitud = placeInfo.coordinates.lat;
     NombreLugar.dataset.longitud = placeInfo.coordinates.lng;
-    console.log("Coordenadas del lugar:", placeInfo.coordinates);
-    console.log("Coordenadas del usuario:", userLocation);
+    
 
     // Calcular y mostrar la ruta
     rutaIti(directionsService, directionsRenderer, userLocation, mapa, 'DRIVING');
@@ -60,7 +59,7 @@ function getTime(originCoords, destCords, mode){
       directionsService.route(request, function (response, status) {
         if (status === "OK") {
           const duration = response.routes[0].legs[0].duration.text;
-          console.log("La duracion de" + "["+ originCoords.lat + ", " + originCoords.lng + "]" + " a ["+ destCords.lat + ", " + destCords.lng + "]" + " es " + duration);
+          
           resolve(duration);
         } else {
           console.error('Error', status);
@@ -70,7 +69,7 @@ function getTime(originCoords, destCords, mode){
   } 
 
   function addVisit(idMuseo, NomLugar, idTurista) {
-      console.log(idMuseo, NomLugar, idTurista)
+      
     fetch(`${server}/api/lugarVisitado/crearLugarVisitado`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,7 +81,7 @@ function getTime(originCoords, destCords, mode){
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Lugar agregado a visitados:', data);
+        
     })
     .catch(error => {
         console.error('Error al agregar lugar a visitados:', error);
@@ -90,7 +89,7 @@ function getTime(originCoords, destCords, mode){
   }
 
 async function getInfo(placeId) {
-    console.log("getInfo llamada con place:", placeId);
+    
 
     const { Place } = await google.maps.importLibrary('places');
     const place = new Place({ id: placeId, requestedLanguage: 'es' });
@@ -175,25 +174,31 @@ async function showDone(placeId, nombreLugar, idTurista) {
   });
 }
 
-function esperarUsuario() {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (window.usuarioLogueado) {
-                clearInterval(interval);
-                resolve(window.usuarioLogueado);
-            }
-        }, 50);
-    });
-}
-
 document.addEventListener('DOMContentLoaded', async function () {
-      await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible
-    console.log("DOMContentLoaded, inicializando pantalla de ruta única...");
+    
     initMap();
 
     const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes");
       directionsService = new DirectionsService();
     directionsRenderer = new DirectionsRenderer();
     directionsRenderer.setMap(mapa);
+
+      const drawer = document.getElementById("indicacionesDrawer");
+  const toggle = document.getElementById("toggleIndicaciones");
+  const closeBtn = document.getElementById("closeIndicaciones");
+
+  if (toggle && drawer) {
+    toggle.addEventListener("click", () => {
+      drawer.classList.toggle("is-open");
+      toggle.innerHTML = drawer.classList.contains("is-open") ? "<span>◀</span>" : "<span>▶</span>";
+    });
+  }
+
+  if (closeBtn && drawer && toggle) {
+    closeBtn.addEventListener("click", () => {
+      drawer.classList.remove("is-open");
+      toggle.innerHTML = "<span>◀</span>";
+    });
+  }
     mostrarValores();
 });

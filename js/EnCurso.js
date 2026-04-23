@@ -1,6 +1,6 @@
 import { getUserLocation } from "../ARCY-imports/getUserLocation.js"
 import { rutaIti } from "../ARCY-imports/rutas.js"
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
+import { showLoading, hideLoading } from "../ARCY-imports/loading.js"
 
 const API_URL = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${server}/api/lugarItinerario/editarEstadoLugarItinerario`;
@@ -26,8 +26,6 @@ async function initMap() {
 }
 
 
-
-
 function getTime(originCoords, destCords, mode){
     let directionsService = new google.maps.DirectionsService();
     const request = {
@@ -40,7 +38,7 @@ function getTime(originCoords, destCords, mode){
       directionsService.route(request, function (response, status) {
         if (status === "OK") {
           const duration = response.routes[0].legs[0].duration.text;
-          console.log("La duracion de" + "["+ originCoords.lat + ", " + originCoords.lng + "]" + " a ["+ destCords.lat + ", " + destCords.lng + "]" + " es " + duration);
+          
           resolve(duration);
         } else {
           console.error('Error', status);
@@ -60,7 +58,7 @@ async function createQueja(TipoQueja, idMuseo) {
         });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        console.log(data.mensaje);
+        
     } catch (error) {
         console.error('Error creating queja:', error);
     }
@@ -68,7 +66,7 @@ async function createQueja(TipoQueja, idMuseo) {
 
 // Función para obtener los lugares Itinerario del usuario
 async function fetchItineraryPlaces(idPlan) {
-    console.log("fetchItineraryPlaces llamada con idItinerario:", idPlan);
+    
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
@@ -107,7 +105,7 @@ async function updateItineraryState(idPlan) {
         });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        console.log(data.message);
+        
     } catch (error) {
         console.error('Error updating itinerary state:', error);
     }
@@ -132,7 +130,6 @@ async function fetchStateOItinerary(idPlanMuseo){
 let miDato = document.cookie.split('; ').find(row => row.startsWith('miDato='));
 miDato = miDato ? miDato.split('=')[1] : null;
 
-console.log(miDato);
 
 function normalizarHora(value) {
   if (value === null || value === undefined) return null;
@@ -192,9 +189,7 @@ function obtenerHorarioDelDia(lugar, fechaBase = new Date()) {
 
 function sePuedeLlegar(minutosEstimados, horaApertura, horaCierre) {
   const ahora = new Date();
-  console.log("Hora actual:", ahora.toTimeString().split(' ')[0]);
-  console.log("Hora apertura:", horaApertura);
-    console.log("Hora cierre:", horaCierre);
+
   // Validaciones básicas
   if (!horaApertura || !horaCierre) {
     return {
@@ -280,7 +275,7 @@ function parseDurationToMinutes(durationText) {
 const MostrarValores = async () => {
     try {
         const lugares= await fetchItineraryPlaces(miDato);
-        console.log("Adventures info: ",lugares)
+        
         if (lugares.length === 0) {
             Swal.fire({
                 icon: 'warning',
@@ -304,7 +299,7 @@ const MostrarValores = async () => {
         
  
         if (lugarInicial && lugarInicial['Estado Museo']==='S') {
-            console.log("Primer lugar no visitado");
+            
             document.getElementById('nombreAventura').textContent = lugarInicial.Plan;           
 
             const placeId = lugarInicial['ID MUSEO'];
@@ -314,7 +309,7 @@ const MostrarValores = async () => {
             if(i<lugaresItinerario.length-1){
             const lugarSiguiente = lugaresItinerario.find(lugar => lugar['Posición en itinerario'] === i+1);
             const placeIdS = lugarSiguiente['ID MUSEO'];
-            console.log(placeIdS);
+            
             document.getElementById("btnLlegar").textContent = 'He Llegado';
             lugarInfoS = await getInfo(placeIdS);
             }
@@ -334,15 +329,33 @@ const MostrarValores = async () => {
             const travelMode = lugarInicial['Metodo de transporte'];
             if(i==0)
             {
-                console.log("Es el primer lugar");
+                
                 const NombreLugarOrigen = document.getElementById('nombreLugarOrigen');
                 NombreLugarOrigen.textContent = "Tu Ubicacion"
                 const coordenadasActualesOrigen = await getUserLocation();
                 const duration = await getTime(coordenadasActualesOrigen, destinoCoords, travelMode);
                 document.getElementById("length").textContent = duration;
-                rutaIti(directionsService, directionsRenderer, coordenadasActualesOrigen, mapa, travelMode);
+                showLoading("Calculando ruta...");
+                try{
+                    rutaIti(directionsService, directionsRenderer, coordenadasActualesOrigen, mapa, travelMode);
+                }
+                catch(e){
+                    console.error("Error al calcular ruta:", e);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al calcular la ruta',
+                        text: 'No se pudo calcular la ruta. Por favor, intenta nuevamente.',
+                        confirmButtonText: 'Reintentar'
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+                finally{
+                    hideLoading();
+                }
+                
                 const minutosEstimados = parseDurationToMinutes(duration);
-                console.log(minutosEstimados)
+                
                     // Evaluar si se puede llegar
                       const DAYS_MAP = {
                         0: 'Domingo',
@@ -356,17 +369,11 @@ const MostrarValores = async () => {
                     const fechaPlan = new Date();
                     const today = DAYS_MAP[fechaPlan.getDay()];
                     const currentMinutes = fechaPlan.getHours() * 60 + fechaPlan.getMinutes();
-                    console.log("lugarIniciaral: ", lugarInicial);
+                    
                     const { dia, apertura, cierre } = obtenerHorarioDelDia(lugarInicial, fechaPlan);
-                    console.log(`Hoy es ${fechaPlan}. El museo abre a las ${apertura} y cierra a las ${cierre}.`);
+                    
                     const { puedeLlegar, suficienteTiempo, mensaje } = sePuedeLlegar(minutosEstimados, apertura, cierre);
-                    console.table({
-  Museo: lugarInfo.name,
-  Dia: dia,
-  Apertura: apertura,
-  Cierre: cierre,
-  MinutosViaje: minutosEstimados
-});
+
 
                     // Mostrar alerta si no cabe o si cabe pero poco tiempo
                     if (!puedeLlegar || !suficienteTiempo) {
@@ -392,7 +399,7 @@ const MostrarValores = async () => {
             }
             
             else{
-                console.log("Lugar numero: ", i);
+                
                 const lugarAnterior = lugaresItinerario.find(lugar => lugar['Posición en itinerario'] === i-1);
                 const placeIdA = lugarAnterior['ID MUSEO'];
                 const lugarInfoA = await getInfo(placeIdA);
@@ -400,16 +407,32 @@ const MostrarValores = async () => {
 
                 nombreLugarElementA.dataset.latitud = lugarInfoA.coordinates.lat;
                 nombreLugarElementA.dataset.longitud = lugarInfoA.coordinates.lng;
-                console.log(lugarInfoA.name, lugarInfo.name);
+                
                 if(lugarAnterior['Estado Museo'] === 'O')
                 {
-                    console.log("lugar anterior omitido, lugar i: ", i);
-                    console.log("Anterior omitido")
+                    
                     nombreLugarElementA.textContent= "Tu ubicación";
                     const coordenadasActualesO = await getUserLocation();
                     const duration = await getTime(coordenadasActualesO, destinoCoords, travelMode);
                     document.getElementById("length").textContent = duration;
-                    rutaIti(directionsService, directionsRenderer, coordenadasActualesO, mapa, travelMode);
+                    showLoading("Calculando ruta...");
+                    try{
+                        rutaIti(directionsService, directionsRenderer, coordenadasActualesO, mapa, travelMode);
+                    }
+                    catch(e){
+                        console.error("Error al calcular ruta:", e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al calcular la ruta',
+                            text: 'No se pudo calcular la ruta. Por favor, intenta nuevamente.',
+                            confirmButtonText: 'Reintentar'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                    finally{
+                        hideLoading();
+                    }
                     const minutosEstimados = parseDurationToMinutes(duration);
                     const DAYS_MAP = {
                         0: 'Domingo',
@@ -424,17 +447,11 @@ const MostrarValores = async () => {
                         const fechaPlan = new Date();
                     const today = DAYS_MAP[fechaPlan.getDay()];
                     const currentMinutes = fechaPlan.getHours() * 60 + fechaPlan.getMinutes();
-                    console.log("lugarIniciaral: ", lugarInicial);
+                    
                     const { dia, apertura, cierre } = obtenerHorarioDelDia(lugarInicial, fechaPlan);
-                    console.log(`Hoy es ${fechaPlan}. El museo abre a las ${apertura} y cierra a las ${cierre}.`);
+                    
                     const { puedeLlegar, suficienteTiempo, mensaje } = sePuedeLlegar(minutosEstimados, apertura, cierre);
-                    console.table({
-  Museo: lugarInfo.name,
-  Dia: dia,
-  Apertura: apertura,
-  Cierre: cierre,
-  MinutosViaje: minutosEstimados
-});
+
 
                         // Mostrar alerta si no cabe o si cabe pero poco tiempo
                         if (!puedeLlegar || !suficienteTiempo) {
@@ -459,8 +476,7 @@ const MostrarValores = async () => {
                     
                 }
                 else{
-                    console.log("lugar anterior visitado, lugar i: ", i);
-                    console.log("Anterior no omitido")
+
                     nombreLugarElementA.textContent=lugarInfoA.name;
                     const coordenadasActuales = {
                         lat: lugarInfoA.coordinates.lat,
@@ -468,9 +484,25 @@ const MostrarValores = async () => {
                         }; 
                         const duration = await getTime(coordenadasActuales, destinoCoords, travelMode);
                         document.getElementById("length").textContent = duration;
-                        rutaIti(directionsService, directionsRenderer, coordenadasActuales, mapa, travelMode);
+                        try{
+                            rutaIti(directionsService, directionsRenderer, coordenadasActuales, mapa, travelMode);
+                        }
+                        catch(e){
+                            console.error("Error al calcular ruta:", e);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al calcular la ruta',
+                                text: 'No se pudo calcular la ruta. Por favor, intenta nuevamente.',
+                                confirmButtonText: 'Reintentar'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                        finally{
+                            hideLoading();
+                        }
                         const minutosEstimados = parseDurationToMinutes(duration);
-                        console.log(minutosEstimados)
+                        
                         const DAYS_MAP = {
                         0: 'Domingo',
                         1: 'Lunes',
@@ -484,17 +516,11 @@ const MostrarValores = async () => {
                             const fechaPlan = new Date();
                     const today = DAYS_MAP[fechaPlan.getDay()];
                     const currentMinutes = fechaPlan.getHours() * 60 + fechaPlan.getMinutes();
-                    console.log("lugarIniciaral: ", lugarInicial);
+                    
                     const { dia, apertura, cierre } = obtenerHorarioDelDia(lugarInicial, fechaPlan);
-                    console.log(`Hoy es ${fechaPlan}. El museo abre a las ${apertura} y cierra a las ${cierre}.`);
+                    
                     const { puedeLlegar, suficienteTiempo, mensaje } = sePuedeLlegar(minutosEstimados, apertura, cierre);
-                    console.table({
-  Museo: lugarInfo.name,
-  Dia: dia,
-  Apertura: apertura,
-  Cierre: cierre,
-  MinutosViaje: minutosEstimados
-});
+
                             
 
                             // Mostrar alerta si no cabe o si cabe pero poco tiempo
@@ -522,7 +548,7 @@ const MostrarValores = async () => {
 
             }
             
-            console.log(lugarInicial['Estado Museo'], lugarInicial['ID'], lugarInfo.coordinates);
+            
             await ShowDone(lugarInfo.name, lugarInicial['ID'], lugarInfoS && lugarInfoS.name, lugares, lugarInicial['ID MUSEO']);
             i++;
         } else {
@@ -535,26 +561,32 @@ const MostrarValores = async () => {
 
 }
 
-function esperarUsuario() {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (window.usuarioLogueado) {
-                clearInterval(interval);
-                resolve(window.usuarioLogueado);
-            }
-        }, 50);
-    });
-}
-
 document.addEventListener('DOMContentLoaded', async function () {
-    console.log("DOMContentLoaded, inicializando pantalla de itinerarios");
-    await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible
+    
     initMap();
 
     const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes");
       directionsService = new DirectionsService();
     directionsRenderer = new DirectionsRenderer();
     directionsRenderer.setMap(mapa);
+
+      const drawer = document.getElementById("indicacionesDrawer");
+  const toggle = document.getElementById("toggleIndicaciones");
+  const closeBtn = document.getElementById("closeIndicaciones");
+
+  if (toggle && drawer) {
+    toggle.addEventListener("click", () => {
+      drawer.classList.toggle("is-open");
+      toggle.innerHTML = drawer.classList.contains("is-open") ? "<span>▶</span>" : "<span>◀</span>";
+    });
+  }
+
+  if (closeBtn && drawer && toggle) {
+    closeBtn.addEventListener("click", () => {
+      drawer.classList.remove("is-open");
+      toggle.innerHTML = "<span>◀</span>";
+    });
+  }
     MostrarValores();
 });
 
@@ -571,107 +603,90 @@ function distanceInMeters(coord1, coord2) {
 }
 
 async function ShowDone(nombreLugar, IdLugarItinerario, nombreLugarSig, lugares, IDMUSEO){  
-  return new Promise((resolve)=>{
+    return new Promise(async(resolve)=>{
+    let Omitir=document.getElementById("btnOmitir");
+    let Llegar=document.getElementById("btnLlegar");
+    let Queja=document.getElementById("btnQueja");
 
-    let Omitir = document.getElementById("btnOmitir");
-    let Llegar = document.getElementById("btnLlegar");
-    let Queja = document.getElementById("btnQueja");
-
-    // =========================
-    // 🧾 QUEJA
-    // =========================
-    Queja.addEventListener('click', async function onQueja() {
-      Queja.removeEventListener('click', onQueja);
-
-      const result = await Swal.fire({
-        title: '¿Qué anomalía encontraste?',
-        input: 'select',
-        inputOptions: {
-          HORARIO_CERRADO_INESPERADO: 'Cerrado cuando debía estar abierto',
-          HORARIO_CIERRE_ANTICIPADO: 'Cerró antes de lo indicado',
-          EVENTO_ESPECIAL: 'Evento especial / acceso restringido',
-          INFORMACION_DESACTUALIZADA: 'Información incorrecta'
-        },
-        inputPlaceholder: 'Selecciona una opción',
-        showCancelButton: true,
-        confirmButtonText: 'Reportar',
-        confirmButtonColor: "#65B2C6",
-        cancelButtonColor: "#D63D6C"
-      });
-
-      if (result.isConfirmed) {
-        await createQueja(result.value, IDMUSEO);
-        await Swal.fire('¡Gracias por tu reporte!', 'Lo revisaremos lo antes posible.', 'success');
-      }
-
+    Queja.addEventListener('click', function onQueja() {
+        Queja.removeEventListener('click', onQueja);
+        Swal.fire({
+            title: '¿Qué anomalía encontraste?',
+            input: 'select',
+            inputOptions: {
+                HORARIO_CERRADO_INESPERADO: 'Cerrado cuando debía estar abierto',
+                HORARIO_CIERRE_ANTICIPADO: 'Cerró antes de lo indicado',
+                EVENTO_ESPECIAL: 'Evento especial / acceso restringido',
+                INFORMACION_DESACTUALIZADA: 'Información incorrecta'
+            },
+                inputPlaceholder: 'Selecciona una opción',
+                showCancelButton: true,
+                confirmButtonText: 'Reportar',
+                confirmButtonColor: "#65B2C6",
+                cancelButtonColor: "#D63D6C"
+            }).then(async (result) => {
+            if (result.isConfirmed) {
+                const reporte = result.value;
+                // Aquí puedes enviar el reporte al servidor o manejarlo como necesites
+                
+                await createQueja(result.value, IDMUSEO);
+                Swal.fire('¡Gracias por tu reporte!', 'Lo revisaremos lo antes posible.', 'success');
+            }
+        });
     }, { once: true });
 
-    // =========================
-    // ⏭ OMITIR DIRECTO
-    // =========================
-    Omitir.addEventListener('click', function onOmitir(){
-      Omitir.removeEventListener('click', onOmitir);
-      window.location.href="/aventuras_proximas";
-      resolve();
-    }, { once: true });
 
-    // =========================
-    // 🧭 LLEGAR / OMITIR
-    // =========================
-    Llegar.addEventListener('click', async function onLlegar(){
 
-      // =========================
-      // 🟢 CASO NORMAL
-      // =========================
-      if(nombreLugar && nombreLugarSig){
-
-        const result = await Swal.fire({
-          title: `¿Haz llegado a ${nombreLugar} ?`,
-          text: `¿Deseas continuar con el siguiente lugar: ${nombreLugarSig}?`,
-          icon:"success",
-          showCancelButton: true,
-          confirmButtonColor: "#65B2C6",
-          cancelButtonColor: "#D63D6C",
-          confirmButtonText: "LLegar",
-          cancelButtonText: "Omitir",
-        });
-
-        if (result.isConfirmed) {
-          console.time('visit-museum');
-          const LugarModifiedV = await fetchStateItinerary(IdLugarItinerario);
-          console.timeEnd('visit-museum');
-          console.log(LugarModifiedV);
-
-          resolve();
-          return;
-        }
-
-        const result1 = await Swal.fire({
-          icon: "info",
-          title: `¿Deseas omitir ${nombreLugar} de tu aventura?`, 
-          text: `Esta accion omitira este lugar de la aventura y se continuara con ${nombreLugarSig}`,
-          showCancelButton: true,
-          confirmButtonColor: "#65B2C6",
-          cancelButtonColor: "#D63D6C",
-          confirmButtonText: "Omitir",
-          cancelButtonText: "Cancelar"
-        });
-
-        if(result1.isConfirmed){
-          console.time('omit-museum');
-          const LugarModified = await fetchStateOItinerary(IdLugarItinerario);
-          console.timeEnd('omit-museum');
-          console.log(LugarModified);      
-        }
-
+    Omitir.addEventListener('click',function onOmitir(){
+        Omitir.removeEventListener('click', onOmitir);
+        window.location.href="/aventuras_proximas";
         resolve();
-        return;
-      }
+    }, { once: true });
 
-      // =========================
-      // 🔵 ÚLTIMO LUGAR
-      // =========================
-      const result = await Swal.fire({
+Llegar.addEventListener('click',function onLlegar(){
+    
+    if(nombreLugar && nombreLugarSig){
+    Swal.fire({
+    title: `¿Haz llegado a ${nombreLugar} ?`,
+    text: `¿Deseas continuar con el siguiente lugar: ${nombreLugarSig}?`,
+    icon:"success",
+    showCancelButton: true,
+    confirmButtonColor: "#65B2C6",
+    cancelButtonColor: "#D63D6C",
+    confirmButtonText: "LLegar",
+    cancelButtonText: "Omitir",
+}).then(async(result) => {
+    if (result.isConfirmed) {
+        console.time('visit-museum');
+        const LugarModifiedV = await fetchStateItinerary(IdLugarItinerario);
+        console.timeEnd('visit-museum');
+        
+        resolve();
+    }
+    else {
+        Swal.fire({
+            icon: "info",
+            title: `¿Deseas omitir ${nombreLugar} de tu aventura?`, 
+            text: `Esta accion omitira este lugar de la aventura y se continuara con ${nombreLugarSig}`,
+            showCancelButton: true,
+            confirmButtonColor: "#65B2C6",
+            cancelButtonColor: "#D63D6C",
+            confirmButtonText: "Omitir",
+            cancelButtonText: "Cancelar"
+        }).then(async(result1)=>{
+            if(result1.isConfirmed){
+                console.time('omit-museum');
+                const LugarModified = await fetchStateOItinerary(IdLugarItinerario);
+                console.timeEnd('omit-museum');
+                
+                resolve();
+            }
+        });
+    }
+});
+}
+else{
+    Swal.fire({
         title: `¿Haz llegado a ${nombreLugar} ?`,
         text: `Este es el ultimo lugar de la aventura`,
         icon:"success",
@@ -680,113 +695,107 @@ async function ShowDone(nombreLugar, IdLugarItinerario, nombreLugarSig, lugares,
         cancelButtonColor: "#D63D6C",
         confirmButtonText: "LLegar",
         cancelButtonText: "Omitir"
-      });
+    }).then(async(result) => {
+        if (result.isConfirmed) {
+            const LugarModifiedV = await fetchStateItinerary(IdLugarItinerario);
+            
+            resolve();
+            //console.log("Adventures info: ",lugares)
+            var i=0;
+    
+            
+            
+            const lugarDes = lugares.find(lugar => lugar['Posición en itinerario'] === 0);
+            const lugarActualizados = await fetchItineraryPlaces(lugarDes['ID Plan']);
 
-      // =========================
-      // 🟢 LLEGÓ
-      // =========================
-      if (result.isConfirmed) {
 
-        const LugarModifiedV = await fetchStateItinerary(IdLugarItinerario);
-        console.log(LugarModifiedV);
-
-        var i=0;
-
-        console.log(lugares.length);
-
-        const lugarDes = lugares.find(lugar => lugar['Posición en itinerario'] === 0);
-        const lugarActualizados = await fetchItineraryPlaces(lugarDes['ID Plan']);
-
-        while(i<=lugares.length-1)
-        {
-          const lugarAct=lugarActualizados.find(lugar => lugar['Posición en itinerario'] === i);
-          console.log("Hola soy: ", i);
-          console.log(lugarAct['Estado Museo']==='V');
-          console.log(lugarAct['ID Plan']);
-
-          if(lugarAct['Estado Museo']!=='S')
-          {
-            if(i===lugarActualizados.length-1)
+            while(i<=lugares.length-1)
             {
-              console.log(lugarAct['ID Plan']);
-              const StateItinerary = await updateItineraryState(lugarAct['ID Plan']);
-              console.log(StateItinerary);                       
-              break;
+
+                const lugarAct=lugarActualizados.find(lugar => lugar['Posición en itinerario'] === i);
+
+                if(lugarAct['Estado Museo']!=='S')
+                {
+                    if(i===lugarActualizados.length-1)
+                    {
+                        
+                        const StateItinerary = await updateItineraryState(lugarAct['ID Plan']);
+                                             
+                        break;
+                    }
+                }
+                else{
+                    
+                    break;
+                }
+                i++;
             }
-          }
-          else{
-            console.log("Entrando al else");
-            break;
-          }
-          i++;
+            Swal.fire({
+                icon: "success",
+                title: `Tu Aventura "${lugarDes['Plan']}" ha llegado a su fin `, 
+                showConfirmButton: true,
+                confirmButtonColor: "#65B2C6",
+            }).then((result)=>{
+                window.location.href="/aventuras_proximas";
+            });
+
+            
         }
+        else{
+            Swal.fire({
+                icon: "info",
+                title: `¿Deseas omitir ${nombreLugar} de tu aventura?`, 
+                text: `Este es el ultimo lugar de la aventura`,
+                showCancelButton: true,
+                confirmButtonColor: "#65B2C6",
+                cancelButtonColor: "#D63D6C",
+                confirmButtonText: "Omitir",
+                cancelButtonText: "Cancelar"
+            }).then(async(result)=>{
+                if(result.isConfirmed){
+                    const LugarModified = await fetchStateOItinerary(IdLugarItinerario);
+                    
+                    resolve();
 
-        await Swal.fire({
-          icon: "success",
-          title: `Tu Aventura "${lugarDes['Plan']}" ha llegado a su fin `,
-          confirmButtonColor: "#65B2C6",
-        });
-
-        window.location.href="/aventuras_proximas";
-        resolve();
-        return;
-      }
-
-      const result2 = await Swal.fire({
-        icon: "info",
-        title: `¿Deseas omitir ${nombreLugar} de tu aventura?`, 
-        text: `Este es el ultimo lugar de la aventura`,
-        showCancelButton: true,
-        confirmButtonColor: "#65B2C6",
-        cancelButtonColor: "#D63D6C",
-        confirmButtonText: "Omitir",
-        cancelButtonText: "Cancelar"
-      });
-
-      if(result2.isConfirmed){
-
-        const LugarModified = await fetchStateOItinerary(IdLugarItinerario);
-        console.log(LugarModified);
-
-        var i=0;
-
-        console.log(lugares.length);
-
-        const lugarDes = lugares.find(lugar => lugar['Posición en itinerario'] === 0);
-        const lugarActualizados = await fetchItineraryPlaces(lugarDes['ID Plan']);
-
-        while(i<=lugares.length-1)
-        {
-          const lugarAct=lugarActualizados.find(lugar => lugar['Posición en itinerario'] === i);
-          console.log("Hola soy: ", i);
-          console.log(lugarAct['ID Plan']);
-
-          if(lugarAct['Estado Museo']!=='S')
-          {
-            if(i===lugarActualizados.length-1)
-            {
-              console.log(lugarAct['ID Plan']);
-              const StateItinerary = await updateItineraryState(lugarAct['ID Plan']);
-              console.log(StateItinerary);                       
-              break;
-            }
-          }
-          i++;
+                    var i=0;
+    
+                    
+                    
+                    const lugarDes = lugares.find(lugar => lugar['Posición en itinerario'] === 0);
+                    const lugarActualizados = await fetchItineraryPlaces(lugarDes['ID Plan']);
+                    while(i<=lugares.length-1)
+                    {
+        
+                        const lugarAct=lugarActualizados.find(lugar => lugar['Posición en itinerario'] === i);
+ 
+                        if(lugarAct['Estado Museo']!=='S')
+                        {
+                            if(i===lugarActualizados.length-1)
+                            {
+                                
+                                const StateItinerary = await updateItineraryState(lugarAct['ID Plan']);
+                                                      
+                                
+                                break;
+                            }
+                        }
+                        i++;
+                    }
+                    Swal.fire({
+                        icon: "success",
+                        title: `Tu Plan de Visita "${lugarDes['Plan']}" ha llegado a su fin `, 
+                        showConfirmButton: true,
+                        confirmButtonColor: "#65B2C6",
+                    }).then((result)=>{
+                        window.location.href="/aventuras_proximas";
+                    });
+                }
+            });
         }
-
-        await Swal.fire({
-          icon: "success",
-          title: `Tu Plan de Visita "${lugarDes['Plan']}" ha llegado a su fin `, 
-          confirmButtonColor: "#65B2C6",
-        });
-
-        window.location.href="/aventuras_proximas";
-      }
-
-      resolve();
-
-    }, { once: true });
-  });
+    });
+}
+}, { once: true });
+});
 }
 
 function eliminarCookie(cookieName) {
@@ -794,7 +803,7 @@ function eliminarCookie(cookieName) {
 }
 
 async function getInfo(placeId) {
-    console.log("getInfo llamada con place:", placeId);
+    
 
     const { Place } = await google.maps.importLibrary('places');
     const place = new Place({ id: placeId, requestedLanguage: 'es' });

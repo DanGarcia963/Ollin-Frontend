@@ -169,3 +169,198 @@ main {
         width: 100%; /* Botones de ancho completo */
     }
 }
+
+/* =========================================
+   PANEL LATERAL DE INDICACIONES
+   ========================================= */
+
+.indicaciones-drawer {
+    position: fixed;
+    top: 88px;                 /* debajo de la barra superior */
+    right: 0;
+    bottom: 92px;              /* arriba de los botones */
+    width: 380px;
+    max-width: 90vw;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: -8px 0 25px rgba(0, 0, 0, 0.15);
+    z-index: 30;
+
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px 0 0 18px;
+
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.indicaciones-drawer.is-open {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: linear-gradient(180deg, rgba(8, 151, 157, 0.10), rgba(255, 255, 255, 0.95));
+}
+
+.drawer-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #08979D;
+}
+
+#resumenRuta {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.drawer-close {
+    border: none;
+    background: #f2f2f2;
+    color: #333;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.drawer-close:hover {
+    background: #e8e8e8;
+}
+
+.indicaciones-list {
+    padding: 14px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Botón lateral flotante */
+.drawer-tab {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 31;
+
+    width: 34px;
+    height: 86px;
+    border: none;
+    border-radius: 16px 0 0 16px;
+    background: #08979D;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.18);
+}
+
+.drawer-tab:hover {
+    background: #055B5C;
+}
+
+/* Cada paso */
+.step-card {
+    display: grid;
+    grid-template-columns: 34px 34px 1fr;
+    gap: 10px;
+    align-items: start;
+
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(8, 151, 157, 0.12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #D63D6C;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.step-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #EAF8F9;
+    color: #08979D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.step-body {
+    min-width: 0;
+}
+
+.step-instruction {
+    font-size: 14px;
+    line-height: 1.35;
+    color: #222;
+    word-break: break-word;
+}
+
+.step-instruction b {
+    color: #08979D;
+}
+
+.step-meta {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Cuando el panel esté cerrado, el botón lateral sigue visible */
+.indicaciones-drawer:not(.is-open) {
+    transform: translateX(100%);
+}
+
+/* =========================================
+   MÓVIL
+   ========================================= */
+@media (max-width: 768px) {
+    .indicaciones-drawer {
+        top: 170px;          /* para dejar espacio a la info superior */
+        width: 92vw;
+        bottom: 104px;
+        border-radius: 16px 0 0 16px;
+    }
+
+    .step-card {
+        grid-template-columns: 30px 30px 1fr;
+        padding: 10px;
+    }
+
+    .drawer-tab {
+        height: 76px;
+        width: 30px;
+    }
+}

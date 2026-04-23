@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/inicio.css">
     <link rel="stylesheet" href="styles/styles_barra.css">
-    <link rel="stylesheet" href="styles/Aventuras_proximas.css">
-    <link rel="stylesheet" href="styles/styleformularioemergente.css">
+    <link rel="stylesheet" href="styles/EnCurso.css"> <link rel="stylesheet" href="styles/styleformularioemergente.css">
     <script defer src="js/i18n.js"></script>
     <script src="/ARCY-PRUEBAS/admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
@@ -182,7 +181,26 @@
         </div>
         
         <div id="auxPlaces" style="display: none;"></div>
-        <div id="map" ></div>
+
+        <!-- Botón flotante para abrir/cerrar el panel -->
+        <button type="button" id="toggleIndicaciones" class="drawer-tab" aria-label="Mostrar u ocultar indicaciones">
+        <span>▶</span>
+        </button>
+
+        <!-- Panel lateral de indicaciones -->
+        <aside id="indicacionesDrawer" class="indicaciones-drawer is-open">
+        <div class="drawer-header">
+            <div>
+            <h3>Indicaciones</h3>
+            <p id="resumenRuta">Ruta en proceso...</p>
+            </div>
+            <button type="button" id="closeIndicaciones" class="drawer-close" aria-label="Cerrar indicaciones">×</button>
+        </div>
+
+        <div id="panelIndicaciones" class="indicaciones-list"></div>
+        </aside>
+
+        <div id="map"></div>
         <div class="botones">
             <div class="Boton" style="margin: 4px 0 0 4px;">
                 <button type="button" class="create-adventure-link" id="btnOmitir" data-i18n="button_cancel">Cancelar</button>
