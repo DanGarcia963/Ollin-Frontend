@@ -578,7 +578,7 @@ function TTogglePasswordRE(){
 function deleteAcc(idTurista){
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
-    console.log('ID del usuario a eliminar:', userId);
+    console.log('ID del usuario a eliminar:', idTurista);
 
 fetch(`${server}/api/deleteUsuario/${idTurista}`, {
     method: 'DELETE'
