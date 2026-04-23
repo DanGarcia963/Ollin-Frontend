@@ -580,26 +580,34 @@ function deleteAcc(idTurista){
     const userId = urlParams.get('userId');
     console.log('ID del usuario a eliminar:', userId);
 
-        //fetch eliminar
-    fetch(`${server}/api/deleteUsuario/${idTurista}`,{
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    })
-    .then(res => res.json())
-    .then(data => {
-        Swal.fire({
-            title: "Eliminado",
-            text:"La cuenta fue eliminada con exito",
-            icon: "success"
-        }).then(()=>{
-            window.location.href="/despedida";
-        })
-        .catch(error => {
-            console.error('Error al eliminar la cuenta:', error);
-        });
-    })
+fetch(`${server}/api/deleteUsuario/${idTurista}`, {
+    method: 'DELETE'
+})
+.then(async res => {
+    const data = await res.json();
 
-            // Si se pudo eliminar
-            window.location.href="/despedida";
+    if (!res.ok) {
+        throw new Error(data.message || 'Error al eliminar');
+    }
+
+    return data;
+})
+.then(data => {
+    Swal.fire({
+        title: "Eliminado",
+        text: "La cuenta fue eliminada con éxito",
+        icon: "success"
+    }).then(() => {
+        window.location.href = "/despedida";
+    });
+})
+.catch(error => {
+    console.error(error);
+    Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error"
+    });
+});
 
 }
