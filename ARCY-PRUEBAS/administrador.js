@@ -58,9 +58,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     console.log("¡Sesión de admin validada con éxito!", usuario);
     window.usuarioLogueado = usuario;
-    const nombreUsuario = document.getElementById("nombreUsuario")
-    nombreUsuario.innerHTML = usuario.Nombre  
-    nombreUsuario.dataset.idAdmin = usuario.id_Administrador
 
   } catch (error) {
     console.error("Error verificando sesión de admin:", error.message);
