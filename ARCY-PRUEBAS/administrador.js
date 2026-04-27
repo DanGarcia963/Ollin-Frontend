@@ -1,3 +1,4 @@
+const server = "https://ollin-backend-production-d68e.up.railway.app"
 document.addEventListener('DOMContentLoaded', async function () {
 
   const token = localStorage.getItem('token');
