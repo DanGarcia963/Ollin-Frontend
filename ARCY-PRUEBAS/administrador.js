@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       showConfirmButton: true
     }).then((result) => {
       if(result.isConfirmed) {
-    window.location.href = "/LoginAdmin";
+    window.location.href = "/LogInAdmin";
       }
     });
     return;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       showConfirmButton: true
     }).then((result) => {
       if(result.isConfirmed) {
-    window.location.href = "/LoginAdmin";
+    window.location.href = "/LogInAdmin";
       }
     });
     return;
