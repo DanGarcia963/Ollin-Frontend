@@ -40,16 +40,11 @@ document.addEventListener('DOMContentLoaded', function () {
       text: 'Has iniciado sesión correctamente',
       timer: 2000,
       showConfirmButton: true
-    }).then(() => {
-      if(resultado.redirect) {
+    }).then((result) => {
+      if(result.isConfirmed) {
         window.location.href = resultado.redirect
       }
     })
-
-
-    if(resultado.redirect) {
-      window.location.href = resultado.redirect
-    }
 
     } catch (error) {
       console.error(error);
