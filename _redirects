@@ -17,14 +17,14 @@
 /despedida                    /despedida.html                         200
 
 # Redirecciones de Administradores
-/LogInAdmin                   /login_Admin.html                       200
-/registroAdmin                /registro_Admin.html                    200
-/inicioAdmin                  /inicioAdmin.html                       200
-/museosAdmin                  /MuseumsAdmin.html                      200
-/gestionUsers                 /gestionUsers.html                      200
-/recuperarContrasenaAdmin     /recuperacion_de_cuenta_Admin.html      200
-/recuperacionContrasenaAdmin  /cambiar_contraseña_Admin.html          200
-/cuentaAdmin                  /perfilAdministrador.html               200
+/LogInAdmin                   /pagesAdmin/login_Admin.html                       200
+/registroAdmin                /pagesAdmin/registro_Admin.html                    200
+/inicioAdmin                  /pagesAdmin/inicioAdmin.html                       200
+/museosAdmin                  /pagesAdmin/MuseumsAdmin.html                      200
+/gestionUsers                 /pagesAdmin/gestionUsers.html                      200
+/recuperacionAdmin            /pagesAdmin/recuperacion_de_cuenta_Admin.html      200
+/recuperarContrasenaAdmin     /pagesAdmin/cambiar_contraseña_Admin.html          200
+/cuentaAdmin                  /pagesAdmin/perfilAdministrador.html               200
 /cuentas                      /cuentas.html                           200
 /crear_usuario                /crearUsuario.html                      200
 /crear_empresa                /crearEmpresa.html                      200
