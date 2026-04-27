@@ -1,18 +1,34 @@
-const server = "https://ollin-backend-production-d68e.up.railway.app"
-
 document.addEventListener('DOMContentLoaded', async function () {
 
   const token = localStorage.getItem('token');
   if (!token) {
     console.log("No hay token guardado, regresando al login...");
-    window.location.href = "/LogInAdmin";
+        swal.fire({
+      icon: 'error',
+      title: 'Acceso denegado',
+      text: 'No tienes permisos para acceder a esta página porque no tienes token válido.',
+      showConfirmButton: true
+    }).then((result) => {
+      if(result.isConfirmed) {
+    window.location.href = "/LoginAdmin";
+      }
+    });
     return;
   }
 
   const isAdmin = localStorage.getItem('isAdmin');
   if (!isAdmin || isAdmin !== 'true') {
     console.log("El token no corresponde a un admin, regresando al login...");
-    window.location.href = "/LogInAdmin";
+    swal.fire({
+      icon: 'error',
+      title: 'Acceso denegado',
+      text: 'No tienes permisos para acceder a esta página porque no eres admin.',
+      showConfirmButton: true
+    }).then((result) => {
+      if(result.isConfirmed) {
+    window.location.href = "/LoginAdmin";
+      }
+    });
     return;
   }
 
@@ -49,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.error("Error verificando sesión de admin:", error.message);
     localStorage.removeItem('token');
     localStorage.removeItem('isAdmin');
-    window.location.href = "/LogInAdmin";
+    window.location.href = "/LoginAdmin";
   }
 })
 
@@ -59,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutBtn.addEventListener('click', function () {
       localStorage.removeItem('token');
       localStorage.removeItem('isAdmin');
-      window.location.href = "/LogInAdmin";
+      window.location.href = "/LoginAdmin";
   })
 }
 })
