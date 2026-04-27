@@ -65,7 +65,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.error("Error verificando sesión de admin:", error.message);
     localStorage.removeItem('token');
     localStorage.removeItem('isAdmin');
-    window.location.href = "/LoginAdmin";
+    swal.fire({
+      icon: 'error',
+      title: 'Error de autenticación',
+      text: 'Hubo un problema con tu sesión. Por favor, inicia sesión nuevamente.',
+      showConfirmButton: true
+    }).then((result) => {
+      if(result.isConfirmed) {
+    window.location.href = "/LogInAdmin";
+      }
+    });
+
   }
 })
 
@@ -75,7 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutBtn.addEventListener('click', function () {
       localStorage.removeItem('token');
       localStorage.removeItem('isAdmin');
-      window.location.href = "/LoginAdmin";
-  })
-}
-})
+      swal.fire({
+        icon: 'success',
+        title: 'Sesión cerrada',
+        text: 'Has cerrado sesión correctamente.',
+        showConfirmButton: true
+      }).then((result) => {
+        if(result.isConfirmed) {
+      window.location.href = "/LogInAdmin";
+        }
+      });
+    });
+  }
+    })
