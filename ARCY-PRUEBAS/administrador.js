@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
   if (!token) {
     console.log("No hay token guardado, regresando al login...");
-    window.location.href = "/LoginAdmin";
+    window.location.href = "/LogInAdmin";
     return;
   }
 
   const isAdmin = localStorage.getItem('isAdmin');
   if (!isAdmin || isAdmin !== 'true') {
     console.log("El token no corresponde a un admin, regresando al login...");
-    window.location.href = "/LoginAdmin";
+    window.location.href = "/LogInAdmin";
     return;
   }
 
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.error("Error verificando sesión de admin:", error.message);
     localStorage.removeItem('token');
     localStorage.removeItem('isAdmin');
-    window.location.href = "/LoginAdmin";
+    window.location.href = "/LogInAdmin";
   }
 })
 
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutBtn.addEventListener('click', function () {
       localStorage.removeItem('token');
       localStorage.removeItem('isAdmin');
-      window.location.href = "/LoginAdmin";
+      window.location.href = "/LogInAdmin";
   })
 }
 })
