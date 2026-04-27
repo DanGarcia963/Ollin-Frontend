@@ -31,11 +31,22 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('isAdmin', 'true'); // Guardamos un indicador de que es admin
     }
 
+    console.log("Respuesta del servidor:", resultado);
+    console.log("Token guardado en localStorage:", localStorage.getItem('token'));
+    console.log("Indicador isAdmin guardado en localStorage:", localStorage.getItem('isAdmin'));
+    Swal.fire({
+      icon: 'success',
+      title: '¡Bienvenido!',
+      text: 'Has iniciado sesión correctamente',
+      timer: 2000,
+      showConfirmButton: false
+    })
+
 
     if(resultado.redirect) {
       window.location.href = resultado.redirect
     }
-    
+
     } catch (error) {
       console.error(error);
       showAlert('Error de conexión con el servidor');
