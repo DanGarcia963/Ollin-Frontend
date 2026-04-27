@@ -16,7 +16,7 @@ function esperarUsuario() {
 document.addEventListener("DOMContentLoaded", async function () {
         await esperarUsuario();
 
-    const idAdmin = window.usuarioLogueado.id;
+    const idAdmin = window.usuarioLogueado.id_Administrador;
     console.log("ID del admin:", idAdmin);
         
     console.log("ID del admin después de asignar:", idAdmin);
