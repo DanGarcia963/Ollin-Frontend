@@ -1,4 +1,4 @@
-const server = "https://ollin-backend-production-d68e.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 // Función para obtener los museos
 async function fetchUsers() {
   try {

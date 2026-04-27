@@ -11,7 +11,7 @@ let FILTER_HAS_SERVICES = false;
 let FILTER_PRECIO_MAX = null;
 let USER_LOCATION = null;
 let FILTER_MAX_DISTANCE_KM = null;
-const server = "https://ollin-backend-production-d68e.up.railway.app"
+//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 // Función para obtener los museos
 async function fetchPlaces() {

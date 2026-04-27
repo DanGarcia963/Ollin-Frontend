@@ -1,142 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="update_data">Actualizar Datos</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles/styles_perfil.css">
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/inicio.css">
+    <title data-i18n="update_data">Actualizar Datos - Ollin</title>
+    <script src="/ARCY-PRUEBAS/administrador.js"></script>
+    <script defer src="js/i18n.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    
     <style>
-        .scrollbar-hide {
-        scrollbar-width: none; /* Firefox */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F4EFE6;
+            color: #333;
         }
 
-        .scrollbar-hide::-webkit-scrollbar {
-        width: 0;
-        height: 0;
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .lang-switcher select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 4px 18px 4px 8px;
+            border-radius: 9999px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 10px;
+            width: 75px;
+            text-align: center;
         }
 
-        /* Mostrar scrollbar solo al hacer hover */
-        .hover\\:scrollbar-default:hover {
-        scrollbar-width: auto; /* Firefox */
-        }
-
-        .hover\\:scrollbar-default:hover::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        }
-
-        .hover\\:scrollbar-default:hover::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 4px;
-        }
-
-        .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
-        background-color: transparent;
+        /* Quitamos el fondo automático de autocompletado en navegadores */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
         }
     </style>
 </head>
-<body>
-    <div id="app" class="flex h-screen">
-        <aside id="sidebar" class="w-20 bg-black text-white flex flex-col items-center py-4 justify-between">
-            <div class="space-y-6">
-                <div id="logo" class="w-12 h-12 bg-white rounded-lg"></div>
+<body class="overflow-hidden">
 
-                <!-- Menu -->
-                <div class="flex flex-col items-center space-y-6 mt-10">
-                    <a href="/museosAdmin" class="btn-sidebar"> 
-                        <span data-i18n="museums">Museos</span>
-                    </a>
+<div id="app" class="flex h-screen w-full">
 
-                     <a href="/gestionUsers" class="btn-sidebar"> 
-                        <span>Usuarios</span>
-                    </a>
-                    <button id="btn-calendar">📅</button>
-                    <a href="/cuentaAdmin" class="btn-sidebar"> 
-                        <span>Cuenta</span>
-                    </a>
-                </div>
+    <aside id="sidebar" class="w-24 bg-black text-white flex flex-col items-center py-6 justify-between shrink-0 shadow-xl z-20">
+        <div class="space-y-8 flex flex-col items-center w-full">
+            
+            <a href="/inicioAdmin" id="logo" class="w-14 h-14 bg-[#F4EFE6] rounded-xl flex items-center justify-center p-1 cursor-pointer transition hover:scale-105 hover:shadow-lg">
+                <img src="assets/icons/Logo.PNG" alt="Ollin Logo" class="w-full h-full object-contain">
+            </a>
+
+            <div class="flex flex-col items-center space-y-8 mt-10 w-full">
+                <a href="/museosAdmin" class="text-white hover:text-gray-400 transition"> 
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </a>
+                <a href="/gestionUsers" class="text-white hover:text-gray-400 transition"> 
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </a>
+                <button id="btn-calendar" class="text-white hover:text-gray-400 transition">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </button>
+                <a href="/cuentaAdmin" class="text-[#C49A94] transition transform scale-110"> 
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </a>
             </div>
+        </div>
 
-            <div class="containerlanguages">
-                <!-- Selector de idioma -->
-                <div class="lang-switcher">
-                    <label for="lang-select" data-i18n="label_select_lang">Idioma:</label>
-                    <select id="lang-select">
-                        <option value="es">Español</option>
-                        <option value="en">English</option>
-                        <option value="it">Italiano</option>
-                        <option value="fr">Frances</option>
-                    </select>
-                </div>
+        <div class="lang-switcher flex flex-col items-center">
+            <label for="lang-select" class="text-[10px] text-gray-400 mb-1 tracking-widest uppercase">Idioma:</label>
+            <select id="lang-select">
+                <option value="es">ESPAÑOL</option>
+                <option value="en">ENGLISH</option>
+            </select>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex items-center justify-center p-8 overflow-y-auto scrollbar-hide">
+        
+        <div class="bg-white rounded-[32px] shadow-sm w-full max-w-md p-8 sm:p-10">
+            
+            <div class="text-center mb-6">
+                <h2 id="name" class="text-2xl font-bold text-[#438B9E] mb-1">Nombre de Usuario</h2>
+                <p id="type" class="text-xs font-bold text-gray-500 tracking-widest uppercase">Administrador</p>
             </div>
-        </aside>
-        <main>
-            <div class="container-data">
-                <div class="userH">
-                    <p id="name"></p>
-                    <p id="type">Administrador</p>
-                </div>
-                <form id="updateName" class="form-profile" novalidate>
-                    <br> 
-                    <label for="nombre" class="label-profile" id="labelName" data-i18n="name_placeholder">Nombre(s)</label><br>
-                    <div class="container-input" id="contInputName">                
-                        <div class="nombre-container">
-                            <input type="nombre" id="nombre" name="nombre" placeholder="" data-i18n-placeholder="name_placeholder" class="input-profile" required disabled>              
-                        </div>
-                        <button type="button" class="btn-icon" id="editName">
-                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
-                        </button>
-                    </div>
-                </form>
-                <form id="updatelastname" class="form-profile" novalidate>
-                    <br>
-                    <label for="lastname" class="label-profile" id="labellastname" data-i18n="lastname_placeholder">Apellido(s)</label><br>
-                    <div class="container-input" id="contInputlastname">                
-                        <div class="lastname-container">
-                            <input type="lastname" id="lastname" name="lastname" placeholder="" data-i18n-placeholder="lastname_placeholder" class="input-profile" required disabled>              
-                        </div>
-                        <button type="button" class="btn-icon" id="editlastname">
-                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
-                        </button>
-                    </div>
-                </form>
+            
+            <hr class="border-gray-100 mb-8">
 
-                <form id="updatePassword" class="form-profile" novalidate>
-                    <br>
-                    <label for="password" class="label-profile" id="labelPassword" data-i18n="password_placeholder">Contraseña</label><br>
-                    <div class="container-input" id="contInputPassword">                
-                        <div class="password-container">
-                            <input type="password" id="password" name="password" placeholder="" data-i18n-placeholder="password_placeholder" class="input-profile" required disabled>              
-                            <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar contraseña" id="togglePassword">
-                        </div>
-                        <button type="button" class="btn-icon" id="editPassword">
-                            <img src="/assets/icons/editarIcono.png" style="width:24px; height:24px;">
-                        </button>
-                    </div>
-                </form>
-                <div class="container-delete">
-                    <button type="button" class="btn-deleteAcc" id="btnDeleteAccount">
-                        <h3 style="margin: 0;" data-i18n="delete_account">Borrar cuenta</h3>
-                        <img src="/assets/icons/basureroIcon.png" width="32px" height="32px">
+            <form id="updateName" class="mb-5" novalidate>
+                <label for="nombre" class="block text-sm font-bold text-gray-800 mb-2" id="labelName" data-i18n="name_placeholder">Nombre(s)</label>
+                <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputName">                
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" data-i18n-placeholder="name_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent" required disabled>              
+                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform" id="editName">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
-                    <!-- Ventana modal -->
-                    <div class="container-modal" id="cModalAlertDelete">
-                    </div>
                 </div>
-                
-                
+            </form>
+
+            <form id="updatelastname" class="mb-5" novalidate>
+                <label for="lastname" class="block text-sm font-bold text-gray-800 mb-2" id="labellastname" data-i18n="lastname_placeholder">Apellido(s)</label>
+                <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputlastname">                
+                    <input type="text" id="lastname" name="lastname" placeholder="Tus apellidos" data-i18n-placeholder="lastname_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent" required disabled>              
+                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform" id="editlastname">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </button>
+                </div>
+            </form>
+
+            <form id="updatePassword" class="mb-8" novalidate>
+                <label for="password" class="block text-sm font-bold text-gray-800 mb-2" id="labelPassword" data-i18n="password_placeholder">Contraseña</label>
+                <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputPassword">                
+                    <input type="password" id="password" name="password" placeholder="********" data-i18n-placeholder="password_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent tracking-[0.2em]" required disabled>              
+                    
+                    <button type="button" class="px-2 text-gray-400 hover:text-gray-600 transition-colors" id="togglePassword">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </button>
+                    
+                    <button type="button" class="px-4 border-l border-gray-100 text-[#438B9E] hover:scale-110 transition-transform" id="editPassword">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </button>
+                </div>
+            </form>
+
+            <div class="container-delete mt-4">
+                <button type="button" class="w-full bg-[#D63D6C] hover:bg-[#b52b57] text-white rounded-xl px-5 py-4 flex items-center justify-between transition-colors shadow-sm cursor-pointer" id="btnDeleteAccount">
+                    <span class="font-bold text-sm tracking-wide" data-i18n="delete_account">Borrar cuenta</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+                <div id="cModalAlertDelete"></div>
             </div>
+            
+        </div>
+    </main>
+</div>
 
-        </main>
-    </div>
-
-    <script type="module" src="/js/jquery-3.7.1.min.js"></script>
-    <script src="/js/Admin/cambiar_datos_Admin.js"></script>
-    <script type="module" src="/js/Hide.js"></script>
+<script type="module" src="/js/jquery-3.7.1.min.js"></script>
+<script src="/js/Admin/cambiar_datos_Admin.js"></script>
+<script type="module" src="/js/Hide.js"></script>
 </body>
 </html>
