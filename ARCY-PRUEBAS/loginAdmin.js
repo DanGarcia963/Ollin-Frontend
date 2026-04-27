@@ -39,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
       title: '¡Bienvenido!',
       text: 'Has iniciado sesión correctamente',
       timer: 2000,
-      showConfirmButton: false
+      showConfirmButton: true
+    }).then(() => {
+      if(resultado.redirect) {
+        window.location.href = resultado.redirect
+      }
     })
 
 
