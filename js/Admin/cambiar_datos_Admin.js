@@ -13,8 +13,8 @@ function esperarUsuario() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-    const idAdmin = 10; // ID de prueba, reemplazar con el ID real del admin
-    console.log("ID del admin después de asignar:", idAdmin);
+    await esperarUsuario();
+    idAdmin = window.usuarioLogueado.id_Administrador;
     let admin
     $("#togglePassword").css({"display":"none"}); 
     setTimeout(async()=>{
