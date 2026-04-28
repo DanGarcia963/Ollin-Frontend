@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
+  if (isAdmin === "true") {
+    localStorage.removeItem('token');
+    localStorage.removeItem('isAdmin');
+    window.location.href = "/";
+    return;
+  }
+
   try {
     // 2. Mandamos la llave al backend en el cuerpo (body) de la petición
     const res = await fetch(`${server}/api/authenticator/usuarioLogueado`, {

@@ -11,7 +11,6 @@ let FILTER_HAS_SERVICES = false;
 let FILTER_PRECIO_MAX = null;
 let USER_LOCATION = null;
 let FILTER_MAX_DISTANCE_KM = null;
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 // Función para obtener los museos
 async function fetchPlaces() {
@@ -285,7 +284,7 @@ function applyAllFilters() {
             result = []; // Si no encuentra, no muestra nada
         }
     }
-    displayFavorites(Infinity, result);
+    displayFavorites(3, result);
 }
 
 // Función para mostrar los museos en la página

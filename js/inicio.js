@@ -180,11 +180,11 @@ async function renderSlide() {
 
 <!-- COLUMNA IZQUIERDA --> 
     <div class="flex flex-col justify-center">
-        <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 tracking-wide"> 
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide"> 
             Noche de Museos 
         </h1>
 
-        <p class="text-sm md:text-lg text-gray-200 mb-4 leading-relaxed max-w-xl">
+        <p class="text-xs md:text-sm lg:text-md text-gray-200 mb-4 leading-relaxed max-w-xl">
           ${eventoActual.Descripcion}
         </p>
 
