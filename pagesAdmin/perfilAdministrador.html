@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="update_data">Actualizar Datos - Ollin</title>
-    <script src="/ARCY-PRUEBAS/administrador.js"></script>
+    
     <script defer src="js/i18n.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
@@ -49,52 +49,54 @@
 </head>
 <body class="overflow-hidden">
 
-<div id="app" class="flex h-screen w-full">
+<div id="app" class="flex flex-col md:flex-row h-screen w-full">
 
-    <aside id="sidebar" class="w-24 bg-black text-white flex flex-col items-center py-6 justify-between shrink-0 shadow-xl z-20">
-        <div class="space-y-8 flex flex-col items-center w-full">
+    <aside id="sidebar" class="w-full md:w-24 bg-black text-white flex flex-row md:flex-col items-center py-3 md:py-6 px-4 md:px-0 justify-between shrink-0 shadow-xl z-20">
+        <div class="flex flex-row md:flex-col items-center justify-between w-full md:space-y-8">
             
-            <a href="/inicioAdmin" id="logo" class="w-14 h-14 bg-[#F4EFE6] rounded-xl flex items-center justify-center p-1 cursor-pointer transition hover:scale-105 hover:shadow-lg">
+            <a href="/inicioAdmin" id="logo" class="w-10 h-10 md:w-14 md:h-14 bg-[#F4EFE6] rounded-xl flex items-center justify-center p-1 cursor-pointer transition hover:scale-105 hover:shadow-lg shrink-0">
                 <img src="assets/icons/Logo.PNG" alt="Ollin Logo" class="w-full h-full object-contain">
             </a>
 
-            <div class="flex flex-col items-center space-y-8 mt-10 w-full">
+            <div class="flex flex-row md:flex-col items-center space-x-6 md:space-x-0 md:space-y-8 md:mt-10">
                 <a href="/museosAdmin" class="text-white hover:text-gray-400 transition"> 
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </a>
                 <a href="/gestionUsers" class="text-white hover:text-gray-400 transition"> 
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 </a>
                 <button id="btn-calendar" class="text-white hover:text-gray-400 transition">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </button>
                 <a href="/cuentaAdmin" class="text-[#C49A94] transition transform scale-110"> 
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </a>
             </div>
-        </div>
 
-        <div class="lang-switcher flex flex-col items-center">
-            <label for="lang-select" class="text-[10px] text-gray-400 mb-1 tracking-widest uppercase">Idioma:</label>
-            <select id="lang-select">
-                <option value="es">ESPAÑOL</option>
-                <option value="en">ENGLISH</option>
-            </select>
-        </div>
-        <div class="flex flex-col items-center space-y-8 mt-10 w-full">
-            <a href="#" class="btn-sidebar" id="cerrarSesion"> 
-                <img src="./assets/icons/cerrarIcono.png" class="sidebar-img w-7 h-7" alt="Cerrar Sesión">
-            </a>        
+            <div class="flex flex-row md:flex-col items-center space-x-3 md:space-x-0 md:space-y-4">
+                <div class="lang-switcher flex flex-col items-center hidden sm:flex">
+                    <label for="lang-select" class="text-[10px] text-gray-400 mb-1 tracking-widest uppercase hidden md:block">Idioma:</label>
+                    <select id="lang-select">
+                        <option value="es">ES</option>
+                        <option value="en">EN</option>
+                    </select>
+                </div>
+                <a href="#" class="btn-sidebar flex flex-col items-center justify-center" id="cerrarSesion"> 
+                    <img src="./assets/icons/cerrarIcono.png" class="w-6 h-6 md:w-8 md:h-8 object-contain"> 
+                    <span class="hidden md:block text-[9px] mt-1 text-center" data-i18n="logout">Cerrar Sesión</span>
+                </a>
+            </div>
+
         </div>
     </aside>
 
-    <main class="flex-1 flex items-center justify-center p-8 overflow-y-auto scrollbar-hide">
+    <main class="flex-1 flex items-center justify-center p-4 md:p-8 overflow-y-auto scrollbar-hide">
         
-        <div class="bg-white rounded-[32px] shadow-sm w-full max-w-md p-8 sm:p-10">
+        <div class="bg-white rounded-[32px] shadow-sm w-full max-w-md p-6 sm:p-10 mb-8 md:mb-0">
             
             <div class="text-center mb-6">
-                <h2 id="name" class="text-2xl font-bold text-[#438B9E] mb-1">Nombre de Usuario</h2>
-                <p id="type" class="text-xs font-bold text-gray-500 tracking-widest uppercase">Administrador</p>
+                <h2 id="name" class="text-xl sm:text-2xl font-bold text-[#438B9E] mb-1">Nombre de Usuario</h2>
+                <p id="type" class="text-[10px] sm:text-xs font-bold text-gray-500 tracking-widest uppercase">Administrador</p>
             </div>
             
             <hr class="border-gray-100 mb-8">
@@ -103,7 +105,7 @@
                 <label for="nombre" class="block text-sm font-bold text-gray-800 mb-2" id="labelName" data-i18n="name_placeholder">Nombre(s)</label>
                 <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputName">                
                     <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" data-i18n-placeholder="name_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent" required disabled>              
-                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform" id="editName">
+                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform shrink-0" id="editName">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
                 </div>
@@ -113,7 +115,7 @@
                 <label for="lastname" class="block text-sm font-bold text-gray-800 mb-2" id="labellastname" data-i18n="lastname_placeholder">Apellido(s)</label>
                 <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputlastname">                
                     <input type="text" id="lastname" name="lastname" placeholder="Tus apellidos" data-i18n-placeholder="lastname_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent" required disabled>              
-                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform" id="editlastname">
+                    <button type="button" class="px-4 text-[#438B9E] hover:scale-110 transition-transform shrink-0" id="editlastname">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
                 </div>
@@ -124,11 +126,11 @@
                 <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors" id="contInputPassword">                
                     <input type="password" id="password" name="password" placeholder="********" data-i18n-placeholder="password_placeholder" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent tracking-[0.2em]" required disabled>              
                     
-                    <button type="button" class="px-2 text-gray-400 hover:text-gray-600 transition-colors" id="togglePassword">
+                    <button type="button" class="px-2 text-gray-400 hover:text-gray-600 transition-colors shrink-0" id="togglePassword">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </button>
                     
-                    <button type="button" class="px-4 border-l border-gray-100 text-[#438B9E] hover:scale-110 transition-transform" id="editPassword">
+                    <button type="button" class="px-4 border-l border-gray-100 text-[#438B9E] hover:scale-110 transition-transform shrink-0" id="editPassword">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
                 </div>

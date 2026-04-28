@@ -1,6 +1,5 @@
 let modal
 let idAdmin
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
 
 function esperarUsuario() {
     return new Promise(resolve => {
@@ -14,44 +13,36 @@ function esperarUsuario() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-        await esperarUsuario();
-
-    const idAdmin = window.usuarioLogueado.id_Administrador;
-    console.log("ID del admin:", idAdmin);
-        
+    const idAdmin = 10; // ID de prueba, reemplazar con el ID real del admin
     console.log("ID del admin después de asignar:", idAdmin);
     let admin
     $("#togglePassword").css({"display":"none"}); 
     setTimeout(async()=>{
-        //idAdmin = document.getElementById('nombreUsuario').dataset.idAdmin;
-        //Para cambiar el nombre en "header" de container-data
         console.log(idAdmin)
         admin = await fetchGetUser(idAdmin)
         let nombresAdmin = `${admin.Nombre} ${admin.Apellido}`
         let nombreAdmin = `${admin.Nombre}`
         let apellidoAdmin= `${admin.Apellido}`
         let correo = `${admin.Correo}`
-        console.log(nombreAdmin, apellidoAdmin, correo, idAdmin)
+        
         let nameH = document.getElementById('name')
         let nameU = document.getElementById('nombre')
         let apelliu = document.getElementById('lastname')
-        let correou = document.getElementById('email')
-        console.log(nombresAdmin)
+        // let correou = document.getElementById('email') // Descomentar si usas email en el HTML
+        
         nameH.innerHTML=`<b>${nombresAdmin}</b>`;
         nameU.value=nombreAdmin
         apelliu.value=apellidoAdmin
-        correou.value = correo
-
+        // correou.value = correo
     },250)
 
     $("#password").val("........"); 
     $('.form-profile').submit(function(event) {
-        // Evitar la recarga de la página al enviar el formulario
         event.preventDefault();
     });
 
     $('#editPassword').click(function(){
-        var valorInput = $("#password").val(); //valor original
+        var valorInput = $("#password").val(); 
         $("#togglePassword").css({"display":"flex"});
         $("#editPassword").prop('disabled', true);
         $("#labelPassword").text("Nueva contraseña")
@@ -59,65 +50,57 @@ document.addEventListener("DOMContentLoaded", async function () {
         $("#password").prop('disabled', false);
         $("#password").prop('required', true);
         $("#password").focus();
-        //$("#togglePassword").css({"display":"flex"});
-        var htmlPassRE = `<label for="passwordRE" class="label-profile" id="labelPasswordRE">Confirmar Contraseña</label><br id="brPRE">
-                            <div class="container-input" id="contInputPasswordRE" style="margin-bottom:0.1rem">
-                                <div class="password-container" style="margin-right: 32px;">
-                                    <input type="password" id="passwordRE" name="passwordRE" placeholder="Nueva contraseña" class="input-profile" required>
-                                    <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar contraseña" id="togglePasswordRE" onclick="TTogglePasswordRE()">
-                                </div>
-                                
-                            </div>                           
-
-                            <div class="btn-form-profile" id="buttomsPasswordRE" style="margin-bottom:24px">
-                                <button type="button" class="btn-cancel" id="cancelUpdatePassword">
-                                    Cancelar
-                                </button>
-                                <button type="submit" class="btn-save" id="doUpdatePassword">
-                                    Aceptar
-                                </button>
-                            </div>
-                            `;
+        
+        // PLANTILLA ACTUALIZADA CON TAILWIND (Input y botones responsivos)
+        var htmlPassRE = `
+            <label for="passwordRE" class="block text-sm font-bold text-gray-800 mb-2 mt-4" id="labelPasswordRE">Confirmar Contraseña</label>
+            <div class="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#438B9E] transition-colors mb-4" id="contInputPasswordRE">
+                <input type="password" id="passwordRE" name="passwordRE" placeholder="Nueva contraseña" class="w-full px-4 py-3 text-gray-600 outline-none bg-transparent tracking-[0.2em]" required>
+                <button type="button" class="px-4 text-gray-400 hover:text-gray-600 transition-colors" onclick="TTogglePasswordRE()">
+                    <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar" id="togglePasswordRE" class="w-5 h-5">
+                </button>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mb-2" id="buttomsPasswordRE">
+                <button type="button" class="w-full sm:w-auto text-gray-600 bg-gray-100 hover:bg-gray-200 px-6 py-2.5 rounded-xl font-bold transition-colors" id="cancelUpdatePassword">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto bg-[#438B9E] text-white hover:bg-[#367282] px-6 py-2.5 rounded-xl font-bold transition-colors shadow-sm" id="doUpdatePassword">Aceptar</button>
+            </div>
+        `;
 
         $("#contInputPassword").css({"margin-bottom":"0.5em"});
         htmlPassRE = htmlPassRE.trim();
         $("#updatePassword").append(htmlPassRE);  
         
-        // Si se cancela
         $('#cancelUpdatePassword').click(function(){
             $("#togglePassword").css({"display":"none"});
             $("#labelPassword").text("Contraseña")
-            $("#password").val(valorInput); //Regresa al valor original
+            $("#password").val(valorInput); 
             $('#contInputPassword').css({"margin-bottom":"1.2em"});
             $("#editPassword").prop('disabled', false);
             $("#password").attr("type", "password");
             $("#password").prop('disabled', true);
             $("#labelPasswordRE").remove();
-            $("#brPRE").remove();
             $("#contInputPasswordRE").remove();
             $("#buttomsPasswordRE").remove();
         });
         
-        // Si se confirma
         $('#doUpdatePassword').click(async function(){
             $("#togglePassword").css({"display":"none"});
             if(validatePassword()){
-                //hacer fetch
                 await alertsChangePw(idAdmin,$('#password').val())
                 $("#labelPassword").text("Contraseña")
-                $("#password").val(valorInput); //Regresa al valor original
+                $("#password").val(valorInput); 
                 $('#contInputPassword').css({"margin-bottom":"1.2em"});
                 $("#editPassword").prop('disabled', false);
                 $("#password").attr("type", "password");
                 $("#password").prop('disabled', true);
                 $("#labelPasswordRE").remove();
-                $("#brPRE").remove();
                 $("#contInputPasswordRE").remove();
                 $("#buttomsPasswordRE").remove();
             }
         });    
     });
 
+    // Se mantiene la lógica de Email intacta, aunque no está en el HTML actual, con Tailwind aplicado por si lo agregas
     $('#editEmail').click(function(){
         var valorInput = $("#email").val();
         $("#editEmail").prop('disabled', true);
@@ -126,22 +109,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         $("#email").prop('disabled', false);
         $("#email").focus();
         
-        var htmlPassRE =`<div class="btn-form-profile" id="buttomsEmail">
-                            <button type="button" class="btn-cancel" id="cancelUpdateEmail">
-                                Cancelar
-                            </button>
-                            <button type="submit" class="btn-save" id="doUpdateEmail">
-                                Aceptar
-                            </button>
-                        </div>`;
+        var htmlPassRE =`
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-3" id="buttomsEmail">
+                <button type="button" class="w-full sm:w-auto text-gray-600 bg-gray-100 hover:bg-gray-200 px-6 py-2.5 rounded-xl font-bold transition-colors" id="cancelUpdateEmail">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto bg-[#438B9E] text-white hover:bg-[#367282] px-6 py-2.5 rounded-xl font-bold transition-colors shadow-sm" id="doUpdateEmail">Aceptar</button>
+            </div>
+        `;
 
         $("#contInputEmail").css({"margin-bottom":"0.5em"});
         htmlPassRE = htmlPassRE.trim();
         $("#updateEmail").append(htmlPassRE);
 
-
         $('#cancelUpdateEmail').click(function(){
-            $("#email").val(valorInput); //Regresa al valor original
+            $("#email").val(valorInput); 
             $('#contInputEmail').css({"margin-bottom":"1.2em"});
             $('#buttomsEmail').remove();
             $("#editEmail").prop('disabled', false);
@@ -158,138 +138,90 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     });
-        // Para editar el nombre
-        $('#editName').click(function() {
-            var valorInput = $("#nombre").val();
-            $("#editName").prop('disabled', true);
-            $('#contInputName').css({ "margin-bottom": "0.1em" });
 
-            $("#nombre").prop('disabled', false);
-            $("#nombre").focus();
+    // Para editar el nombre
+    $('#editName').click(function() {
+        var valorInput = $("#nombre").val();
+        $("#editName").prop('disabled', true);
+        $('#contInputName').css({ "margin-bottom": "0.1em" });
 
-            var htmlButtons = `<div class="btn-form-profile" id="buttomsName">
-                                    <button type="button" class="btn-cancel" id="cancelUpdateName">
-                                        Cancelar
-                                    </button>
-                                    <button type="submit" class="btn-save" id="doUpdateName">
-                                        Aceptar
-                                    </button>
-                                </div>`;
+        $("#nombre").prop('disabled', false);
+        $("#nombre").focus();
 
-            $("#contInputName").css({ "margin-bottom": "0.5em" });
-            htmlButtons = htmlButtons.trim();
-            $("#updateName").append(htmlButtons);
+        var htmlButtons = `
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-3" id="buttomsName">
+                <button type="button" class="w-full sm:w-auto text-gray-600 bg-gray-100 hover:bg-gray-200 px-6 py-2.5 rounded-xl font-bold transition-colors" id="cancelUpdateName">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto bg-[#438B9E] text-white hover:bg-[#367282] px-6 py-2.5 rounded-xl font-bold transition-colors shadow-sm" id="doUpdateName">Aceptar</button>
+            </div>
+        `;
 
-            $('#cancelUpdateName').click(function() {
-                $("#nombre").val(valorInput); // Regresa al valor original
-                $('#contInputName').css({ "margin-bottom": "1.2em" });
-                $('#buttomsName').remove();
-                $("#editName").prop('disabled', false);
-                $("#nombre").prop('disabled', true);
-            });
+        $("#contInputName").css({ "margin-bottom": "0.5em" });
+        htmlButtons = htmlButtons.trim();
+        $("#updateName").append(htmlButtons);
 
-            $('#doUpdateName').click(async function() {
-                // Validación y lógica de actualización
-                if(validatename()){
+        $('#cancelUpdateName').click(function() {
+            $("#nombre").val(valorInput); 
+            $('#contInputName').css({ "margin-bottom": "1.2em" });
+            $('#buttomsName').remove();
+            $("#editName").prop('disabled', false);
+            $("#nombre").prop('disabled', true);
+        });
+
+        $('#doUpdateName').click(async function() {
+            if(validatename()){
                 await alertsChangeName(idAdmin,$('#nombre').val())
                 $('#contInputName').css({ "margin-bottom": "1.2em" });
                 $("#editName").prop('disabled', false);
                 $("#nombre").prop('disabled', true);
                 $("#buttomsName").remove();
             }
-            });
+        });
+    });
+
+    // Para editar el lastname
+    $('#editlastname').click(function() {
+        var valorInput = $("#lastname").val();
+        $("#editlastname").prop('disabled', true);
+        $('#contInputlastname').css({ "margin-bottom": "0.1em" });
+
+        $("#lastname").prop('disabled', false);
+        $("#lastname").focus();
+
+        var htmlButtons = `
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-3" id="buttomslastname">
+                <button type="button" class="w-full sm:w-auto text-gray-600 bg-gray-100 hover:bg-gray-200 px-6 py-2.5 rounded-xl font-bold transition-colors" id="cancelUpdatelastname">Cancelar</button>
+                <button type="submit" class="w-full sm:w-auto bg-[#438B9E] text-white hover:bg-[#367282] px-6 py-2.5 rounded-xl font-bold transition-colors shadow-sm" id="doUpdatelastname">Aceptar</button>
+            </div>
+        `;
+
+        $("#contInputlastname").css({ "margin-bottom": "0.5em" });
+        htmlButtons = htmlButtons.trim();
+        $("#updatelastname").append(htmlButtons);
+
+        $('#cancelUpdatelastname').click(function() {
+            $("#lastname").val(valorInput); 
+            $('#contInputlastname').css({ "margin-bottom": "1.2em" });
+            $('#buttomslastname').remove();
+            $("#editlastname").prop('disabled', false);
+            $("#lastname").prop('disabled', true);
         });
 
-        // Para editar el lastname
-        $('#editlastname').click(function() {
-            var valorInput = $("#lastname").val();
-            $("#editlastname").prop('disabled', true);
-            $('#contInputlastname').css({ "margin-bottom": "0.1em" });
-
-            $("#lastname").prop('disabled', false);
-            $("#lastname").focus();
-
-            var htmlButtons = `<div class="btn-form-profile" id="buttomslastname">
-                                    <button type="button" class="btn-cancel" id="cancelUpdatelastname">
-                                        Cancelar
-                                    </button>
-                                    <button type="submit" class="btn-save" id="doUpdatelastname">
-                                        Aceptar
-                                    </button>
-                                </div>`;
-
-            $("#contInputlastname").css({ "margin-bottom": "0.5em" });
-            htmlButtons = htmlButtons.trim();
-            $("#updatelastname").append(htmlButtons);
-
-            $('#cancelUpdatelastname').click(function() {
-                $("#lastname").val(valorInput); // Regresa al valor original
-                $('#contInputlastname').css({ "margin-bottom": "1.2em" });
-                $('#buttomslastname').remove();
-                $("#editlastname").prop('disabled', false);
-                $("#lastname").prop('disabled', true);
-            });
-
-            $('#doUpdatelastname').click(async function() {
-                // Validación y lógica de actualización
-                if(validatelastname()){
+        $('#doUpdatelastname').click(async function() {
+            if(validatelastname()){
                 await alertsChangeLastName(idAdmin,$('#lastname').val())
                 $('#contInputlastname').css({ "margin-bottom": "1.2em" });
                 $("#editlastname").prop('disabled', false);
                 $("#lastname").prop('disabled', true);
                 $("#buttomslastname").remove();
-                }
-            });
+            }
         });
-
-        // Para editar la fecha de nacimiento
-        $('#editBirthdate').click(function() {
-            var valorInput = $("#birthdate").val();
-            $("#editBirthdate").prop('disabled', true);
-            $('#contInputBirthdate').css({ "margin-bottom": "0.1em" });
-
-            $("#birthdate").prop('disabled', false);
-            $("#birthdate").focus();
-
-            var htmlButtons = `<div class="btn-form-profile" id="buttomsBirthdate">
-                                    <button type="button" class="btn-cancel" id="cancelUpdateBirthdate">
-                                        Cancelar
-                                    </button>
-                                    <button type="submit" class="btn-save" id="doUpdateBirthdate">
-                                        Aceptar
-                                    </button>
-                                </div> `;
-
-            $("#contInputBirthdate").css({ "margin-bottom": "0.5em" });
-            htmlButtons = htmlButtons.trim();
-            $("#updateBirthdate").append(htmlButtons);
-
-            $('#cancelUpdateBirthdate').click(function() {
-                $("#birthdate").val(valorInput); // Regresa al valor original
-                $('#contInputBirthdate').css({ "margin-bottom": "1.2em" });
-                $('#buttomsBirthdate').remove();
-                $("#editBirthdate").prop('disabled', false);
-                $("#birthdate").prop('disabled', true);
-            });
-
-            $('#doUpdateBirthdate').click(function() {
-                // Validación y lógica de actualización
-                $('#contInputBirthdate').css({ "margin-bottom": "1.2em" });
-                $("#editBirthdate").prop('disabled', false);
-                $("#birthdate").prop('disabled', true);
-                $("#buttomsBirthdate").remove();
-            });
-        });
-
+    });
 
     /**MODAL */
-    // Oculta el contenedor modal al principio
     modal = document.getElementById("cModalAlertDelete");
     modal.style.display = "none";
 
-    // Muestra el contenedor modal al hacer clic en el botón trigger
     document.getElementById("btnDeleteAccount").addEventListener("click", async function () {
-        //Cambia contenido del modal
         Swal.fire({
             title: '¿Estás seguro de que deseas eliminar tu cuenta?',
             text: "Esta acción no se puede deshacer",
@@ -301,7 +233,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             cancelButtonText: 'No, cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Si el usuario confirma, llama a la función para eliminar la cuenta
                 deleteAcc(idAdmin);
             }
         });
@@ -377,19 +308,6 @@ function validateEmail(){
     return true;
 }
 
-//Funcion para validar fecha de nacimiento, tomando en cuenta que debe de ser mayor de edad (18 años)
-function validateDate(){
-    const date = document.getElementById('date');
-    if(date.value.trim() == '' ){
-        showAlert('La fecha de nacimiento no ha sido llenada')
-        highlightInvalidField(date);
-        return false;
-    } else {
-        removeHighlight(date);
-    }
-    return true;
-}
-
 function isValidEmail(email) {
     return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
 }
@@ -404,11 +322,11 @@ function showAlert(message) {
 }
 
 function highlightInvalidField(field) {
-    field.style.borderColor = 'red';
+    field.parentElement.style.borderColor = 'red'; // Cambiado para apuntar al contenedor de Tailwind
 }
 
 function removeHighlight(field) {
-    field.style.borderColor = ''; // Reset to default
+    field.parentElement.style.borderColor = ''; 
 }
 
 async function fetchGetUser(idAdmin){
@@ -420,7 +338,7 @@ async function fetchGetUser(idAdmin){
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching delete adventure places:', error);
+        console.error('Error fetching data:', error);
     }
 }
 
@@ -434,7 +352,7 @@ async function fetchChangeName(idAdmin,newName){
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching delete adventure places:', error);
+        console.error('Error updating name:', error);
     }
 }
 
@@ -444,14 +362,14 @@ async function alertsChangeName(idAdmin,newName){
         Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
-            text: 'Se cambio el nombre con exito correctamente',
+            text: 'Se cambio el nombre con éxito correctamente',
             confirmButtonColor: "#65B2C6"
         });
     }else{
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Se perdio comunicacion con la base de datos.',
+            text: 'Se perdió comunicación con la base de datos.',
             confirmButtonColor: "#65B2C6"
         });
     }
@@ -467,7 +385,7 @@ async function fetchChangeLastName(idAdmin,newLastName){
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching delete adventure places:', error);
+        console.error('Error updating last name:', error);
     }
 }
 
@@ -477,14 +395,14 @@ async function alertsChangeLastName(idAdmin,newLastName){
         Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
-            text: 'Se cambio el apellido con exito correctamente',
+            text: 'Se cambio el apellido con éxito correctamente',
             confirmButtonColor: "#65B2C6"
         });
     }else{
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Se perdio comunicacion con la base de datos.',
+            text: 'Se perdió comunicación con la base de datos.',
             confirmButtonColor: "#65B2C6"
         });
     }
@@ -500,7 +418,7 @@ async function fetchChangeEmail(idAdmin,newEmail){
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching delete adventure places:', error);
+        console.error('Error updating email:', error);
     }
 }
 
@@ -510,14 +428,14 @@ async function alertsChangeEmail(idAdmin,newEmail){
         Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
-            text: 'Se cambio el apellido con exito correctamente',
+            text: 'Se cambio el correo con éxito correctamente',
             confirmButtonColor: "#65B2C6"
         });
     }else{
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Se perdio comunicacion con la base de datos.',
+            text: 'Se perdió comunicación con la base de datos.',
             confirmButtonColor: "#65B2C6"
         });
     }
@@ -533,7 +451,7 @@ async function fetchChangePW(idAdmin,newPassword){
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching delete adventure places:', error);
+        console.error('Error updating password:', error);
     }
 }
 
@@ -550,21 +468,18 @@ async function alertsChangePw(idAdmin,newPassword){
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Se perdio comunicación con la base de datos.',
+            text: 'Se perdió comunicación con la base de datos.',
             confirmButtonColor: "#65B2C6"
         });
     }
 }
 
-
-// Oculta el contenedor modal al hacer clic en el botón de cerrar/regresar
 function closeModal(){
     let modal = document.getElementById("cModalAlertDelete");
     modal.style.display = "none";
     modal.classList.toggle('active');
 }
 
-// Mostrar/ocultar contraseña confirmada
 function TTogglePasswordRE(){
     const passwordREInput = document.getElementById('passwordRE');
     const togglePasswordRE = document.getElementById('togglePasswordRE');
@@ -572,19 +487,15 @@ function TTogglePasswordRE(){
     if (passwordREInput && togglePasswordRE) {
         const type = passwordREInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordREInput.setAttribute('type', type);
-
-        // Cambia la imagen del botón
         togglePasswordRE.src = type === 'password' ? 'assets/icons/Boton ojoA.svg' : 'assets/icons/Boton ojoC.svg';
     }
 }
 
-// Para borrar la cuenta
 function deleteAcc(idAdmin){
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
     console.log('ID del usuario a eliminar:', userId);
 
-        //fetch eliminar
     fetch(`${server}/api/deleteUsuario/${idAdmin}`,{
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -593,17 +504,14 @@ function deleteAcc(idAdmin){
     .then(data => {
         Swal.fire({
             title: "Eliminado",
-            text:"La cuenta fue eliminada con exito",
+            text:"La cuenta fue eliminada con éxito",
             icon: "success"
         }).then(()=>{
             window.location.href="/despedida";
         })
-        .catch(error => {
-            console.error('Error al eliminar la cuenta:', error);
-        });
     })
-
-            // Si se pudo eliminar
-            window.location.href="/despedida";
-
+    .catch(error => {
+        console.error('Error al eliminar la cuenta:', error);
+        window.location.href="/despedida";
+    });
 }
