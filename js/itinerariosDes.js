@@ -67,8 +67,8 @@ async function displayFavorites() {
                 // Obtener información del lugar utilizando el ID del lugar
                 if(itinerario.Estado !=='F'){
                 try {
-                    const placeInfo = await getInfo(idPlace);
-                    const itineraryCard = createItineraryCard(itinerario, index, placeInfo.name, placeInfo.photoUrls); // Pasar el nombre del lugar
+                    
+                    const itineraryCard = createItineraryCard(itinerario, index, zeroItinerario.NombreMuseo, zeroItinerario.Imagenes); // Pasar el nombre del lugar
                     itinerariesContainer.innerHTML += itineraryCard; // Agregar la tarjeta al contenedor
                 } catch (error) {
                     console.error('Error obteniendo información del lugar:', error);
@@ -171,8 +171,8 @@ function esperarUsuario() {
 
 // Evento al cargar el documento
 document.addEventListener('DOMContentLoaded', async function () {
+    await esperarUsuario();
     console.log("DOMContentLoaded, inicializando pantalla de itinerarios");
-    await esperarUsuario(); // Esperar a que la variable global usuarioLogueado esté disponible 
     showLoading("Cargando planes de visita...")
     try{
     await displayFavorites();
@@ -333,45 +333,6 @@ async function fetchFirstPlaceOfItinerary(idPlan) {
     }
 }
 
-
-async function getInfo(placeId) {
-    console.log("getInfo llamada con place:", placeId);
-
-    const { Place } = await google.maps.importLibrary('places');
-    const place = new Place({ id: placeId, requestedLanguage: 'es' });
-    await place.fetchFields({
-      fields: [
-        'displayName',
-        'formattedAddress',
-        'rating',
-        'regularOpeningHours',
-        'internationalPhoneNumber',
-        'reviews',
-        'photos',
-        'types'
-      ]
-    });
-    const imgWidth = 1000;
-    const imgHeight = 1000;
-    const photoUrls = place.photos
-      ? place.photos.map(photo =>
-          photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-        )
-      : null;
-    return {
-      name: place.displayName,
-      type: place.types,
-      placeID: place.id,
-      address: place.formattedAddress,
-      rating: place.rating,
-      opening_hours: place.regularOpeningHours?.weekdayText || null,
-      phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
-      reviews: place.reviews?.length ? place.reviews : null,
-      photoUrls,
-      type: place.types
-    };
-  }
-
 async function fetchStateOItinerary(idPlanMuseo){
     try{
         const response =await fetch(API_URL_STATEI,{
@@ -413,7 +374,7 @@ function getDeleteButtonHTML(idItinerario) {
     return `<img src="assets/icons/eliminarIcon.png" alt="Eliminar" class="deleteIcon" onclick="deleteItinerary('${idItinerario}')">`;
 }
 
-window.crearCookieYRedirigir = crearCookieYRedirigir;
+  window.crearCookieYRedirigir = crearCookieYRedirigir;
 window.crearCookieYedit = crearCookieYedit;
 window.finalizeItinerary = finalizeItinerary;
 window.deleteItinerary = deleteItinerary;

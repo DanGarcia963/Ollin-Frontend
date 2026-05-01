@@ -163,7 +163,6 @@ function normalizarHora(value) {
 }
 
 function obtenerHorarioDelDia(lugar, fechaBase = new Date()) {
-
   const dias = [
     'Domingo',
     'Lunes',
@@ -176,8 +175,21 @@ function obtenerHorarioDelDia(lugar, fechaBase = new Date()) {
 
   const diaNombre = dias[fechaBase.getDay()];
 
-  const aperturaRaw = lugar[`HoraApertura_${diaNombre}`];
-  const cierreRaw   = lugar[`HoraCierre_${diaNombre}`];
+  const info = lugar?.Informacion_JSON || {};
+  const horarios = info?.HorariosByDay || {};
+
+  // Primero intenta el formato que sí usa tu consulta de itinerario
+  let aperturaRaw =
+    lugar[`HoraApertura_${diaNombre}`] ??
+    lugar[`HorarioIn_${diaNombre}`] ??
+    horarios?.[diaNombre]?.[0]?.HorarioIn ??
+    null;
+
+  let cierreRaw =
+    lugar[`HoraCierre_${diaNombre}`] ??
+    lugar[`HorarioOut_${diaNombre}`] ??
+    horarios?.[diaNombre]?.[0]?.HorarioOut ??
+    null;
 
   return {
     dia: diaNombre,
@@ -272,6 +284,19 @@ function parseDurationToMinutes(durationText) {
     return hours * 60 + mins;
 }
 
+async function fetchPlaces(placeId) {
+    try {
+        const response = await fetch(`${server}/api/lugar/${placeId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching places:', error);
+    }
+}
+
 const MostrarValores = async () => {
     try {
         const lugares= await fetchItineraryPlaces(miDato);
@@ -303,7 +328,7 @@ const MostrarValores = async () => {
             document.getElementById('nombreAventura').textContent = lugarInicial.Plan;           
 
             const placeId = lugarInicial['ID MUSEO'];
-            const lugarInfo = await getInfo(placeId);
+            const lugarInfo = await fetchPlaces(placeId);
 
 
             if(i<lugaresItinerario.length-1){
@@ -311,20 +336,20 @@ const MostrarValores = async () => {
             const placeIdS = lugarSiguiente['ID MUSEO'];
             
             document.getElementById("btnLlegar").textContent = 'He Llegado';
-            lugarInfoS = await getInfo(placeIdS);
+            lugarInfoS = await fetchPlaces(placeIdS);
             }
             else{
                 document.getElementById("btnLlegar").textContent = 'Terminar';
             }
   
             const nombreLugarElement = document.getElementById('nombreLugar');
-            nombreLugarElement.textContent = lugarInfo.name;
-            nombreLugarElement.dataset.latitud = lugarInfo.coordinates.lat;
-            nombreLugarElement.dataset.longitud = lugarInfo.coordinates.lng;
+            nombreLugarElement.textContent = lugarInfo.Nombre;
+            nombreLugarElement.dataset.latitud = lugarInfo.Latitud;
+            nombreLugarElement.dataset.longitud = lugarInfo.Longitud;
             
             const destinoCoords = {
-                lat: lugarInfo.coordinates.lat,
-                lng: lugarInfo.coordinates.lng
+                lat: lugarInfo.Latitud,
+                lng: lugarInfo.Longitud
             };
             const travelMode = lugarInicial['Metodo de transporte'];
             if(i==0)
@@ -402,12 +427,12 @@ const MostrarValores = async () => {
                 
                 const lugarAnterior = lugaresItinerario.find(lugar => lugar['Posición en itinerario'] === i-1);
                 const placeIdA = lugarAnterior['ID MUSEO'];
-                const lugarInfoA = await getInfo(placeIdA);
+                const lugarInfoA = await fetchPlaces(placeIdA);
                 const nombreLugarElementA = document.getElementById('nombreLugarOrigen');
 
-                nombreLugarElementA.dataset.latitud = lugarInfoA.coordinates.lat;
-                nombreLugarElementA.dataset.longitud = lugarInfoA.coordinates.lng;
-                
+                nombreLugarElementA.dataset.latitud = lugarInfoA.Latitud;
+                nombreLugarElementA.dataset.longitud = lugarInfoA.Longitud;
+
                 if(lugarAnterior['Estado Museo'] === 'O')
                 {
                     
@@ -477,10 +502,10 @@ const MostrarValores = async () => {
                 }
                 else{
 
-                    nombreLugarElementA.textContent=lugarInfoA.name;
+                    nombreLugarElementA.textContent=lugarInfoA.Nombre;
                     const coordenadasActuales = {
-                        lat: lugarInfoA.coordinates.lat,
-                        lng: lugarInfoA.coordinates.lng		
+                        lat: lugarInfoA.Latitud,
+                        lng: lugarInfoA.Longitud		
                         }; 
                         const duration = await getTime(coordenadasActuales, destinoCoords, travelMode);
                         document.getElementById("length").textContent = duration;
@@ -549,7 +574,7 @@ const MostrarValores = async () => {
             }
             
             
-            await ShowDone(lugarInfo.name, lugarInicial['ID'], lugarInfoS && lugarInfoS.name, lugares, lugarInicial['ID MUSEO']);
+            await ShowDone(lugarInfo.Nombre, lugarInicial['ID'], lugarInfoS && lugarInfoS.Nombre, lugares, lugarInicial['ID MUSEO']);
             i++;
         } else {
             i++;
@@ -801,57 +826,3 @@ else{
 function eliminarCookie(cookieName) {
     document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
 }
-
-async function getInfo(placeId) {
-    
-
-    const { Place } = await google.maps.importLibrary('places');
-    const place = new Place({ id: placeId, requestedLanguage: 'es' });
-
-    await place.fetchFields({
-        fields: [
-            'displayName',
-            'formattedAddress',
-            'rating',
-            'regularOpeningHours',
-            'internationalPhoneNumber',
-            'reviews',
-            'photos',
-            'types',
-            'location' 
-        ]
-    });
-
-    const imgWidth = 1000;
-    const imgHeight = 1000;
-    const photoUrls = place.photos
-        ? place.photos.map(photo =>
-            photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-        )
-        : null;
-
-
-    const lat = place.location?.lat();
-    const lng = place.location?.lng();
-
-    if (lat === undefined || lng === undefined) {
-        console.warn('No se pudo obtener coordenadas para el lugar:', place);
-    }
-
-    return {
-        name: place.displayName,
-        type: place.types,
-        placeID: place.id,
-        address: place.formattedAddress,
-        rating: place.rating,
-        opening_hours: place.regularOpeningHours?.weekdayText || null,
-        phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
-        reviews: place.reviews?.length ? place.reviews : null,
-        photoUrls,
-        coordinates: {
-            lat,
-            lng
-        }
-    };
-}
-

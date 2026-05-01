@@ -1,18 +1,22 @@
 console.log("Inicio.js cargado");
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
+
+// Si ya defines `server` en otro archivo, puedes dejarlo así.
+// Si no, descomenta y pon tu URL real.
+// const server = "https://ollin-backend-production-d68e.up.railway.app";
 
 async function fetchRecommendedMuseums() {
     try {
-        const response = await fetch(`${server}/api/lugarVisitado/recomendarMuseos`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
+        const response = await fetch(`${server}/api/lugarVisitado/recomendarMuseos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching recommended museums:', error);
-    }   
+        return [];
+    }
 }
 
 async function cargarRecomendaciones() {
@@ -24,35 +28,43 @@ async function cargarRecomendaciones() {
     const now = Date.now();
     const cachedData = localStorage.getItem(cacheKey);
     const cachedTime = localStorage.getItem(cacheTimeKey);
-    if(cachedData && cachedTime && (now - cachedTime < cacheDuration)) {
+
+    if (cachedData && cachedTime && (now - cachedTime < cacheDuration)) {
         renderRecomendations(JSON.parse(cachedData));
         console.log('Cargando recomendaciones desde caché');
         return JSON.parse(cachedData);
     }
 
-    try{
+    try {
         console.log('Consultando API para recomendaciones...');
         const recomendaciones = await fetchRecommendedMuseums();
         localStorage.setItem(cacheKey, JSON.stringify(recomendaciones));
         localStorage.setItem(cacheTimeKey, now);
         renderRecomendations(recomendaciones);
-    }
-    catch(error){
+    } catch (error) {
         console.error('Error al cargar recomendaciones:', error);
     }
 }
 
 async function renderRecomendations(recomendaciones) {
     const recommendedContainer = document.getElementById('recommendedMuseums');
+
+    if (!recommendedContainer) return;
+
     if (recomendaciones && recomendaciones.length > 0) {
         recommendedContainer.innerHTML = '';
+
         for (const museo of recomendaciones) {
-            const placeInfo = await getPhotos(museo.id_Museo);
+            const imagenPrincipal =
+                museo?.Imagenes?.length > 0
+                    ? museo.Imagenes[0]
+                    : 'assets/icons/museumIcon.png';
+
             const card = document.createElement('div');
             card.className = 'bg-[#d98f8f] min-w-40 rounded-xl p-3 hover:scale-105 transition cursor-pointer';
 
             card.innerHTML = `
-                <img src="${placeInfo.photoUrls ? placeInfo.photoUrls[0] : 'assets/icons/museumIcon.png'}"
+                <img src="${imagenPrincipal}"
                     alt="${museo.Nombre}" 
                     class="w-36 lg:w-full h-36 object-cover rounded-lg">
 
@@ -67,36 +79,21 @@ async function renderRecomendations(recomendaciones) {
                     </h5>
                 </div>
             `;
+
             recommendedContainer.appendChild(card);
         }
+    } else {
+        recommendedContainer.innerHTML = `
+            <p class="text-sm text-gray-300">No hay recomendaciones disponibles.</p>
+        `;
     }
 }
-
-async function getPhotos(placeId) {
-        const { Place } = await google.maps.importLibrary('places');
-    const place = new Place({ id: placeId, requestedLanguage: 'es' });
-    await place.fetchFields({
-      fields: [
-        'photos',
-      ]
-    });
-    const imgWidth = 1000;
-    const imgHeight = 1000;
-    const photoUrls = place.photos
-      ? place.photos.map(photo =>
-          photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-        )
-      : null;
-    return {
-      photoUrls,
-    };
-  }
 
 let eventos = [];
 let currentIndex = 0;
 const API_URL_CREAR_LUGAR_ITINERARIO = `${server}/api/lugarItinerario/crearLugarItinerario`;
 
-// 🔹 Variables globales para reutilizar en el banner
+// Variables globales para reutilizar en el banner
 let eventoActual = null;
 let museosActuales = [];
 
@@ -110,10 +107,12 @@ async function cargarEventos() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
+
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching eventos:', error);
+        return [];
     }
 }
 
@@ -131,24 +130,25 @@ async function addPlaceToItinerary(idPlan, idMuseo, NomLugar) {
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const responseData = await response.json();
-
+        await response.json();
     } catch (error) {
         console.error('Error al añadir lugar al itinerario:', error);
     }
 }
 
-async function cargarMuseosEvento(idEvento){
-    try{
+async function cargarMuseosEvento(idEvento) {
+    try {
         const response = await fetch(`${server}/api/evento/obtenerMuseosPorEvento`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_Evento: idEvento }) 
+            body: JSON.stringify({ id_Evento: idEvento })
         });
+
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching museos:', error);
+        return [];
     }
 }
 
@@ -157,42 +157,42 @@ async function cargarMuseosEvento(idEvento){
 ========================= */
 
 async function renderSlide() {
+    const container = document.getElementById("carouselContainer");
 
-  const container = document.getElementById("carouselContainer");
+    if (!container) return;
 
-  const eventosData = await cargarEventos();
+    const eventosData = await cargarEventos();
 
-  if(!eventosData || eventosData.length === 0) {
-    container.innerHTML = "<p data-i18n='noevents'>No hay eventos disponibles.</p>";
-    return;
-  }
+    if (!eventosData || eventosData.length === 0) {
+        container.innerHTML = "<p data-i18n='noevents'>No hay eventos disponibles.</p>";
+        return;
+    }
 
-  // Guardamos evento actual
-  eventoActual = eventosData[0];
+    // Guardamos evento actual
+    eventoActual = eventosData[0];
 
-  const museosData = await cargarMuseosEvento(eventoActual.id_Evento);
+    const museosData = await cargarMuseosEvento(eventoActual.id_Evento);
 
-  // Guardamos museos
-  museosActuales = museosData || [];
+    // Guardamos museos
+    museosActuales = museosData || [];
 
-  container.innerHTML = `
+    container.innerHTML = `
     <div class="grid lg:grid-cols-2 gap-10 h-full">
 
-<!-- COLUMNA IZQUIERDA --> 
-    <div class="flex flex-col justify-center">
-        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide"> 
-            Noche de Museos 
-        </h1>
+      <!-- COLUMNA IZQUIERDA --> 
+      <div class="flex flex-col justify-center">
+          <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide"> 
+              Noche de Museos 
+          </h1>
 
-        <p class="text-xs md:text-sm lg:text-md text-gray-200 mb-4 leading-relaxed max-w-xl">
-          ${eventoActual.Descripcion}
-        </p>
+          <p class="text-xs md:text-sm lg:text-md text-gray-200 mb-4 leading-relaxed max-w-xl">
+            ${eventoActual.Descripcion}
+          </p>
 
-        <p class="text-yellow-400 font-semibold">
-          Del ${formatearFecha(eventoActual.Fecha_Inicio)} 
-          al ${formatearFecha(eventoActual.Fecha_Limite)}
-        </p>
-
+          <p class="text-yellow-400 font-semibold">
+            Del ${formatearFecha(eventoActual.Fecha_Inicio)} 
+            al ${formatearFecha(eventoActual.Fecha_Limite)}
+          </p>
       </div>
 
       <!-- COLUMNA DERECHA -->
@@ -205,30 +205,34 @@ async function renderSlide() {
             Museos Participantes
           </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-40 
-            overflow-y-auto pr-2
-            scroll-smooth scrollbar-thin scrollbar-thumb-red-700 
-            scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default"> 
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-40 
+              overflow-y-auto pr-2
+              scroll-smooth scrollbar-thin scrollbar-thumb-red-700 
+              scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default"> 
 
-            ${museosActuales.map(museo => `
-            <div class="bg-white/20 flex lg:flex-col xl:flex-row items-center 
-                justify-center hover:bg-white/30 transition duration-300 
-                rounded-lg p-3 gap-2 mt-2 cursor-pointer">
-            
-                <img src="assets/icons/museum_icon.png" alt="museum" 
-                    class="w-10 h-10">
-                <h3 class="text-sm font-semibold">
-                    ${museo.Nombre}
-                </h3>
-            </div>
-            `).join('')}
+              ${museosActuales.map(museo => {
+                  const imagenPrincipal =
+                      museo?.Imagenes?.length > 0
+                          ? museo.Imagenes[0]
+                          : 'assets/icons/museum_icon.png';
 
+                  return `
+                    <div class="bg-white/20 flex lg:flex-col xl:flex-row items-center 
+                        justify-center hover:bg-white/30 transition duration-300 
+                        rounded-lg p-3 gap-2 mt-2 cursor-pointer">
+                        
+                        <img src="${imagenPrincipal}" alt="museum" 
+                            class="w-10 h-10 object-cover rounded-full">
+                        <h3 class="text-sm font-semibold">
+                            ${museo.Nombre}
+                        </h3>
+                    </div>
+                  `;
+              }).join('')}
+
+          </div>
         </div>
-
-    </div>
-
       </div>
-
     </div>
   `;
 }
@@ -238,20 +242,20 @@ async function renderSlide() {
 ========================= */
 
 function formatearFecha(fecha) {
-  if (!fecha) return "";
+    if (!fecha) return "";
 
-  const limpia = fecha.replace("T", " ").replace("Z", "");
-  const [datePart, timePart] = limpia.split(" ");
+    const limpia = fecha.replace("T", " ").replace("Z", "");
+    const [datePart, timePart] = limpia.split(" ");
 
-  const [anio, mes, dia] = datePart.split("-");
-  const [hora, minuto] = timePart.split(":");
+    const [anio, mes, dia] = datePart.split("-");
+    const [hora, minuto] = timePart.split(":");
 
-  const meses = [
-    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-  ];
+    const meses = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ];
 
-  return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${anio}, ${hora}:${minuto}`;
+    return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${anio}, ${hora}:${minuto}`;
 }
 
 /* =========================
@@ -259,31 +263,45 @@ function formatearFecha(fecha) {
 ========================= */
 
 function renderBannerContent() {
-  if (!eventoActual) return;
+    if (!eventoActual) return;
 
-  document.getElementById("bannerDescripcion").textContent =
-    eventoActual.Descripcion;
+    const bannerDescripcion = document.getElementById("bannerDescripcion");
+    const bannerFecha = document.getElementById("bannerFecha");
+    const museosContainer = document.getElementById("bannerMuseos");
 
-  document.getElementById("bannerFecha").textContent =
-    `Del ${formatearFecha(eventoActual.Fecha_Inicio)} al ${formatearFecha(eventoActual.Fecha_Limite)}`;
+    if (bannerDescripcion) {
+        bannerDescripcion.textContent = eventoActual.Descripcion;
+    }
 
-  const museosContainer = document.getElementById("bannerMuseos");
+    if (bannerFecha) {
+        bannerFecha.textContent =
+            `Del ${formatearFecha(eventoActual.Fecha_Inicio)} al ${formatearFecha(eventoActual.Fecha_Limite)}`;
+    }
 
-  museosContainer.innerHTML = museosActuales.map(museo => `
-    <div class="bg-white/20 hover:bg-white/30 transition rounded-lg p-3 flex items-center gap-2">
-      <img src="assets/icons/museum_icon.png"
-           class="w-8 h-8">
-      <span class="font-semibold text-sm">
-        ${museo.Nombre}
-      </span>
-    </div>
-  `).join('');
+    if (museosContainer) {
+        museosContainer.innerHTML = museosActuales.map(museo => {
+            const imagenPrincipal =
+                museo?.Imagenes?.length > 0
+                    ? museo.Imagenes[0]
+                    : 'assets/icons/museum_icon.png';
+
+            return `
+              <div class="bg-white/20 hover:bg-white/30 transition rounded-lg p-3 flex items-center gap-2">
+                <img src="${imagenPrincipal}"
+                     class="w-8 h-8 object-cover rounded-full">
+                <span class="font-semibold text-sm">
+                  ${museo.Nombre}
+                </span>
+              </div>
+            `;
+        }).join('');
+    }
 }
 
 function showDone() {
     Swal.fire({
         icon: "success",
-        title: `¡Se ha guardado el evento a tus planes de visita!`, 
+        title: `¡Se ha guardado el evento a tus planes de visita!`,
         showConfirmButton: false,
         timer: 1500,
     });
@@ -301,7 +319,6 @@ function generarNombreItinerario(evento) {
 
 async function saveEventAndMuseums(nombreItinerario, idTurista, museos) {
     try {
-
         const res = await fetch(`${server}/api/itinerario/crearItinerario`, {
             method: 'POST',
             headers: {
@@ -320,7 +337,6 @@ async function saveEventAndMuseums(nombreItinerario, idTurista, museos) {
         const { id_Plan: idPlan } = await res.json();
 
         console.log('Itinerario creado con ID:', idPlan);
-
 
         for (const museo of museos) {
             await addPlaceToItinerary(idPlan, museo.id_Museo, museo.Nombre);
@@ -358,9 +374,9 @@ function esperarUsuario() {
    EVENT LISTENERS
 ========================= */
 
-document.addEventListener('DOMContentLoaded', async function() {
-    cargarRecomendaciones();
-    renderSlide();
+document.addEventListener('DOMContentLoaded', async function () {
+    await cargarRecomendaciones();
+    await renderSlide();
     await esperarUsuario();
 
     const idTurista = window.usuarioLogueado.id;
@@ -370,9 +386,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const eventBanner = document.getElementById("eventBanner");
     const saveBtn = document.getElementById("saveEventBtn");
     const closeEventBanner = document.getElementById("closeEventBanner");
-    console.log("ID del turista:", idTurista);
 
-    if (!nightSection || !eventBanner || !closeEventBanner) return;
+    if (!nightSection || !eventBanner || !closeEventBanner || !saveBtn) return;
 
     // Abrir banner
     nightSection.addEventListener("click", (e) => {
@@ -382,37 +397,39 @@ document.addEventListener('DOMContentLoaded', async function() {
         eventBanner.classList.remove("hidden");
     });
 
-  // Cerrar con botón
-  closeEventBanner.addEventListener("click", () => {
-    eventBanner.classList.add("hidden");
-  });
+    // Cerrar con botón
+    closeEventBanner.addEventListener("click", () => {
+        eventBanner.classList.add("hidden");
+    });
 
-  // Cerrar haciendo click fuera
-  eventBanner.addEventListener("click", (e) => {
-    if (e.target === eventBanner) {
-      eventBanner.classList.add("hidden");
-    }
-  });
+    // Cerrar haciendo click fuera
+    eventBanner.addEventListener("click", (e) => {
+        if (e.target === eventBanner) {
+            eventBanner.classList.add("hidden");
+        }
+    });
 
-  // Guardar evento
-saveBtn.addEventListener("click", async () => {
-    console.log("Evento actual al guardar:", eventoActual);
-    console.log("Museos actuales al guardar:", museosActuales);
-    if (!eventoActual || museosActuales.length === 0) return;
+    // Guardar evento
+    saveBtn.addEventListener("click", async () => {
+        console.log("Evento actual al guardar:", eventoActual);
+        console.log("Museos actuales al guardar:", museosActuales);
 
-    // Desactivar botón mientras guarda
-    saveBtn.disabled = true;
-    saveBtn.textContent = "Guardando...";
+        if (!eventoActual || museosActuales.length === 0) return;
 
-    const nombreItinerario = generarNombreItinerario(eventoActual);
-    console.log("Nombre del itinerario generado:", nombreItinerario);
-    await saveEventAndMuseums(
-        nombreItinerario,
-        idTurista,
-        museosActuales
-    );
+        // Desactivar botón mientras guarda
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Guardando...";
 
-});
-        
-    
+        const nombreItinerario = generarNombreItinerario(eventoActual);
+        console.log("Nombre del itinerario generado:", nombreItinerario);
+
+        await saveEventAndMuseums(
+            nombreItinerario,
+            idTurista,
+            museosActuales
+        );
+
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Guardar evento";
+    });
 });

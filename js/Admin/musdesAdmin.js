@@ -67,69 +67,18 @@ const getUserLocation = () => {
 
     // Obtiene información detallada de un museo por su placeId
 
-async function getInfo(placeId) {
-    const { Place } = await google.maps.importLibrary('places');
-    const place = new Place({ id: placeId, requestedLanguage: 'es' });
-
-    await place.fetchFields({
-        fields: [
-            'displayName',
-            'formattedAddress',
-            'rating',
-            'regularOpeningHours',
-            'internationalPhoneNumber',
-            'reviews',
-            'photos',
-            'types',
-            'location' 
-        ]
-    });
-
-    const imgWidth = 1000;
-    const imgHeight = 1000;
-    const photoUrls = place.photos
-        ? place.photos.map(photo =>
-            photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-        )
-        : null;
-
-
-    const lat = place.location?.lat();
-    const lng = place.location?.lng();
-
-    if (lat === undefined || lng === undefined) {
-        console.warn('No se pudo obtener coordenadas para el lugar:', place);
+async function fetchPlaces(placeId) {
+    try {
+        const response = await fetch(`${server}/api/lugar/${placeId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching places:', error);
     }
-
-    return {
-        name: place.displayName,
-        type: place.types,
-        placeID: place.id,
-        address: place.formattedAddress,
-        rating: place.rating,
-        opening_hours: place.regularOpeningHours?.weekdayText || null,
-        phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
-        reviews: place.reviews?.length ? place.reviews : null,
-        photoUrls,
-        coordinates: {
-            lat,
-            lng
-        }
-    };
 }
-
-  // Busca información de un museo por su nombre
-  async function getInfoByName(name) {
-    const { Place } = await google.maps.importLibrary('places');
-    // Solo pedimos el place_id para no sobrecargar la llamada
-    const results = await Place.searchByText({
-      textQuery: name,
-      fields: ['place_id']
-    });
-    if (!results.length) throw new Error('NoPlaceFound');
-    // Reusa getInfo para cargar el resto de campos
-    return getInfo(results[0].place_id);
-  }
 
 // Normaliza valores de hora a formato "HH:MM"
 function normalizeTime(value) {
@@ -191,12 +140,7 @@ function getMuseumPriority(scheduleInfo) {
 }
 
 // Crea la tarjeta HTML para un museo
-async function createMuseumCard(placeInfo, storedPlace) {
-    if (typeof placeInfo === 'string') {
-        try { placeInfo = JSON.parse(placeInfo); } 
-        catch (error) { return ''; }
-    }
-    if (!placeInfo || typeof placeInfo !== 'object') return '';
+async function createMuseumCard(storedPlace) {
 
     const tieneQuejas = storedPlace?.total_quejas_ultimo_mes > 0;
 
@@ -221,7 +165,7 @@ async function createMuseumCard(placeInfo, storedPlace) {
 
         <div class="relative h-48 w-full shrink-0 overflow-hidden bg-gray-100">
             <img 
-                src="${placeInfo.photoUrls ? placeInfo.photoUrls[0] : 'assets/icons/Lugarejemplo.PNG'}" 
+                src="${storedPlace.Imagenes ? storedPlace.Imagenes[0] : 'assets/icons/Lugarejemplo.PNG'}" 
                 alt="Museo"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
@@ -231,8 +175,8 @@ async function createMuseumCard(placeInfo, storedPlace) {
         <div class="p-5 flex flex-col flex-1 justify-between bg-white z-20">
             
             <div class="mb-2">
-                <h3 class="info-name text-lg font-bold text-gray-800 leading-tight line-clamp-2" data-placeid="${placeInfo.placeID}">
-                    ${placeInfo.name || 'Nombre no especificado'}
+                <h3 class="info-name text-lg font-bold text-gray-800 leading-tight line-clamp-2" data-placeid="${storedPlace["ID MUSEO"]}">
+                    ${storedPlace.NombreMuseo || 'Nombre no especificado'}
                 </h3>
             </div>
 
@@ -240,18 +184,18 @@ async function createMuseumCard(placeInfo, storedPlace) {
                 
                 <p class="text-xs text-gray-500 line-clamp-2 flex items-start">
                     <svg class="w-4 h-4 text-[#438B9E] mr-1 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    ${placeInfo.address}
+                    ${storedPlace.Direccion || 'Dirección no especificada'}
                 </p>
 
                 <div class="card-actions flex items-center justify-between pt-3 border-t border-gray-100">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold text-gray-400">★ ${placeInfo.rating || 'S/N'}</span>
+                        <span class="text-xs font-semibold text-gray-400">★ ${storedPlace.Rating || 'S/N'}</span>
                     </div>
 
                     <div class="flex items-center gap-3">
                         ${alertaIcon}
                         <button class="bg-[#F4EFE6] text-[#438B9E] hover:bg-[#438B9E] hover:text-white transition-colors duration-300 p-2 rounded-full shadow-sm flex items-center justify-center cursor-pointer">
-                            <svg class="w-5 h-5 pointer-events-none" id="ViewMoreBtn" data-id-museo="${placeInfo.placeID}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            <svg class="w-5 h-5 pointer-events-none" id="ViewMoreBtn" data-id-museo="${storedPlace["ID MUSEO"]}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         </button>
                     </div>
                 </div>
@@ -316,20 +260,10 @@ async function displayFavorites(maxMuseos = Infinity, filteredList = null) {
         if (renderedIds.has(storedId)) continue;
         renderedIds.add(storedId);
 
-        let placeInfo = null;
-        const storedName = place["NombreMuseo"];
-
-        try {
-            placeInfo = await getInfo(storedId);
-        } catch (e) {
-            if (e.message.includes('NOT_FOUND')) {
-                try { placeInfo = await getInfoByName(storedName); } 
-                catch (e2) { continue; }
-            } else { continue; }
-        }
+   
 
         if (renderToken !== CURRENT_RENDER_TOKEN) return;
-        const cardHTML = await createMuseumCard(placeInfo, place);
+        const cardHTML = await createMuseumCard(place);
         if (renderToken !== CURRENT_RENDER_TOKEN) return;
 
         museumContainer.insertAdjacentHTML('beforeend', cardHTML);    

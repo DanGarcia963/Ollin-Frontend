@@ -10,35 +10,7 @@
     <link rel="stylesheet" href="/styles/loadingOverlay.css">
     <script src="ARCY-PRUEBAS/admin.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-    .scrollbar-hide {
-      scrollbar-width: none; /* Firefox */
-    }
-
-    .scrollbar-hide::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-    }
-
-    /* Mostrar scrollbar solo al hacer hover */
-    .hover\\:scrollbar-default:hover {
-    scrollbar-width: auto; /* Firefox */
-    }
-
-    .hover\\:scrollbar-default:hover::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    }
-
-    .hover\\:scrollbar-default:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    }
-
-    .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
-    background-color: transparent;
-    }
-</style>
+        
 </head>
 <body>
     <header>
@@ -171,13 +143,5 @@
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/map.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script defer>
-        (g=>{var h,a,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(var k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]=(name,opts)=>{r.add(name);return u().then(()=>d[name])};})( {
-          key: "AIzaSyAsOqTQSOWBmyMoqlSaj71fo2pNgL8del8",
-          version: "weekly",
-          libraries: "places",
-          loading: "async"
-      } );
-      </script>
 </body>
 </html>

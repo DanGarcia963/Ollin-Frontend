@@ -54,45 +54,6 @@ async function fetchFirstPlaceOfItinerary(idPlan) {
         console.error('Error fetching first place of itinerary:', error);
     }
 }
-
-// Función para obtener la información de un lugar sin utilizar el mapa
-async function getInfo(placeId) {
-    console.log("getInfo llamada con place:", placeId);
-
-    const { Place } = await google.maps.importLibrary('places');
-    const place = new Place({ id: placeId, requestedLanguage: 'es' });
-    await place.fetchFields({
-      fields: [
-        'displayName',
-        'formattedAddress',
-        'rating',
-        'regularOpeningHours',
-        'internationalPhoneNumber',
-        'reviews',
-        'photos',
-        'types'
-      ]
-    });
-    const imgWidth = 1000;
-    const imgHeight = 1000;
-    const photoUrls = place.photos
-      ? place.photos.map(photo =>
-          photo.getURI({ maxHeight: imgHeight, maxWidth: imgWidth })
-        )
-      : null;
-    return {
-      name: place.displayName,
-      type: place.types,
-      placeID: place.id,
-      address: place.formattedAddress,
-      rating: place.rating,
-      opening_hours: place.regularOpeningHours?.weekdayText || null,
-      phone_number: place.internationalPhoneNumber || place.nationalPhoneNumber,
-      reviews: place.reviews?.length ? place.reviews : null,
-      photoUrls,
-      type: place.types
-    };
-  }
   
 
   function createVisitCard(placeInfo) {
@@ -113,7 +74,7 @@ async function getInfo(placeId) {
     }
 
     // Check and round rating
-    const rating = typeof placeInfo.rating === 'number' ? Math.round(placeInfo.rating * 2) / 2 : 0;
+    const rating = typeof placeInfo.Rating === 'number' ? Math.round(placeInfo.Rating * 2) / 2 : 0;
     const starsHtml = generateStars(rating);
     
     // Generar el HTML para los detalles del horario de manera dinámica.
@@ -138,12 +99,12 @@ async function getInfo(placeId) {
 const card = `
 	<div class="visit-card scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
     	<div class="card-left">
-	        <img src="${placeInfo.photoUrls ? placeInfo.photoUrls[0] : 'assets/icons/Lugarejemplo.PNG'}" alt="Museo"/> 
+	        <img src="${placeInfo.Imagenes ? placeInfo.Imagenes[0] : 'assets/icons/Lugarejemplo.PNG'}" alt="Museo"/> 
 		</div>
         <div class="card-info-grid">
     		<div class="title-rating">
-	            <span class="info-name" id="info-name" data-placeid="${placeInfo.placeID}">
-		    		${placeInfo.name || 'Nombre no especificado'}
+	            <span class="info-name" id="info-name" data-placeid="${placeInfo['ID MUSEO']}">
+		    		${placeInfo.NombreMuseo || 'Nombre no especificado'}
 			    </span>
             	<div class="rating">
             		<div class="stars" id="stars">
@@ -158,7 +119,7 @@ const card = `
 
             <div class="address">
             	<img src="assets/icons/ubicacionIcon.png" width="15px" height="15px" style="margin:0px 4px;">
-			    ${placeInfo.address}
+			    ${placeInfo.Direccion || 'Dirección no especificada'}
             </div>
             <div class="schedule">
             	<img src="assets/icons/reloj2.png" width="15px" height="15px" style="margin:0px 4px;">
@@ -219,27 +180,9 @@ async function displayVisit(maxMuseos = CURRENT_LIMIT) {
             }
             renderedIds.add(storedId);
 
-                    let placeInfo = null;
-                const storedName = place["NombreMuseo"];
-
-                try {
-                    placeInfo = await getInfo(storedId);
-                } catch (e) {
-                if (e.message.includes('NOT_FOUND')) {
-                try {
-                    placeInfo = await getInfoByName(storedName);
-                } catch (e2) {
-                    console.warn(`No se encontró info para "${storedName}"`);
-                    continue;
-                }
-                } else {
-                    console.error(`Error en getInfo(${storedId}):`, e);
-                    continue;
-                }
-            }
             if (renderToken !== CURRENT_RENDER_TOKEN) return;
 
-            const visitCardHtml = createVisitCard(placeInfo);
+            const visitCardHtml = createVisitCard(place);
 
             if (renderToken !== CURRENT_RENDER_TOKEN) return;
 
@@ -278,14 +221,13 @@ async function displayVisitPlans() {
 
                 var idPlace = zeroItinerario['ID MUSEO'];
                 var stateMuseum = zeroItinerario['Estado Museo'];
-                console.log()
+                console.log(zeroItinerario);
                 console.log(idPlace);
 
                 // Obtener información del lugar utilizando el ID del lugar
                 if(itinerario.Estado ==='F'){
                 try {
-                    const placeInfo = await getInfo(idPlace);
-                    const itineraryCard = createItineraryCard(itinerario, index, placeInfo.name, placeInfo.photoUrls); // Pasar el nombre del lugar
+                    const itineraryCard = createItineraryCard(itinerario, index, zeroItinerario.NombreMuseo, zeroItinerario.Imagenes); // Pasar el nombre del lugar
                     itinerariesContainer.innerHTML += itineraryCard; // Agregar la tarjeta al contenedor
                 } catch (error) {
                     console.error('Error obteniendo información del lugar:', error);

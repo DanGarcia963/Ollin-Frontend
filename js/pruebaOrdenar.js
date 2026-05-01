@@ -1,6 +1,4 @@
-//const server = "https://ollin-backend-production-d68e.up.railway.app"
-
-const API_URL = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
+const API_URL = 'http://localhost:1234/api/lugarItinerario/obtenerLugaresItinerario';
 let placesService; 
 
 let miDato = document.cookie.split('; ').find(row => row.startsWith('miDato='));
@@ -129,24 +127,17 @@ async function getBestTransport(originCoords, destCoords, placeId, id_Plan_Museo
    INFO PLACE
 ============================================ */
 
-async function getInfo(placeId) {
-
-  const { Place } = await google.maps.importLibrary('places');
-
-  const place = new Place({ id: placeId, requestedLanguage: 'es' });
-
-  await place.fetchFields({
-    fields: ['displayName', 'location']
-  });
-
-  const lat = place.location.lat();
-  const lng = place.location.lng();
-
-  return {
-    name: place.displayName,
-    placeId,
-    coordinates: { lat, lng }
-  };
+async function fetchPlaces(placeId) {
+    try {
+        const response = await fetch(`http://localhost:1234/api/lugar/${placeId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching places:', error);
+    }
 }
 
 /* ============================================
@@ -162,8 +153,11 @@ async function calcularMetodosYSeleccionarMejor(lugares, originCoords, selectedM
     const IDPlanMuseo = lugar['ID'];
     const placeId = lugar['ID MUSEO'];
 
-    const lugarInfo = await getInfo(placeId);
-    const destinoCoords = lugarInfo.coordinates;
+    const lugarInfo = await fetchPlaces(placeId);
+    const destinoCoords = {
+      lat: lugarInfo.Latitud,
+      lng: lugarInfo.Longitud
+    };
 
     const mejorMetodo = await getBestTransport(
       originCoords,
@@ -204,8 +198,11 @@ const OrdenarValores = async (selectedModes) => {
       originCoords = coordenadasActualesOrigen;
     } else {
       const previousPlaceId = betterMuseums[i - 1].placeId;
-      const lugarInfo = await getInfo(previousPlaceId);
-      originCoords = lugarInfo.coordinates;
+      const lugarInfo = await fetchPlaces(previousPlaceId);
+      originCoords = {
+        lat: lugarInfo.Latitud,
+        lng: lugarInfo.Longitud
+      };
     }
 
     const mejorOpcion = await calcularMetodosYSeleccionarMejor(
@@ -244,7 +241,7 @@ const OrdenarValores = async (selectedModes) => {
 async function fetchEditIti(museo) {
   try {
     const response = await fetch(
-      `${server}/api/lugarItinerario/editarLugarItinerario`,
+      'http://localhost:1234/api/lugarItinerario/editarLugarItinerario',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
