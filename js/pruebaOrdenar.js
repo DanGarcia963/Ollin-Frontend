@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:1234/api/lugarItinerario/obtenerLugaresItinerario';
+const API_URL = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
 let placesService; 
 
 let miDato = document.cookie.split('; ').find(row => row.startsWith('miDato='));
@@ -129,7 +129,7 @@ async function getBestTransport(originCoords, destCoords, placeId, id_Plan_Museo
 
 async function fetchPlaces(placeId) {
     try {
-        const response = await fetch(`http://localhost:1234/api/lugar/${placeId}`, {
+        const response = await fetch(`${server}/api/lugar/${placeId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -241,7 +241,7 @@ const OrdenarValores = async (selectedModes) => {
 async function fetchEditIti(museo) {
   try {
     const response = await fetch(
-      'http://localhost:1234/api/lugarItinerario/editarLugarItinerario',
+      `${server}/api/lugarItinerario/editarLugarItinerario`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
