@@ -65,21 +65,6 @@ const getUserLocation = () => {
   });
 };
 
-    // Obtiene información detallada de un museo por su placeId
-
-async function fetchPlaces(placeId) {
-    try {
-        const response = await fetch(`${server}/api/lugar/${placeId}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching places:', error);
-    }
-}
-
 // Normaliza valores de hora a formato "HH:MM"
 function normalizeTime(value) {
   if (value === null || value === undefined) return null;
@@ -323,12 +308,12 @@ document.addEventListener("click", (e) => {
 });
 
 //Abre el modal para ver mas informacion sobre el museo
-function abrirViewMore(museoData, infoLugar) {
-    const direccion = infoLugar ? infoLugar.address : "Dirección no disponible";
-    const photo = infoLugar && infoLugar.photoUrls && infoLugar.photoUrls.length > 0
-        ? infoLugar.photoUrls[0] : "assets/icons/Lugarejemplo.PNG";
-    const photo2 = infoLugar && infoLugar.photoUrls && infoLugar.photoUrls.length > 1
-        ? infoLugar.photoUrls[1] : photo; // Si no hay segunda foto, repite la primera o usa placeholder
+function abrirViewMore(museoData) {
+    const direccion = museoData ? museoData.Direccion : "Dirección no disponible";
+    const photo = museoData && museoData.Imagenes && museoData.Imagenes.length > 0
+        ? museoData.Imagenes[0] : "assets/icons/Lugarejemplo.PNG";
+    const photo2 = museoData && museoData.Imagenes && museoData.Imagenes.length > 1
+        ? museoData.Imagenes[1] : photo; // Si no hay segunda foto, repite la primera o usa placeholder
 
     document.getElementById("vm-nombre").textContent = museoData.NombreMuseo;
     document.getElementById("vm-image").src = photo;
@@ -362,7 +347,7 @@ function abrirViewMore(museoData, infoLugar) {
         "Servicios": museoData.Servicios,
         "Fecha de fundación": museoData.FechaFundacion,
     });
-    agregarSeccion(body, "Información de contacto", { "Teléfono": infoLugar.phone_number || "No disponible" });
+    agregarSeccion(body, "Información de contacto", { "Teléfono": museoData.Telefono || "No disponible" });
 
     document.getElementById("viewMoreCard").classList.remove("hidden");
 }
@@ -374,9 +359,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = event.target.closest('button');
       if(btn && btn.querySelector('svg[id="ViewMoreBtn"]')) {
             const idLugar = btn.querySelector('svg').getAttribute('data-id-museo');
-            const infoLugar = await getInfo(idLugar);
             const museum = await fetchPlaces().then(places => places.find(p => p["ID MUSEO"] === idLugar));
-            abrirViewMore(museum, infoLugar);
+            abrirViewMore(museum);
       }
   });
 });

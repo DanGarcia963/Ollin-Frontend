@@ -143,7 +143,9 @@ console.log(name, lastname, email, password,passwordRE, birthdate);
     }
 
     function isValidEmail(email) {
-        return /\S+@\S+\.\S+/.test(email);
+        // Esta expresión regular es mucho más estricta y valida formatos reales de correo
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
     }
 
     function isValidPassword(password) {
