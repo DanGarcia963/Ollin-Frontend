@@ -83,3 +83,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.location.href = "/";
   }
 });
+document.addEventListener('DOMContentLoaded', function () {
+  const logoutBtn = document.getElementById('cerrarSesion');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function () {
+      localStorage.removeItem('token');
+      window.location.href = "/";
+    });
+  }
+});
