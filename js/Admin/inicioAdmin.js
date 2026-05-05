@@ -136,15 +136,77 @@ recommendedMuseums.forEach(async museum => {
     usersList.appendChild(li);
   });
 
-  document.getElementById("btn-crear").addEventListener("click", async () => {
+// ==========================================
+  // EVENTOS PARA EJECUTAR SCRIPTS DE PYTHON
+  // ==========================================
+
+  // 1. Botón para actualizar museos (webScrapingPlaceID.py)
+  document.getElementById("btn-actualizar").addEventListener("click", async () => {
     try {
+      // Bloqueamos la pantalla con un spinner porque el scraping tarda
+      Swal.fire({
+        title: 'Actualizando Museos',
+        html: 'Este proceso toma varios minutos por el Web Scraping.<br><b>Por favor, no cierres esta ventana.</b>',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       const res = await fetch(`${server}/ejecutarScript`, {
         method: "POST"
       });
-      const data = await res.json();
-      console.log(data);
+      
+      // Usamos .text() porque el backend responde con res.send() (texto), no json
+      const data = await res.text(); 
+      console.log("Respuesta del servidor:", data);
+      
+      if (res.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Actualización Completada!',
+          text: 'Los datos de los museos se han sincronizado correctamente.'
+        });
+      } else {
+        Swal.fire('Error', 'Hubo un problema al ejecutar el script en el servidor.', 'error');
+      }
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error en petición:", err);
+      Swal.fire('Error crítico', 'No se pudo conectar con el servidor.', 'error');
+    }
+  });
+
+  // 2. Botón para crear eventos de Noche de Museos (NightMuseums.py)
+  document.getElementById("btn-crear").addEventListener("click", async () => {
+    try {
+      Swal.fire({
+        title: 'Buscando Eventos',
+        html: 'Revisando la cartelera oficial de la CDMX.<br><b>Esto puede tardar un momento...</b>',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const res = await fetch(`${server}/ejecutarScriptNightMuseums`, {
+        method: "POST"
+      });
+      
+      const data = await res.text();
+      console.log("Respuesta del servidor:", data);
+      
+      if (res.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Evento Creado!',
+          text: 'La Noche de Museos se procesó correctamente.'
+        });
+      } else {
+        Swal.fire('Error', 'Hubo un problema al ejecutar el script de eventos.', 'error');
+      }
+    } catch (err) {
+      console.error("Error en petición:", err);
+      Swal.fire('Error crítico', 'No se pudo conectar con el servidor.', 'error');
     }
   });
 });
