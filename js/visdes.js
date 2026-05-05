@@ -466,8 +466,7 @@ function esperarUsuario() {
 document.addEventListener('DOMContentLoaded', async () => {
     await esperarUsuario()
     console.log("DOMContentLoaded, inicializando pantalla de favoritos");
-    let CURRENT_LIMIT = 3;
-    const STEP = 10;
+    let CURRENT_LIMIT = Infinity; // Mostrar todos los lugares visitados sin límite
     showLoading("Cargando historial de visitas...")
     try{
     await displayVisit(CURRENT_LIMIT);
@@ -477,51 +476,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     } finally {
       hideLoading(); // Ocultar el indicador de carga
     }
-
-const showMoreBtn = document.getElementById("showMoreBtn");
-    const showLessBtn = document.getElementById("showLessBtn");
-
-    showMoreBtn.style.display = "inline-block";
-    showLessBtn.style.display = "none";
-
-    showMoreBtn.addEventListener("click", async () => {
-        CURRENT_LIMIT += STEP;
-
-        showLoading("Cargando más favoritos...");
-
-        try {
-            await displayVisit(CURRENT_LIMIT);
-            await displayVisitPlans();
-        } catch (e) {
-            console.error("Error al mostrar más favoritos:", e);
-        } finally {
-            hideLoading();
-        }
-
-        showLessBtn.style.display = "inline-block";
-
-        if (CURRENT_LIMIT >= ALL_FAVORITES.length) {
-            showMoreBtn.style.display = "none";
-        }
-    });
-
-    showLessBtn.addEventListener("click", async () => {
-        CURRENT_LIMIT = 3;
-
-        showLoading("Mostrando menos favoritos...");
-
-        try {
-            await displayVisit(CURRENT_LIMIT);
-            await displayVisitPlans();
-        } catch (e) {
-            console.error("Error al mostrar menos favoritos:", e);
-        } finally {
-            hideLoading();
-        }
-
-        showMoreBtn.style.display = "inline-block";
-        showLessBtn.style.display = "none";
-    });
 
   });
 

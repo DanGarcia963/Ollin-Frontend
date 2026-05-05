@@ -140,73 +140,75 @@ recommendedMuseums.forEach(async museum => {
   // EVENTOS PARA EJECUTAR SCRIPTS DE PYTHON
   // ==========================================
 
-  // 1. Botón para actualizar museos (webScrapingPlaceID.py)
+// Variables globales para controlar los intervalos
+  let intervaloMuseos;
+  let intervaloEventos;
+
+  // 1. Botón para actualizar museos
   document.getElementById("btn-actualizar").addEventListener("click", async () => {
     try {
-      // Bloqueamos la pantalla con un spinner porque el scraping tarda
       Swal.fire({
-        title: 'Actualizando Museos',
-        html: 'Este proceso toma varios minutos por el Web Scraping.<br><b>Por favor, no cierres esta ventana.</b>',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
+        icon: 'info', title: 'Iniciando...', text: 'Arrancando motor de scraping...', timer: 1500, showConfirmButton: false
       });
 
-      const res = await fetch(`${server}/ejecutarScript`, {
-        method: "POST"
-      });
-      
-      // Usamos .text() porque el backend responde con res.send() (texto), no json
-      const data = await res.text(); 
-      console.log("Respuesta del servidor:", data);
+      const res = await fetch(`${server}/ejecutarScript`, { method: "POST" });
       
       if (res.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Actualización Completada!',
-          text: 'Los datos de los museos se han sincronizado correctamente.'
-        });
-      } else {
-        Swal.fire('Error', 'Hubo un problema al ejecutar el script en el servidor.', 'error');
+        // Limpiar intervalo anterior si existe
+        if(intervaloMuseos) clearInterval(intervaloMuseos);
+        
+        // Empezar a preguntar por los logs cada 2 segundos
+        intervaloMuseos = setInterval(async () => {
+          try {
+            const resLog = await fetch(`${server}/logs/museos`);
+            const texto = await resLog.text();
+            const cajaTexto = document.getElementById("museos-json");
+            cajaTexto.innerText = texto;
+            
+            // Hacer scroll automático hacia abajo
+            cajaTexto.scrollTop = cajaTexto.scrollHeight;
+
+            // Si dice que finalizó, detenemos las peticiones
+            if(texto.includes("✅ Proceso finalizado")) {
+              clearInterval(intervaloMuseos);
+            }
+          } catch(e) { console.error("Error leyendo logs:", e); }
+        }, 2000); // 2000 ms = 2 segundos
       }
     } catch (err) {
-      console.error("Error en petición:", err);
-      Swal.fire('Error crítico', 'No se pudo conectar con el servidor.', 'error');
+      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
     }
   });
 
-  // 2. Botón para crear eventos de Noche de Museos (NightMuseums.py)
+  // 2. Botón para crear eventos
   document.getElementById("btn-crear").addEventListener("click", async () => {
     try {
       Swal.fire({
-        title: 'Buscando Eventos',
-        html: 'Revisando la cartelera oficial de la CDMX.<br><b>Esto puede tardar un momento...</b>',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
+        icon: 'info', title: 'Iniciando...', text: 'Buscando cartelera...', timer: 1500, showConfirmButton: false
       });
 
-      const res = await fetch(`${server}/ejecutarScriptNightMuseums`, {
-        method: "POST"
-      });
-      
-      const data = await res.text();
-      console.log("Respuesta del servidor:", data);
+      const res = await fetch(`${server}/ejecutarScriptNightMuseums`, { method: "POST" });
       
       if (res.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Evento Creado!',
-          text: 'La Noche de Museos se procesó correctamente.'
-        });
-      } else {
-        Swal.fire('Error', 'Hubo un problema al ejecutar el script de eventos.', 'error');
+        if(intervaloEventos) clearInterval(intervaloEventos);
+        
+        intervaloEventos = setInterval(async () => {
+          try {
+            const resLog = await fetch(`${server}/logs/eventos`);
+            const texto = await resLog.text();
+            const cajaTexto = document.getElementById("eventos-log");
+            cajaTexto.innerText = texto;
+            
+            cajaTexto.scrollTop = cajaTexto.scrollHeight;
+
+            if(texto.includes("✅ Proceso finalizado")) {
+              clearInterval(intervaloEventos);
+            }
+          } catch(e) { console.error("Error leyendo logs:", e); }
+        }, 2000);
       }
     } catch (err) {
-      console.error("Error en petición:", err);
-      Swal.fire('Error crítico', 'No se pudo conectar con el servidor.', 'error');
+      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
     }
   });
 });

@@ -31,6 +31,28 @@ function getUserLocation() {
   });
 }
 
+export function PlaceIdToCoords(placeId) {
+  // Crear una solicitud de geocodificación
+  var request = {
+    placeId: placeId,
+  };
+
+  return new Promise((resolve, reject) => {
+    geocoder.geocode(request, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        // Obtener las coordenadas del primer resultado
+        var coordenadas = {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng(),
+        };
+        resolve(coordenadas);
+      } else {
+        console.error('Error al obtener coordenadas:', status);
+      }
+    });
+  })
+}
+
 async function getDistTime(places, distances, durations){
   const directionsService = new google.maps.DirectionsService();
   const userCoords = await getUserLocation();

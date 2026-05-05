@@ -2,7 +2,7 @@ import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
 
 let CURRENT_RENDER_TOKEN = 0;
 let ALL_FAVORITES = [];
-let CURRENT_LIMIT = 3;
+let CURRENT_LIMIT = Infinity; // Mostrar todos los lugares favoritos sin límite 
 
 console.log("iniciandodespliegue");
 
@@ -454,51 +454,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.location.href = `/inicio?placeId=${idLugar}`;
         }
     });
-
-    const showMoreBtn = document.getElementById("showMoreBtn");
-    const showLessBtn = document.getElementById("showLessBtn");
-
-    if (showMoreBtn) showMoreBtn.style.display = "inline-block";
-    if (showLessBtn) showLessBtn.style.display = "none";
-
-    if (showMoreBtn) {
-        showMoreBtn.addEventListener("click", async () => {
-            CURRENT_LIMIT += 10;
-
-            showLoading("Cargando más favoritos...");
-
-            try {
-                await displayFavorites(CURRENT_LIMIT);
-            } catch (e) {
-                console.error("Error al mostrar más favoritos:", e);
-            } finally {
-                hideLoading();
-            }
-
-            if (showLessBtn) showLessBtn.style.display = "inline-block";
-
-            if (CURRENT_LIMIT >= ALL_FAVORITES.length) {
-                showMoreBtn.style.display = "none";
-            }
-        });
-    }
-
-    if (showLessBtn) {
-        showLessBtn.addEventListener("click", async () => {
-            CURRENT_LIMIT = 3;
-
-            showLoading("Mostrando menos favoritos...");
-
-            try {
-                await displayFavorites(CURRENT_LIMIT);
-            } catch (e) {
-                console.error("Error al mostrar menos favoritos:", e);
-            } finally {
-                hideLoading();
-            }
-
-            if (showMoreBtn) showMoreBtn.style.display = "inline-block";
-            showLessBtn.style.display = "none";
-        });
-    }
 });

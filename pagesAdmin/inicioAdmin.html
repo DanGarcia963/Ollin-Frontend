@@ -154,12 +154,8 @@
                         <h3 class="font-medium text-gray-800 mb-3 text-center xl:text-left">Renderizado del webScraping de eventos de noche de museos</h3>
                         <div class="flex flex-col sm:flex-row items-center sm:items-stretch w-full gap-4">
                             <div class="flex-1 w-full bg-white lg:bg-[#fbf9f6] rounded-lg p-3 shadow-sm min-h-[80px] overflow-x-auto">
-                                <table class="w-full text-[10px] sm:text-xs text-left text-gray-600 min-w-[300px]">
-                                    <tbody id="eventos-table">
-                                        <tr class="border-b border-gray-100 last:border-none"><td class="py-2">26/11/2025</td><td>Alcaldía: Cuauhtémoc</td><td>Museos: Museo Nacional...</td></tr>
-                                        <tr><td class="py-2">26/11/2025</td><td>Alcaldía: Miguel Hidalgo</td><td>Museos: Museo Jumex...</td></tr>
-                                    </tbody>
-                                </table>
+                                <!-- Cambiamos la tabla por un PRE con id="eventos-log" -->
+                                <pre id="eventos-log" class="w-full text-[10px] sm:text-xs text-gray-600 whitespace-pre-wrap max-h-32 overflow-y-auto">Aquí aparecerán los eventos...</pre>
                             </div>
                             <button id="btn-crear" class="w-full sm:w-auto bg-[#438B9E] hover:bg-[#367282] transition text-white px-6 py-2 rounded-lg font-medium shadow-sm shrink-0">
                                 Crear

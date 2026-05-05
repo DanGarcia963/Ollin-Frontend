@@ -544,7 +544,7 @@ function applyAllFilters() {
     }
 
     showLoading("Aplicando filtros...");
-    const CURRENT_LIMIT = 3;
+    const CURRENT_LIMIT = Infinity;
     try {
         displayFavorites(CURRENT_LIMIT, result);
     } catch (e) {
@@ -1221,8 +1221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     showLoading("Cargando museos...");
-    var CURRENT_LIMIT = 3;
-    const STEP = 10;
+    var CURRENT_LIMIT = Infinity;
 
     try {
         await displayFavorites(CURRENT_LIMIT);
@@ -1235,46 +1234,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     initUserLocation();
-
-    const showMoreBtn = document.getElementById("showMoreBtn");
-    const showLessBtn = document.getElementById("showLessBtn");
-
-    showMoreBtn.style.display = "inline-block";
-
-    showMoreBtn.addEventListener("click", async () => {
-        CURRENT_LIMIT += STEP;
-        showLoading("Cargando más museos...");
-        try {
-            await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
-        } catch (e) {
-            console.error("Error al mostrar más museos:", e);
-            const container = document.getElementById('museodes');
-            container.innerHTML = '<div class="error-message">Error al cargar más museos. Por favor, intenta recargar la página.</div>';
-        } finally {
-            hideLoading();
-        }
-
-        showLessBtn.style.display = "inline-block";
-
-        if (CURRENT_LIMIT >= ALL_MUSEOS.length) {
-            showMoreBtn.style.display = "none";
-        }
-    });
-
-    showLessBtn.addEventListener("click", async () => {
-        CURRENT_LIMIT = 3;
-        showLoading("Mostrando menos museos...");
-        try {
-            await displayFavorites(CURRENT_LIMIT, ALL_MUSEOS);
-        } catch (e) {
-            console.error("Error al mostrar menos museos:", e);
-            const container = document.getElementById('museodes');
-            container.innerHTML = '<div class="error-message">Error al mostrar los museos. Por favor, intenta recargar la página.</div>';
-        } finally {
-            hideLoading();
-        }
-
-        showMoreBtn.style.display = "inline-block";
-        showLessBtn.style.display = "none";
-    });
 });
