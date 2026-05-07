@@ -572,6 +572,8 @@ function applyAllFilters() {
 
 // Evento boton aplicar filtros
 document.getElementById('filterSend').addEventListener('click', () => {
+        
+    const filtersBox = document.getElementById("filters-expanded");
     CURRENT_ALCALDIAS.clear();
 
     document.querySelectorAll('.alcaldia-checkbox:checked')
@@ -592,10 +594,13 @@ document.getElementById('filterSend').addEventListener('click', () => {
     FILTER_MAX_DISTANCE_KM = distVal ? parseInt(distVal) : null;
 
     applyAllFilters();
+    filtersBox.style.display = "none";
 });
 
 // Evento boton borrar filtros
 document.getElementById('filterErase').addEventListener('click', () => {
+        
+    const filtersBox = document.getElementById("filters-expanded");
     CURRENT_ALCALDIAS.clear();
     CURRENT_NAME_FILTER = '';
 
@@ -626,6 +631,7 @@ document.getElementById('filterErase').addEventListener('click', () => {
     if (distSelect) distSelect.value = '';
 
     applyAllFilters();
+    filtersBox.style.display = "none";
 });
 
 // Función para mostrar los museos en la página
