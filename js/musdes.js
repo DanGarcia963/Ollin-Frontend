@@ -544,7 +544,7 @@ function applyAllFilters() {
     }
 
     showLoading("Aplicando filtros...");
-    const CURRENT_LIMIT = Infinity;
+    const CURRENT_LIMIT = 55;
     try {
         displayFavorites(CURRENT_LIMIT, result);
     } catch (e) {
@@ -1221,7 +1221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     showLoading("Cargando museos...");
-    var CURRENT_LIMIT = Infinity;
+    var CURRENT_LIMIT = 55;
 
     try {
         await displayFavorites(CURRENT_LIMIT);
