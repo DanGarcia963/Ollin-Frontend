@@ -22,24 +22,24 @@ async function fetchRecommendedMuseums() {
 async function cargarRecomendaciones() {
     const nombreUsuario = document.getElementById('nombreUsuario');
     const idTurista = nombreUsuario.getAttribute('data-id-Turista');
-    const cacheKey = `recomendaciones_${idTurista}`;
-    const cacheTimeKey = `recomendaciones_time_${idTurista}`;
-    const cacheDuration = 30 * 24 * 60 * 60 * 1000; // 30 días
+    //const cacheKey = `recomendaciones_${idTurista}`;
+    //const cacheTimeKey = `recomendaciones_time_${idTurista}`;
+    //const cacheDuration = 30 * 24 * 60 * 60 * 1000; // 30 días
     const now = Date.now();
-    const cachedData = localStorage.getItem(cacheKey);
-    const cachedTime = localStorage.getItem(cacheTimeKey);
+    //const cachedData = localStorage.getItem(cacheKey);
+    //const cachedTime = localStorage.getItem(cacheTimeKey);
 
-    if (cachedData && cachedTime && (now - cachedTime < cacheDuration)) {
-        renderRecomendations(JSON.parse(cachedData));
-        console.log('Cargando recomendaciones desde caché');
-        return JSON.parse(cachedData);
-    }
+    //if (cachedData && cachedTime && (now - cachedTime < cacheDuration)) {
+    //    renderRecomendations(JSON.parse(cachedData));
+    //    console.log('Cargando recomendaciones desde caché');
+    //    return JSON.parse(cachedData);
+    // }
 
     try {
         console.log('Consultando API para recomendaciones...');
         const recomendaciones = await fetchRecommendedMuseums();
-        localStorage.setItem(cacheKey, JSON.stringify(recomendaciones));
-        localStorage.setItem(cacheTimeKey, now);
+        //localStorage.setItem(cacheKey, JSON.stringify(recomendaciones));
+        //localStorage.setItem(cacheTimeKey, now);
         renderRecomendations(recomendaciones);
     } catch (error) {
         console.error('Error al cargar recomendaciones:', error);
@@ -58,7 +58,7 @@ async function renderRecomendations(recomendaciones) {
             const imagenPrincipal =
                 museo?.Imagenes?.length > 0
                     ? museo.Imagenes[0]
-                    : 'assets/icons/museumIcon.png';
+                    : 'assets/icons/museum_icon.png';
 
             const card = document.createElement('div');
             card.className = 'bg-[#d98f8f] min-w-40 rounded-xl p-3 hover:scale-105 transition cursor-pointer';
@@ -181,15 +181,15 @@ async function renderSlide() {
 
       <!-- COLUMNA IZQUIERDA --> 
       <div class="flex flex-col justify-center">
-          <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide"> 
-              Noche de Museos 
+          <h1 class="text-xl md:text-2xl font-extrabold mb-4 tracking-wide"> 
+              <span data-i18n="night_of_museums">Noche de Museos</span>
           </h1>
 
           <p class="text-xs md:text-sm lg:text-md text-gray-200 mb-4 leading-relaxed max-w-xl">
             ${eventoActual.Descripcion}
           </p>
 
-          <p class="text-yellow-400 font-semibold">
+          <p class="text-xs md:text-sm text-yellow-400 font-semibold">
             Del ${formatearFecha(eventoActual.Fecha_Inicio)} 
             al ${formatearFecha(eventoActual.Fecha_Limite)}
           </p>
@@ -201,7 +201,7 @@ async function renderSlide() {
         <div class="bg-white/10 backdrop-blur-md rounded-xl p-5 
             border border-white/20 shadow-xl h-[320px]">
 
-          <h2 class="text-xl font-semibold mb-4">
+          <h2 class="text-xl font-semibold mb-4" data-i18n="participating_museums">
             Museos Participantes
           </h2>
 

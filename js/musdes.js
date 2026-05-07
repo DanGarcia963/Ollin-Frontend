@@ -146,7 +146,7 @@ async function fetchItineraryPlaces(id_Turista) {
 }
 
 // Agrega un museo a la lista de favoritos
-function addFavorite(idMuseo, NomLugar, idTurista) {
+function addFavorite(idMuseo, NomLugar, idTurista, iconElement) {
     fetch(`${server}/api/lugarFavorito/crearLugarFavorito`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -158,12 +158,16 @@ function addFavorite(idMuseo, NomLugar, idTurista) {
     })
         .then(response => response.json())
         .then(data => {
+            // Actualizamos la UI directamente
+            iconElement.src = "assets/icons/favoritosBlancoRosa.png";
+            iconElement.setAttribute('data-favorite', 'true');
+
             Swal.fire({
-                title: "Agregado!",
+                title: "¡Agregado!",
                 text: "El lugar ha sido agregado a Favoritos",
-                icon: "success"
-            }).then(() => {
-                window.location.reload();
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
             });
         })
         .catch(error => {
@@ -172,7 +176,7 @@ function addFavorite(idMuseo, NomLugar, idTurista) {
 }
 
 // Agrega un museo a la lista de visitados
-function addVisit(idMuseo, NomLugar, idTurista) {
+function addVisit(idMuseo, NomLugar, idTurista, iconElement) {
     fetch(`${server}/api/lugarVisitado/crearLugarVisitado`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -184,12 +188,16 @@ function addVisit(idMuseo, NomLugar, idTurista) {
     })
         .then(response => response.json())
         .then(data => {
+            // Actualizamos la UI directamente
+            iconElement.src = "assets/icons/checkedRosa.png";
+            iconElement.setAttribute('data-visited', 'true');
+
             Swal.fire({
-                title: "Agregado!",
+                title: "¡Agregado!",
                 text: "El lugar ha sido agregado a Visitados",
-                icon: "success"
-            }).then(() => {
-                window.location.reload();
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
             });
         })
         .catch(error => {
@@ -198,7 +206,7 @@ function addVisit(idMuseo, NomLugar, idTurista) {
 }
 
 // Elimina un museo de la lista de favoritos
-function removeFavorite(idLugar, idTurista) {
+function removeFavorite(idLugar, idTurista, iconElement) {
     fetch(`${server}/api/lugarFavorito/eliminarLugarFavorito`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -209,12 +217,16 @@ function removeFavorite(idLugar, idTurista) {
     })
         .then(response => response.json())
         .then(data => {
+            // Actualizamos la UI directamente
+            iconElement.src = "assets/icons/favoritosCoral.png";
+            iconElement.setAttribute('data-favorite', 'false');
+
             Swal.fire({
                 title: "¡Eliminado!",
                 text: "El lugar ha sido borrado de Favoritos",
-                icon: "success"
-            }).then(() => {
-                window.location.reload();
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
             });
         })
         .catch(error => {
@@ -223,7 +235,7 @@ function removeFavorite(idLugar, idTurista) {
 }
 
 // Elimina un museo de la lista de visitados
-function removeVisit(idLugar, idTurista) {
+function removeVisit(idLugar, idTurista, iconElement) {
     fetch(`${server}/api/lugarVisitado/eliminarLugarVisitado`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -234,12 +246,16 @@ function removeVisit(idLugar, idTurista) {
     })
         .then(response => response.json())
         .then(data => {
+            // Actualizamos la UI directamente
+            iconElement.src = "assets/icons/checkedPalido.png";
+            iconElement.setAttribute('data-visited', 'false');
+
             Swal.fire({
                 title: "¡Eliminado!",
                 text: "El lugar ha sido borrado de Visitados",
-                icon: "success"
-            }).then(() => {
-                window.location.reload();
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
             });
         })
         .catch(error => {
@@ -446,7 +462,7 @@ async function createMuseumCard(storedPlace) {
             </div>
             <div class="schedule">
                 <img src="assets/icons/reloj2.png" width="15px" height="15px" style="margin:0px 4px;">
-                <strong>Horarios : </strong>${horarioEstado.text}
+                <strong data-i18n="schedule">Horarios : </strong>${horarioEstado.text}
             </div>
             <div class="card-actions">
                 <img src="/assets/icons/Boton ojoA.svg" id="ViewMoreBtn" data-id-museo="${storedPlace["ID MUSEO"]}">
@@ -1062,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (event.target.id === 'tuBotonFavoritos') {
+            const iconElement = event.target; // Capturamos el botón exacto que se clickeó
             const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
             const idLugar = event.target.closest('.favorite-card')
                 .querySelector('.info-name')
@@ -1082,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     cancelButtonText: "Regresar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        addFavorite(idLugar, nombreMuseo, idTurista);
+                        addFavorite(idLugar, nombreMuseo, idTurista, iconElement);
                     }
                 });
             } else {
@@ -1097,13 +1114,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     cancelButtonText: "Regresar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        removeFavorite(idLugar, idTurista);
+                        removeFavorite(idLugar, idTurista, iconElement);
                     }
                 });
             }
         }
 
         if (event.target.id === 'tuBotonVisitados') {
+            const iconElement = event.target; // Capturamos el botón exacto que se clickeó
             const idTurista = document.getElementById("nombreUsuario").getAttribute('data-id-turista');
             const idLugar = event.target.closest('.favorite-card')
                 .querySelector('.info-name')
@@ -1124,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     cancelButtonText: "Regresar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        addVisit(idLugar, nombreMuseo, idTurista);
+                        addVisit(idLugar, nombreMuseo, idTurista, iconElement);
                     }
                 });
             } else {
@@ -1139,7 +1157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     cancelButtonText: "Regresar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        removeVisit(idLugar, idTurista);
+                        removeVisit(idLugar, idTurista, iconElement);
                     }
                 });
             }

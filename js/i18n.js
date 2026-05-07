@@ -88,7 +88,35 @@ const translations = {
       button_arrived:          "He llegado",
       button_cancel:         "Cancelar",
       button_organize:         "Organizar Plan de Visita",
-      button_save:             "Guardar cambios"
+      button_save:             "Guardar cambios",
+
+      night_of_museums:       "Noche de Museos",
+      participating_museums:  "Museos Participantes",
+      save_event:             "Guardar Evento",
+
+      municipality:            "Municipio",
+      always_free:              "Siempre gratis",
+      has_services:              "Cuenta con servicios",
+      has_discounts:             "Cuenta con descuentos",
+      open_now:                   "Abierto ahora",
+      opens_today:                 "Abre hoy",
+      max_price:                    "Precio máximo ($)",
+      distance:                     "Cercanía (km)",
+      select_distance:              "-- Selecciona distancia --",
+      apply_filters:                 "Aplicar filtros",
+      clear_filters:                 "Limpiar filtros",
+      search_museo:                 "Buscar",
+      schedule:                   "Horarios : ",
+      select_itinerary:            "Selecciona un Plan de Visita",
+      add_to_new_itinerary:        "Agregar a nuevo Plan de Visita",
+      create_new_itinerary:        "Crear Nuevo Plan de Visita",
+      
+      add_museums:                 "Agregar Museos",
+      viewplan:               "Ver",
+      finaliplan:             "Finalizar",
+      editplan:              "Editar",
+      continue:                "Continuar",
+       beginplan:              "Comenzar"
     },
 
     en: {
@@ -167,7 +195,36 @@ const translations = {
       button_arrived:          "I've arrived",
       button_cancel:         "Cancel",
       button_organize:         "Organize Visit Plan",
-      button_save:             "Save changes"
+      button_save:             "Save changes",
+
+      night_of_museums:       "Night of Museums",
+      participating_museums:  "Participating Museums",
+      save_event:             "Save Event",
+
+      municipality:            "Municipality",
+      always_free:              "Always free",
+      has_services:              "Has services",
+      has_discounts:             "Has discounts",
+      open_now:                   "Open now",
+      opens_today:                 "Opens today",
+      max_price:                    "Max price ($)",
+      distance:                     "Distance (km)",
+      select_distance:              "-- Select distance --",
+      apply_filters:                 "Apply filters",
+      clear_filters:                 "Clear filters",
+      search_museo:                 "Search",
+      schedule:                   "Schedule : ",
+      select_itinerary:            "Select a Visit Plan",
+      add_to_new_itinerary:        "Add to new Visit Plan",
+      create_new_itinerary:        "Create New Visit Plan",
+
+        add_museums:                 "Add Museums",
+        viewplan:               "View",
+        finaliplan:             "Finalize",
+        editplan:              "Edit",
+        continue:                "Continue",
+         beginplan:              "Begin"
+
     },
 
     it: {
@@ -246,7 +303,35 @@ const translations = {
         button_arrived:          "Sono arrivato",
         button_cancel:         "Annulla",
         button_organize:         "Organizza piano di visita",
-        button_save:             "Salva modifiche"
+        button_save:             "Salva modifiche",
+
+        night_of_museums:       "Notte dei Musei",
+        participating_museums:  "Musei partecipanti",
+        save_event:             "Salva evento",
+
+        municipality:            "Municipalità",
+        always_free:              "Sempre gratuito",
+        has_services:              "Ha servizi",
+        has_discounts:             "Ha sconti",
+        open_now:                   "Aperto ora",
+        opens_today:                 "Apre oggi",
+        max_price:                    "Prezzo massimo ($)",
+        distance:                     "Distanza (km)",
+        select_distance:              "-- Seleziona distanza --",
+        apply_filters:                 "Applica filtri",
+        clear_filters:                 "Pulisci filtri",
+        search_museo:                 "Cerca",
+        schedule:                   "Orari : ",
+        select_itinerary:            "Seleziona un piano di visita",
+        add_to_new_itinerary:        "Aggiungi a nuovo piano di visita",
+        create_new_itinerary:        "Crea nuovo piano di visita",
+
+        add_museums:                 "Aggiungi musei",
+        viewplan:               "Vedi", 
+        finaliplan:             "Finalizza",
+        editplan:              "Modifica",
+        continue:                "Continua",
+         beginplan:              "Inizia"
       },
 
       fr: {
@@ -323,7 +408,36 @@ const translations = {
         button_arrived:         "Je suis arrivé",
         button_cancel:         "Annuler",
         button_organize:         "Organiser le plan de visite",
-        button_save:             "Enregistrer les modifications"
+        button_save:             "Enregistrer les modifications",
+
+        night_of_museums:       "Nuit des Musées",
+        participating_museums:  "Musées participants",
+        save_event:             "Enregistrer l'événement",
+
+        municipality:            "Municipalité",
+        always_free:              "Toujours gratuit",
+        has_services:              "A des services",  
+        has_discounts:             "A des réductions",
+        open_now:                   "Ouvert maintenant",
+        opens_today:                 "Ouvre aujourd'hui",
+        max_price:                    "Prix maximum ($)",
+        distance:                     "Distance (km)",
+        select_distance:              "-- Sélectionnez la distance --",
+        apply_filters:                 "Appliquer les filtres",
+        clear_filters:                 "Effacer les filtres",
+        search_museo:                 "Rechercher",
+        schedule:                   "Horaires : ",
+        select_itinerary:            "Sélectionnez un plan de visite",
+        add_to_new_itinerary:        "Ajouter à un nouveau plan de visite",
+        create_new_itinerary:        "Créer un nouveau plan de visite",
+
+        add_museums:                 "Ajouter des musées",
+
+        viewplan:               "Voir",
+        finaliplan:             "Finaliser",
+        editplan:              "Modifier",
+        continue:                "Continuer",
+         beginplan:              "Commencer"
       }
   };
   

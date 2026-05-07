@@ -88,25 +88,25 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
     let statusText = '';
     let statusClass = '';
     let mainActionBtn = ''; // Botón de Comenzar/Continuar
-    let editBtn = `<a onclick="crearCookieYedit(${index})" class="cardButton edit-btn">Editar</a>`;
+    let editBtn = `<a onclick="crearCookieYedit(${index})" data-i18n="editplan" class="cardButton edit-btn">Editar</a>`;
     let deleteButtonHTML = getDeleteButtonHTML(itinerario.ID);
 
     switch (itinerario.Estado) {
         case 'F':
             statusText = 'Finalizado';
             statusClass = 'status-finished';
-            mainActionBtn = `<a onclick="crearCookieYedit(${index})" class="cardButton continue">Ver Plan</a>`;
+            mainActionBtn = `<a onclick="crearCookieYedit(${index})" data-i18n="viewplan" class="cardButton continue">Ver Plan</a>`;
             editBtn = ''; // En finalizado no editamos
             break;
         case 'C':
             statusText = 'En Curso';
             statusClass = 'status-progress';
-            mainActionBtn = `<a onclick="crearCookieYRedirigir(${index}, 'Continuar')" class="cardButton continue">Continuar</a>`;
+            mainActionBtn = `<a onclick="crearCookieYRedirigir(${index}, 'Continuar')" data-i18n="continue" class="cardButton continue">Continuar</a>`;
             break;
         case 'N':
             statusText = 'Nuevo';
             statusClass = 'status-new';
-            mainActionBtn = `<a onclick="crearCookieYRedirigir(${index}, 'Comenzar')" class="cardButton continue">Comenzar</a>`;
+            mainActionBtn = `<a onclick="crearCookieYRedirigir(${index}, 'Comenzar')" data-i18n="beginplan" class="cardButton continue">Comenzar</a>`;
             break;
     }
 
@@ -150,7 +150,7 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
         <div class="cardButtons">
             ${mainActionBtn}
             ${editBtn}
-            <button class="cardButton finish" onclick="finalizeItinerary(${index})">Finalizar</button>
+            <button class="cardButton finish" onclick="finalizeItinerary(${index})" data-i18n="finaliplan">Finalizar</button>
         </div>
     </div>
     `;
@@ -363,7 +363,7 @@ function createEmptyItineraryCard(itinerario) {
             <p data-i18n="planempty">Este plan de visita está vacío.</p>
             <button class="add-place-btn-modern" onclick="goToMuseums('${itinerario.ID}')">
                 <img src="assets/icons/agregarIcon2.png">
-                <span>Agregar Museos</span>
+                <span data-i18n="add_museums">Agregar Museos</span>
             </button>
         </div>
     </div>

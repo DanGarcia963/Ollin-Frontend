@@ -101,7 +101,7 @@
 
         <div class="museums-controls flex items-center justify-between mb-4">
             <div class="search-box">
-                <input type="text" placeholder="Buscar" id="searchMuseoInput"  placeholder="Buscar museo por nombre...">
+                <input type="text" data-i18n-placeholder="search_museo" placeholder="Buscar museo por nombre..." id="searchMuseoInput">
                 <img src="assets/icons/lupaGoogl.png" id="search-box">
                 <img src="assets/icons/filtroIcono.png" alt="Filter" id="filter-icon">
             </div>
@@ -110,7 +110,7 @@
         <div id="filters-expanded" class="filters-expanded">
             <div id="contenedorMamalonFiltros">
                 <div>
-                    <b>Alcaldía</b>
+                    <b data-i18n="municipality">Alcaldía</b>
                     <div id="recommendedFilters">
                     <div>
                         <input type="checkbox" class="alcaldia-checkbox checkbox-button" id="alcaldia-ao" data-alcaldia="Álvaro Obregón"> 
@@ -180,40 +180,40 @@
 
                     <div>
                         <input type="checkbox" id="filterAlwaysFree" class="checkbox-button">
-                        <label for="filterAlwaysFree">Siempre gratis</label>
+                        <label for="filterAlwaysFree" data-i18n="always_free">Siempre gratis</label>
                     </div>
 
                     <div>
                         <input type="checkbox" id="filterHasServices" class="checkbox-button">
-                        <label for="filterHasServices">Tienen servicios</label>
+                        <label for="filterHasServices" data-i18n="has_services">Tienen servicios</label>
                     </div>
 
                     <div>
                         <input type="checkbox" id="filterHasDiscounts" class="checkbox-button">
-                        <label for="filterHasDiscounts">Cuenta con descuentos</label>
+                        <label for="filterHasDiscounts" data-i18n="has_discounts">Cuenta con descuentos</label>
                     </div>
 
                     <div>
                         <input type="checkbox" id="filter-abierto-ahora" class="checkbox-button">
-                        <label for="filter-abierto-ahora">Abiertos ahora</label>
+                        <label for="filter-abierto-ahora" data-i18n="open_now">Abiertos ahora</label>
                     </div>
 
                     <div>
                         <input type="checkbox" id="filter-abre-hoy" class="checkbox-button">
-                        <label for="filter-abre-hoy">Abre hoy</label>
+                        <label for="filter-abre-hoy" data-i18n="opens_today">Abre hoy</label>
                     </div>
 
                     <div>
-                        <input type="number" id="filter-precio-max" placeholder="Precio máximo ($)">
+                        <input type="number" id="filter-precio-max" data-i18n-placeholder="max_price" placeholder="Precio máximo" min="0" class="checkbox-button">
                     </div>
 
                     </div>
                 </div>
 
                 <div>
-                    <b>Cercanía</b>
+                    <b data-i18n="distance">Cercanía</b>
                     <select id="filterDistanceKm" >
-                        <option value="">-- Selecciona distancia --</option>
+                        <option data-i18n="select_distance" value="">-- Selecciona distancia --</option>
                         <option value="1">1 km</option>
                         <option value="5">5 km</option>
                         <option value="10">10 km</option>
@@ -223,8 +223,8 @@
                 </div>
             </div>
             <div id="filtersSummit">
-                <button type="button" id="filterSend" class="filtersSummit">Aplicar filtros</button>
-                <button type="button" id="filterErase" class="filtersSummit">Borrar filtros</button>
+                <button type="button" id="filterSend" class="filtersSummit" data-i18n="apply_filters">Aplicar filtros</button>
+                <button type="button" id="filterErase" class="filtersSummit" data-i18n="clear_filters">Borrar filtros</button>
             </div>
         </div>
 
@@ -248,7 +248,7 @@
         </div>
 
         <!-- Mensaje y botón que se muestran si no hay lugares favoritos -->
-        <div id="no-favorites-message" style="display: none;">
+         <div id="no-favorites-message" style="display: none;">
             <p>No hay lugares favoritos agregados aún.</p>
             <button onclick="window.location.href='/inicio'">Ir a agregar</button>
         </div>
@@ -261,14 +261,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Selecciona un itinerario</h5>
+        <h5 class="modal-title" id="modalLabel" data-i18n="select_itinerary">Selecciona un itinerario</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <ul class="list-group" id="itinerariosDisponibles">
           <!-- Aquí se insertan los itinerarios dinámicamente -->
         </ul>
-        <button class="create-adventure-link">Agregar a nuevo Plan de Visita</button>
+        <button class="create-adventure-link" data-i18n="add_to_new_itinerary">Agregar a nuevo Plan de Visita</button>
       </div>
     </div>
   </div>
@@ -278,7 +278,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Crear Nuevo Plan de Visita</h5>
+        <h5 class="modal-title" id="modalLabel" data-i18n="create_new_itinerary">Crear Nuevo Plan de Visita</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
