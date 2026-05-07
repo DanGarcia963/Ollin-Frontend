@@ -61,11 +61,11 @@ async function renderRecomendations(recomendaciones) {
                     : 'assets/icons/museum_icon.png';
 
             const card = document.createElement('div');
-            card.className = 'bg-[#d98f8f] min-w-40 rounded-xl p-3 hover:scale-105 transition cursor-pointer';
+            card.className = 'bg-white min-w-40 rounded-xl p-3 hover:scale-105 transition cursor-pointer';
 
             card.innerHTML = `
                 <img src="${imagenPrincipal}"
-                    alt="${museo.Nombre}" 
+                    alt="${museo.NombreMuseo}" 
                     class="w-36 lg:w-full h-36 object-cover rounded-lg">
 
                 <div class="flex flex-col lg:flex-row items-center 
@@ -75,7 +75,7 @@ async function renderRecomendations(recomendaciones) {
                             class="w-4 h-4">
 
                     <h5 class="text-sm font-semibold">
-                        ${museo.Nombre}
+                        ${museo.NombreMuseo}
                     </h5>
                 </div>
             `;
@@ -181,7 +181,7 @@ async function renderSlide() {
 
       <!-- COLUMNA IZQUIERDA --> 
       <div class="flex flex-col justify-center">
-          <h1 class="text-xl md:text-2xl font-extrabold mb-4 tracking-wide"> 
+          <h1 class="text-sm md:text-3xl font-extrabold mb-4 tracking-wide"> 
               <span data-i18n="night_of_museums">Noche de Museos</span>
           </h1>
 
