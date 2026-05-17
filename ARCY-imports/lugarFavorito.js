@@ -1,6 +1,6 @@
 import { mostrarLugares } from "../ARCY-PRUEBAS/places2.js";
 import { getInfo, obtenerCoordenadasPorPlaceId, obtenerUnLugarConId, updateHTML } from "./utilidadesMapa.js";
-const server = "https://ollin-backend-production-d68e.up.railway.app"
+const server = "https://ollin-backend-production-a735.up.railway.app"
 
 export const comprobarSiLugarEsFavorito = async (placeId) => {
   try {

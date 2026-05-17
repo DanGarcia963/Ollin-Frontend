@@ -5,9 +5,10 @@ let ALL_FAVORITES = [];
 let CURRENT_LIMIT = Infinity; // Mostrar todos los lugares favoritos sin límite 
 
 console.log("iniciandodespliegue");
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
 
 // Define la URL de la API para obtener lugares favoritos
-const API_URL = `${server}/api/lugarFavorito/obtenerLugaresFavoritos`;
+const API_URL = `${API_BASE_URL}/api/lugarFavorito/obtenerLugaresFavoritos`;
 
 // ==============================
 // UTILIDADES
@@ -360,7 +361,7 @@ async function displayFavorites(maxMuseos = CURRENT_LIMIT) {
 // ACCIONES
 // ==============================
 function removeFavorite(idLugar, idTurista) {
-    fetch(`${server}/api/lugarFavorito/eliminarLugarFavorito`, {
+    fetch(`${API_BASE_URL}/api/lugarFavorito/eliminarLugarFavorito`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

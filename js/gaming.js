@@ -1,4 +1,4 @@
-const server = "https://ollin-backend-production-d68e.up.railway.app"
+const server = "https://ollin-backend-production-a735.up.railway.app"
 
 async function fetchNumVisitPlaces(idTurista) {
     console.log("fetchNumVisitPlaces llamada con idTurista:", idTurista);

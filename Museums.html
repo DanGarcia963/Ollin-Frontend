@@ -38,6 +38,27 @@
     .hover\\:scrollbar-default:hover::-webkit-scrollbar-track {
     background-color: transparent;
     }
+
+    /* Modal View More Ajustado para Móviles */
+        .viewMoreCard {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+            z-index: 50; backdrop-filter: blur(4px); padding: 1rem;
+        }
+        .viewMoreCard.hidden { display: none !important; }
+        .vm-card {
+            background: #ffffff; width: 100%; max-width: 600px; border-radius: 20px;
+            overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            display: flex; flex-direction: column; max-height: 90vh; /* Permite scroll interno si es muy alto */
+        }
+        .vm-header { position: relative; background-color: #F4EFE6; padding: 20px; border-bottom: 1px solid #eee; flex-shrink: 0; }
+        #vm-cerrar {
+            position: absolute; top: 15px; right: 15px; background: #438B9E; color: white;
+            border: none; width: 30px; height: 30px; border-radius: 50%;
+            cursor: pointer; font-weight: bold; transition: background 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #vm-cerrar:hover { background: #367282; }
 </style>
 </head>
 <body>
@@ -104,6 +125,34 @@
                 <input type="text" data-i18n-placeholder="search_museo" placeholder="Buscar museo por nombre..." id="searchMuseoInput">
                 <img src="assets/icons/lupaGoogl.png" id="search-box">
                 <img src="assets/icons/filtroIcono.png" alt="Filter" id="filter-icon">
+            </div>
+        </div>
+
+
+
+        <div id="museodes" class="flex-1 overflow-y-auto pr-2 scrollbar-hide grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 content-start auto-rows-max pb-6">
+        </div>
+
+        <!-- Mensaje y botón que se muestran si no hay lugares favoritos -->
+        <div id="no-favorites-message" style="display: none;" class="bg-white p-4 rounded-xl text-center shadow-sm">
+            <p class="text-gray-500 mb-2">No hay lugares agregados aún.</p>
+            <button onclick="window.location.href='/inicio'" class="bg-[#C49A94] text-white px-4 py-1 rounded-lg">Ir a agregar</button>
+        </div>
+
+        <!-- Contenedor oculto para el servicio de Google Maps -->
+        <div id="map" style="display: none;"></div>
+
+        <div id="viewMoreCard" class="viewMoreCard hidden">
+            <div class="vm-card">
+                <div class="vm-header">
+                    <h2 id="vm-nombre" class="text-lg md:text-xl font-bold text-gray-800 mb-4 pr-8 line-clamp-2">Nombre del Museo</h2>
+                    <div class="flex gap-2 h-32 md:h-40">
+                        <img id="vm-image" src="" alt="Imagen 1" class="w-1/2 object-cover rounded-lg bg-gray-100">
+                        <img id="vm-image2" src="" alt="Imagen 2" class="w-1/2 object-cover rounded-lg bg-gray-100">
+                    </div>
+                    <button id="vm-cerrar">✕</button>
+                </div>
+                <div class="vm-body p-4 md:p-6 text-sm text-gray-600 overflow-y-auto flex-1" id="vm-body"></div>
             </div>
         </div>
 
@@ -227,34 +276,6 @@
                 <button type="button" id="filterErase" class="filtersSummit" data-i18n="clear_filters">Borrar filtros</button>
             </div>
         </div>
-
-        <div id="viewMoreCard" class="viewMoreCard hidden">
-        <div class="vm-card">
-
-            <div class="vm-header">
-            <h2 id="vm-nombre"></h2>
-            <img id="vm-image" src="" alt="Imagen del museo">
-            <img id="vm-image2" src="" alt="Imagen del museo">
-            <button id="vm-cerrar">✕</button>
-            </div>
-
-            <div class="vm-body" id="vm-body"></div>
-
-        </div>
-        </div>
-
-        <div id="museodes" class="scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
-            <!-- Las tarjetas de lugares favoritos se insertarán aquí mediante JavaScript -->
-        </div>
-
-        <!-- Mensaje y botón que se muestran si no hay lugares favoritos -->
-         <div id="no-favorites-message" style="display: none;">
-            <p>No hay lugares favoritos agregados aún.</p>
-            <button onclick="window.location.href='/inicio'">Ir a agregar</button>
-        </div>
-
-        <!-- Contenedor oculto para el servicio de Google Maps -->
-        <div id="map" style="display: none;"></div>
     </main>
 <!-- Modal para Crear Nueva Aventura -->
 <div class="modal fade" id="nuevaAventuraModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
