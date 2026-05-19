@@ -367,6 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Al cargar la página, mostramos TODOS los museos
-    displayFavorites(3);
+    displayFavorites(Infinity);
     initUserLocation();
 });

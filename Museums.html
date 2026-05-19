@@ -39,26 +39,95 @@
     background-color: transparent;
     }
 
-    /* Modal View More Ajustado para Móviles */
-        .viewMoreCard {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
-            z-index: 50; backdrop-filter: blur(4px); padding: 1rem;
-        }
-        .viewMoreCard.hidden { display: none !important; }
-        .vm-card {
-            background: #ffffff; width: 100%; max-width: 600px; border-radius: 20px;
-            overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            display: flex; flex-direction: column; max-height: 90vh; /* Permite scroll interno si es muy alto */
-        }
-        .vm-header { position: relative; background-color: #F4EFE6; padding: 20px; border-bottom: 1px solid #eee; flex-shrink: 0; }
-        #vm-cerrar {
-            position: absolute; top: 15px; right: 15px; background: #438B9E; color: white;
-            border: none; width: 30px; height: 30px; border-radius: 50%;
-            cursor: pointer; font-weight: bold; transition: background 0.2s;
-            display: flex; align-items: center; justify-content: center;
-        }
-        #vm-cerrar:hover { background: #367282; }
+/* =========================================
+   MODAL VIEW MORE (Ajustado a la navbar)
+   ========================================= */
+
+.viewMoreCard {
+    position: fixed; 
+    top: 70px; /* Altura de la navbar en escritorio */
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(0,0,0,0.6); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 50; /* Queda perfecto debajo del z-index: 1000 del header */
+    backdrop-filter: blur(4px); 
+    padding: 1rem; 
+}
+
+.viewMoreCard.hidden { 
+    display: none !important; 
+}
+
+.vm-card {
+    background: #ffffff; 
+    width: 100%; 
+    max-width: 600px; 
+    border-radius: 20px;
+    overflow-y: auto; /* Activa el scroll interno */
+    overflow-x: hidden; 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-direction: column; 
+    /* calc asegura que la tarjeta no se salga por abajo, restando el padding */
+    max-height: calc(100vh - 70px - 2rem); 
+}
+
+/* Resto de tu código intacto */
+.vm-header { 
+    position: relative; 
+    background-color: #F4EFE6; 
+    padding: 20px; 
+    border-bottom: 1px solid #eee; 
+    flex-shrink: 0; 
+}
+
+#vm-cerrar {
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    background: #438B9E; 
+    color: white;
+    border: none; 
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%;
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: background 0.2s;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+#vm-cerrar:hover { 
+    background: #367282; 
+}
+
+/* =========================================
+   RESPONSIVE PARA VIEW MORE CARD
+   ========================================= */
+
+@media (max-width: 768px) {
+    .viewMoreCard {
+        top: 64px; /* Coincide con min-height de navbar en 768px */
+    }
+    .vm-card {
+        max-height: calc(100vh - 64px - 2rem);
+    }
+}
+
+@media (max-width: 576px) {
+    .viewMoreCard {
+        top: 60px; /* Coincide con min-height de navbar en 576px */
+    }
+    .vm-card {
+        max-height: calc(100vh - 60px - 2rem);
+    }
+}
 </style>
 </head>
 <body>

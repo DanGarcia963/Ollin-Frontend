@@ -71,19 +71,18 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 recommendedMuseums.forEach(async museum => {
     const div = document.createElement('div');
-    const placeInfo = await getPhotos(museum.id_Museo);
     
     // Aquí está el cambio clave: quitamos md:w-full y dejamos un ancho fijo (w-48 o w-56) hasta llegar a pantallas grandes (lg:w-full)
-    div.className = 'bg-[#d98f8f] w-48 sm:w-56 lg:w-full shrink-0 lg:shrink rounded-xl p-3 hover:scale-105 transition cursor-pointer flex flex-col justify-between';
+    div.className = 'bg-white w-48 sm:w-56 lg:w-full shrink-0 lg:shrink rounded-xl p-3 hover:scale-105 transition cursor-pointer flex flex-col justify-between';
     
     div.innerHTML = `
-        <img src="${placeInfo.photoUrls?.[0] || 'assets/icons/museum_icon.png'}"
-             alt="${museum.Nombre}" 
+        <img src="${museum.Imagenes?.[0] || 'assets/icons/museum_icon.png'}"
+             alt="${museum.NombreMuseo}" 
              class="w-full h-32 lg:h-36 object-cover rounded-lg">
         <div class="flex flex-row items-start lg:items-center justify-start lg:justify-center gap-2 mt-3">
             <img src="assets/icons/museum_icon.png" alt="museum" class="w-4 h-4 mt-0.5 lg:mt-0 shrink-0">
-            <h5 class="text-xs lg:text-sm font-semibold leading-tight text-white drop-shadow-sm">
-                ${museum.Nombre}
+            <h5 class="class="text-xs font-semibold lg:text-sm font-semibold leading-tight text-white drop-shadow-sm">
+                ${museum.NombreMuseo}
             </h5>
         </div>
     `;
