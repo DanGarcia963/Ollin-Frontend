@@ -5,6 +5,7 @@ let mapa;
 let directionsService
 let directionsRenderer
 
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
 
 async function initMap() {
         const userLocation = await getUserLocation();
@@ -24,7 +25,7 @@ async function initMap() {
 
 async function fetchPlaces(placeId) {
     try {
-        const response = await fetch(`${server}/api/lugar/${placeId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/lugar/${placeId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -85,7 +86,7 @@ function getTime(originCoords, destCords, mode){
 
   function addVisit(idMuseo, NomLugar, idTurista) {
       
-    fetch(`${server}/api/lugarVisitado/crearLugarVisitado`, {
+    fetch(`${API_BASE_URL}/api/lugarVisitado/crearLugarVisitado`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -162,5 +163,24 @@ document.addEventListener('DOMContentLoaded', async function () {
       toggle.innerHTML = "<span>◀</span>";
     });
   }
+
+        const resumenDrawer = document.getElementById("resumenDrawer");
+        const toggleResumen = document.getElementById("toggleResumen");
+        const closeResumen = document.getElementById("closeResumen");
+
+        if (toggleResumen && resumenDrawer) {
+        toggleResumen.addEventListener("click", () => {
+            resumenDrawer.classList.toggle("is-open");
+            toggleResumen.innerHTML = resumenDrawer.classList.contains("is-open") ? "<span>◀</span>" : "<span>▶</span>";
+        });
+        }
+
+        if (closeResumen && resumenDrawer && toggleResumen) {
+        closeResumen.addEventListener("click", () => {
+            resumenDrawer.classList.remove("is-open");
+            toggleResumen.innerHTML = "<span>▶</span>";
+        });
+        }
+
     mostrarValores();
 });

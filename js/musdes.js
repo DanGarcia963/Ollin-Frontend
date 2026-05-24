@@ -812,6 +812,61 @@ function createMuseumCard(storedPlace, userState = {}) {
         ? Math.round(storedPlace.Rating * 2) / 2
         : 0;
 
+        const parametros = new URLSearchParams(window.location.search).get("idPlan");
+
+                        const botónAgregar = parametros? `<div title="Agregar a plan de visita especifico" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="agregar-itinerario-especifico"
+                                aria-label="Agregar al itinerario"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="assets/icons/agregarAItinerario.png"
+                                    alt="Agregar"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Agregar al itinerario
+                            </span>
+                        </div>` : 
+                        ` <div title="Agregar a plan de visita" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="agregar-itinerario"
+                                aria-label="Agregar al itinerario"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="assets/icons/agregarAItinerario.png"
+                                    alt="Agregar"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Agregar al itinerario
+                            </span>
+                        </div> ` ;
+
     const starsHtml = generateStars(rating);
 
     const placeId = storedPlace["ID MUSEO"];
@@ -838,142 +893,177 @@ function createMuseumCard(storedPlace, userState = {}) {
         horarioEstado.status === "open"
             ? "bg-green-100 text-green-700"
             : "bg-gray-100 text-gray-600";
+            
 
     return `
-    <div class="favorite-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col min-h-[380px] h-auto border border-gray-100 group relative">
-        
-            <div class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold ${badgeColor} shadow-sm z-10 backdrop-blur-sm bg-opacity-90">
-            ${horarioEstado.status === 'open' ? 'Abierto' : 'Cerrado'}
-        </div>
+    <div class="favorite-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col min-h-[380px] h-auto border border-gray-100 group relative">   
+      <div class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold ${badgeColor} shadow-sm z-10 backdrop-blur-sm bg-opacity-90">
+        ${horarioEstado.status === 'open' ? 'Abierto' : 'Cerrado'}
+      </div>
 
-        <div class="relative h-48 w-full shrink-0 overflow-hidden bg-gray-100">
-            <img 
-                src="${storedPlace.Imagenes ? storedPlace.Imagenes[0] : 'assets/icons/Lugarejemplo.PNG'}" 
-                alt="Museo"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
+      <div class="relative h-48 w-full shrink-0 overflow-hidden bg-gray-100">
+        <img 
+          src="${storedPlace.Imagenes ? storedPlace.Imagenes[0] : 'assets/icons/Lugarejemplo.PNG'}" 
+          alt="Museo"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
 
         <!-- Contenido -->
-        <div class="p-5 flex flex-col flex-1 justify-between bg-white z-20">
+      <div class="p-5 flex flex-col flex-1 justify-between bg-white z-20">
+        <div class="mb-2">
+          <h3 class="info-name text-lg font-bold text-gray-800 leading-tight line-clamp-2" data-placeid="${storedPlace['ID MUSEO']}">
+            ${storedPlace.NombreMuseo || 'Nombre no especificado'}
+          </h3>
+        </div>
 
-            <div class="mb-2">
-                <h3 class="info-name text-lg font-bold text-gray-800 leading-tight line-clamp-2" data-placeid="${storedPlace['ID MUSEO']}">
-                    ${storedPlace.NombreMuseo || 'Nombre no especificado'}
-                </h3>
+        <div class="flex-1 flex flex-col justify-end space-y-3">        
+          <p class="text-xs text-gray-500 line-clamp-2 flex items-start">
+            <svg class="w-4 h-4 text-[#438B9E] mr-1 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            ${storedPlace.Direccion || 'Dirección no especificada'}
+          </p>
+
+          <!-- Horario -->
+          <p class="text-xs text-gray-500 line-clamp-2 flex items-start">
+            <img
+              src="assets/icons/reloj2.png"
+              class="w-4 h-4 opacity-70"
+              loading="lazy"
+              decoding="async"
+            />
+            <strong>Horario:</strong>
+            ${escapeHTML(horarioEstado.text)}
+          </p>
+          <div class="card-actions flex items-center justify-between gap-2 flex-wrap">
+            <!-- Rating -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-gray-400">★ ${storedPlace.Rating || 'S/N'}</span>
             </div>
-
-            <div class="flex-1 flex flex-col justify-end space-y-3">
-                
-                <p class="text-xs text-gray-500 line-clamp-2 flex items-start">
-                    <svg class="w-4 h-4 text-[#438B9E] mr-1 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    ${storedPlace.Direccion || 'Dirección no especificada'}
-                </p>
-
-                <!-- Horario -->
-                <p class="text-xs text-gray-500 line-clamp-2 flex items-start">
-                    <img
-                        src="assets/icons/reloj2.png"
-                        class="w-4 h-4 opacity-70"
-                        loading="lazy"
-                        decoding="async"
-                    />
-                        <strong>Horario:</strong>
-                        ${escapeHTML(horarioEstado.text)}
-                </p>
-                <div class="card-actions flex items-center justify-between gap-2 flex-wrap">
-                <!-- Rating -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold text-gray-400">★ ${storedPlace.Rating || 'S/N'}</span>
-                    </div>
-                    <!-- Ver más -->
+                    
+                    <!-- Botones -->
                     <div class="flex items-center gap-3">
-                        <button
-                            type="button"
-                            data-action="view-more"
-                            data-id-museo="${escapeHTML(placeId)}"
-                            aria-label="Ver más"
-                            class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
-                        >
-                            <img
-                                src="/assets/icons/Boton ojoA.svg"
-                                alt="Ver más"
-                                class="w-5 h-5"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </button>
+                        <!-- Ver más -->
+                        <div title="Ver más información" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="view-more"
+                                data-id-museo="${escapeHTML(placeId)}"
+                                aria-label="Ver más"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="/assets/icons/Boton ojoA.svg"
+                                    alt="Ver más"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Ver más detalles
+                            </span>
+                        </div>
 
                         <!-- Visitados -->
-                        <button
-                            type="button"
-                            data-action="visitados"
-                            data-visited="${isVisited}"
-                            aria-label="Visitados"
-                            class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
-                        >
-                            <img
-                                src="${escapeHTML(visitedIcon)}"
-                                alt="Visitados"
-                                class="w-5 h-5"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </button>
+                        <div title="Agregar a visitados" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="visitados"
+                                data-visited="${isVisited}"
+                                aria-label="Visitados"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="${escapeHTML(visitedIcon)}"
+                                    alt="Visitados"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Marcar como visitado
+                            </span>
+                        </div>
 
                         <!-- Favoritos -->
-                        <button
-                            type="button"
-                            data-action="favoritos"
-                            data-favorite="${isFavorite}"
-                            aria-label="Favoritos"
-                            class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
-                        >
-                            <img
-                                src="${escapeHTML(favoriteIcon)}"
-                                alt="Favoritos"
-                                class="w-5 h-5"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </button>
+                        <div title="Agregar a favoritos" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="favoritos"
+                                data-favorite="${isFavorite}"
+                                aria-label="Favoritos"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="${escapeHTML(favoriteIcon)}"
+                                    alt="Favoritos"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Agregar a favoritos
+                            </span>
+                        </div>
 
                         <!-- Origen -->
-                        <button
-                            type="button"
-                            data-action="origen"
-                            aria-label="Origen"
-                            class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
-                        >
-                            <img
-                                src="assets/icons/origenIcon.png"
-                                alt="Origen"
-                                class="w-5 h-5"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </button>
+                        <div title="Generar Ruta Unica" class="relative group inline-flex">
+                            <button
+                                type="button"
+                                data-action="origen"
+                                aria-label="Origen"
+                                class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
+                            >
+                                <img
+                                    src="assets/icons/origenIcon.png"
+                                    alt="Origen"
+                                    class="w-5 h-5"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </button>
+
+                            <span
+                                class="pointer-events-none absolute -top-10 left-1/2 z-20
+                                      -translate-x-1/2 whitespace-nowrap rounded-md
+                                      bg-gray-800 px-2 py-1 text-xs text-white
+                                      opacity-0 transition-opacity duration-200
+                                      group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                Ver origen
+                            </span>
+                        </div>
 
                         <!-- Itinerario -->
-                        <button
-                            type="button"
-                            data-action="agregar-itinerario"
-                            aria-label="Agregar al itinerario"
-                            class="bg-[#F4EFE6] hover:scale-110 transition-all duration-300 rounded-full p-2 shadow-sm"
-                        >
-                            <img
-                                src="assets/icons/agregarAItinerario.png"
-                                alt="Agregar"
-                                class="w-5 h-5"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </button>
+                        ${botónAgregar}
                     </div>
                 </div>
-            </div>
-        </div>
+              </div>
+      </div>
     </div>
     `;
 }
@@ -1420,6 +1510,43 @@ function initEventHandlers() {
       modal.show();
       displayIninerary();
       return;
+    }
+
+    if (action === "agregar-itinerario-especifico") {
+      const idPlan = new URLSearchParams(window.location.search).get("idPlan");
+      const nombrePlan = new URLSearchParams(window.location.search).get("nombrePlan") || "tu plan de visita";
+      
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: `Esta acción agregará ${nombreMuseo} a tu plan de visita ${nombrePlan}.`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#65B2C6",
+        cancelButtonColor: "#D63D6C",
+        confirmButtonText: "Estoy seguro",
+        cancelButtonText: "Regresar"
+      }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        addPlaceToItinerary(idPlan, idLugar, nombreMuseo)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: `¡Se ha agregado ${nombreMuseo} a tu plan de visita ${nombrePlan}!`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          })
+          .catch(error => {
+            console.error("Error agregando al itinerario:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "No se pudo agregar el museo al plan de visita. Por favor, intenta nuevamente.",
+            });
+          });
+      });
     }
 
     if (action === "favoritos") {

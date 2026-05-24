@@ -1,7 +1,6 @@
 import { hideLoading, showLoading } from "../ARCY-imports/loading.js";
 
 const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
-
 const API_URL = `${API_BASE_URL}/api/itinerario/obtenerItinerarios`;
 const API_URL1 = `${API_BASE_URL}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${API_BASE_URL}/api/lugarItinerario/editarEstadoLugarItinerario`;
@@ -212,12 +211,12 @@ function crearCookieYedit(index) {
     window.location.href = 'editar_aventura';
 }
 
-function goToMuseums(itineraryId) {
+function goToMuseums(itineraryId, itineraryName) {
     // (Opcional) guardar el itinerario activo
     localStorage.setItem("activeItinerary", itineraryId);
 
     // Redirigir
-    window.location.href = "/museums";
+    window.location.href =  `/museums?nombrePlan=${itineraryName}&idPlan=${itineraryId}`;
 }
 
 // Función para actualizar el estado del itinerario
@@ -363,7 +362,7 @@ function createEmptyItineraryCard(itinerario) {
         </div>
         <div class="empty-state-body">
             <p data-i18n="planempty">Este plan de visita está vacío.</p>
-            <button class="add-place-btn-modern" onclick="goToMuseums('${itinerario.ID}')">
+            <button class="add-place-btn-modern" onclick="goToMuseums('${itinerario.ID}', '${itinerario.Nombre}')">
                 <img src="assets/icons/agregarIcon2.png">
                 <span data-i18n="add_museums">Agregar Museos</span>
             </button>

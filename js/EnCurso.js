@@ -2,27 +2,89 @@ import { getUserLocation } from "../ARCY-imports/getUserLocation.js"
 import { rutaIti } from "../ARCY-imports/rutas.js"
 import { showLoading, hideLoading } from "../ARCY-imports/loading.js"
 
-const API_URL = `${server}/api/lugarItinerario/obtenerLugaresItinerario`;
-const API_URL_STATEI = `${server}/api/lugarItinerario/editarEstadoLugarItinerario`;
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+
+const API_URL = `${API_BASE_URL}/api/lugarItinerario/obtenerLugaresItinerario`;
+const API_URL_STATEI = `${API_BASE_URL}/api/lugarItinerario/editarEstadoLugarItinerario`;
 
 let mapa;
 let directionsService
 let directionsRenderer
 
-async function initMap() {
-        const userLocation = await getUserLocation();
-    const { Map } = await google.maps.importLibrary("maps");
-    mapa = new Map(document.getElementById("map"),{
-        center:userLocation,
-        zoom: 16,
-        styles: [
-        {
-          featureType: 'poi',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-      ],
+let parkingMarkers = [];
+
+function clearParkingMarkers() {
+  parkingMarkers.forEach(marker => {
+    marker.map = null;
+  });
+  parkingMarkers = [];
+}
+
+async function showNearbyParking(destinoCoords) {
+  try {
+    const [{ Place, SearchNearbyRankPreference }, { AdvancedMarkerElement }] = await Promise.all([
+      google.maps.importLibrary("places"),
+      google.maps.importLibrary("marker"),
+    ]);
+
+    clearParkingMarkers();
+
+    const request = {
+      fields: ["displayName", "location", "formattedAddress", "googleMapsURI"],
+      locationRestriction: {
+        center: destinoCoords,
+        radius: 700, // puedes subirlo o bajarlo
+      },
+      includedPrimaryTypes: ["parking", "parking_garage", "parking_lot"],
+      maxResultCount: 5,
+      rankPreference: SearchNearbyRankPreference.DISTANCE,
+    };
+
+    const { places } = await Place.searchNearby(request);
+
+    if (!places || places.length === 0) {
+      console.log("No se encontraron estacionamientos cercanos.");
+      return;
+    }
+
+    places.forEach((place, index) => {
+      if (!place.location) return;
+
+      const marker = new AdvancedMarkerElement({
+        map: mapa,
+        position: place.location,
+        title: place.displayName || `Estacionamiento ${index + 1}`,
+      });
+
+      parkingMarkers.push(marker);
+
+      // Si quieres que al dar clic abra Google Maps:
+      marker.addListener?.("click", () => {
+        if (place.googleMapsURI) {
+          window.open(place.googleMapsURI, "_blank");
+        }
+      });
     });
+  } catch (error) {
+    console.error("Error buscando estacionamientos cercanos:", error);
+  }
+}
+
+async function initMap() {
+  const userLocation = await getUserLocation();
+  const { Map } = await google.maps.importLibrary("maps");
+
+  mapa = new Map(document.getElementById("map"), {
+    center: userLocation,
+    zoom: 16,
+    styles: [
+      {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }],
+      },
+    ],
+  });
 }
 
 
@@ -49,7 +111,7 @@ function getTime(originCoords, destCords, mode){
 
 async function createQueja(TipoQueja, idMuseo) {
     try {
-        const response = await fetch(`${server}/api/queja/crearQueja`, {
+        const response = await fetch(`${API_BASE_URL}/api/queja/crearQueja`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ entrada: { 
@@ -98,7 +160,7 @@ async function fetchStateItinerary(idPlanMuseo){
 
 async function updateItineraryState(idPlan) {
     try {
-        const response = await fetch(`${server}/api/itinerario/editarEstadoItinerario`, {
+        const response = await fetch(`${API_BASE_URL}/api/itinerario/editarEstadoItinerario`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_Plan: idPlan, Estado: 'F' })
@@ -286,7 +348,7 @@ function parseDurationToMinutes(durationText) {
 
 async function fetchPlaces(placeId) {
     try {
-        const response = await fetch(`${server}/api/lugar/${placeId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/lugar/${placeId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -300,7 +362,7 @@ async function fetchPlaces(placeId) {
 const MostrarValores = async () => {
     try {
         const lugares= await fetchItineraryPlaces(miDato);
-        
+        console.log(lugares)
         if (lugares.length === 0) {
             Swal.fire({
                 icon: 'warning',
@@ -363,6 +425,11 @@ const MostrarValores = async () => {
                 showLoading("Calculando ruta...");
                 try{
                     rutaIti(directionsService, directionsRenderer, coordenadasActualesOrigen, mapa, travelMode);
+                    if (travelMode === "DRIVING" || travelMode === google.maps.TravelMode.DRIVING) {
+                        await showNearbyParking(destinoCoords);
+                    } else {
+                        clearParkingMarkers();
+                    } 
                 }
                 catch(e){
                     console.error("Error al calcular ruta:", e);
@@ -443,6 +510,11 @@ const MostrarValores = async () => {
                     showLoading("Calculando ruta...");
                     try{
                         rutaIti(directionsService, directionsRenderer, coordenadasActualesO, mapa, travelMode);
+                          if (travelMode === "DRIVING" || travelMode === google.maps.TravelMode.DRIVING) {
+                            await showNearbyParking(destinoCoords);
+                        } else {
+                            clearParkingMarkers();
+                        }
                     }
                     catch(e){
                         console.error("Error al calcular ruta:", e);
@@ -511,6 +583,11 @@ const MostrarValores = async () => {
                         document.getElementById("length").textContent = duration;
                         try{
                             rutaIti(directionsService, directionsRenderer, coordenadasActuales, mapa, travelMode);
+                            if (travelMode === "DRIVING" || travelMode === google.maps.TravelMode.DRIVING) {
+                                await showNearbyParking(destinoCoords);
+                            } else {
+                                clearParkingMarkers();
+                            }
                         }
                         catch(e){
                             console.error("Error al calcular ruta:", e);
@@ -588,12 +665,12 @@ const MostrarValores = async () => {
 
 document.addEventListener('DOMContentLoaded', async function () {
     
-    initMap();
+  await initMap();
 
-    const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes");
-      directionsService = new DirectionsService();
-    directionsRenderer = new DirectionsRenderer();
-    directionsRenderer.setMap(mapa);
+  const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes");
+  directionsService = new DirectionsService();
+  directionsRenderer = new DirectionsRenderer();
+  directionsRenderer.setMap(mapa);
 
       const drawer = document.getElementById("indicacionesDrawer");
   const toggle = document.getElementById("toggleIndicaciones");
@@ -612,6 +689,25 @@ document.addEventListener('DOMContentLoaded', async function () {
       toggle.innerHTML = "<span>◀</span>";
     });
   }
+
+        const resumenDrawer = document.getElementById("resumenDrawer");
+        const toggleResumen = document.getElementById("toggleResumen");
+        const closeResumen = document.getElementById("closeResumen");
+
+        if (toggleResumen && resumenDrawer) {
+        toggleResumen.addEventListener("click", () => {
+            resumenDrawer.classList.toggle("is-open");
+            toggleResumen.innerHTML = resumenDrawer.classList.contains("is-open") ? "<span>◀</span>" : "<span>▶</span>";
+        });
+        }
+
+        if (closeResumen && resumenDrawer && toggleResumen) {
+        closeResumen.addEventListener("click", () => {
+            resumenDrawer.classList.remove("is-open");
+            toggleResumen.innerHTML = "<span>▶</span>";
+        });
+        }
+
     MostrarValores();
 });
 

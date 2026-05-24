@@ -100,6 +100,7 @@ export const rutaIti = async (
 
     // Pintar indicaciones personalizadas
     renderIndicaciones(steps);
+    console.log(steps);
 
     // Abrir el panel automáticamente
     const drawer = document.getElementById("indicacionesDrawer");

@@ -59,41 +59,47 @@
                         <img src="./assets/icons/cerrarIcono.png" class="sidebar-img"> <span data-i18n="logout">Cerrar Sesión </span>
                     </a>
                 </div>
-                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</a>
+                <button type="button" id="closeBtn" class="closeBtn btn-icon" onclick="closeNav()">&times;</button>
             </div>
         </div> 
     </header>
 
     <main> 
-        <div class="general-info">
-            <div class="cont-ginfo scrollable-section">
-                <div class="header-o-ginfo ">
-                    <img src="./assets/icons/origenIcon.png" width="24px" height="24px">
-                    <span class="scrollable-section"><b >Aventura: </b><span id="nombreAventura"> a </span></span>
-                </div>             
+        <button type="button" id="toggleResumen" class="drawer-tab-left" aria-label="Mostrar u ocultar resumen">
+            <span>◀</span>
+        </button>
+
+        <aside id="resumenDrawer" class="resumen-drawer is-open">
+            <div class="drawer-header">
+                <div>
+                <h3>Resumen del plan</h3>
+                <p id="subtituloPlan">Detalles principales de tu visita</p>
+                </div>
+                <button type="button" id="closeResumen" class="drawer-close" aria-label="Cerrar resumen">×</button>
             </div>
 
-            <div class="cont-ginfo scrollable-section">
-                <div class="header-o-ginfo">
-                    <img src="./assets/icons/reloj3.png" width="24px" height="24px">
-                    <span class="scrollable-section"><b >Duración: </b><span id="length"> Calculando Ruta... </span></span>
-                    </div>
-            </div>
+            <div class="resumen-content">
+                <div class="info-item">
+                <span class="info-label">Aventura</span>
+                <span id="nombreAventura" class="info-value">—</span>
+                </div>
 
-            <div class="cont-ginfo scrollable-section">
-                <div class="header-o-ginfo">
-                    <img src="./assets/icons/origenIcon.png" width="24px" height="24px">
-                    <span class="scrollable-section"><b>Origen: </b><span id="nombreLugarOrigen"> Sin Origen especificado. </span></span>
-                     </div>
-            </div>
+                <div class="info-item">
+                <span class="info-label">Duración</span>
+                <span id="length" class="info-value">Calculando ruta...</span>
+                </div>
 
-            <div class="cont-ginfo scrollable-section">
-                <div class="header-o-ginfo">
-                    <img src="./assets/icons/origenIcon.png" width="24px" height="24px">
-                    <span class="scrollable-section"><b>Destino: </b><span id="nombreLugar"> Sin Origen especificado. </span></span>
-                    </div>
+                <div class="info-item">
+                <span class="info-label">Origen</span>
+                <span id="nombreLugarOrigen" class="info-value">Sin origen especificado</span>
+                </div>
+
+                <div class="info-item">
+                <span class="info-label">Destino</span>
+                <span id="nombreLugar" class="info-value">Sin destino especificado</span>
+                </div>
             </div>
-        </div>
+        </aside>
         
         <div id="auxPlaces" style="display: none;"></div>
 
@@ -118,9 +124,9 @@
         <div id="map"></div>
         
         <div class="botones">
-            <button type="button" class="create-adventure-link" id="btnOmitir">Cancelar</button>
-            <button type="button" class="create-adventure-link" id="btnQueja">Reportar problema</button>
             <button type="button" class="create-adventure-link" id="btnLlegar">He llegado</button>
+            <button type="button" class="create-adventure-link" id="btnQueja">Reportar problema</button>
+            <button type="button" class="create-adventure-link" id="btnOmitir">Cancelar</button>
         </div>
     </main>
     
