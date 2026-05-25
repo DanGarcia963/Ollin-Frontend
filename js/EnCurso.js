@@ -22,28 +22,31 @@ function clearParkingMarkers() {
 
 async function showNearbyParking(destinoCoords) {
   try {
-    const [{ Place, SearchNearbyRankPreference }, { AdvancedMarkerElement }] = await Promise.all([
-      google.maps.importLibrary("places"),
-      google.maps.importLibrary("marker"),
-    ]);
+    const [{ Place, SearchNearbyRankPreference }, { AdvancedMarkerElement }] =
+      await Promise.all([
+        google.maps.importLibrary("places"),
+        google.maps.importLibrary("marker"),
+      ]);
 
     clearParkingMarkers();
 
-    const request = {
+    const { places } = await Place.searchNearby({
       fields: ["displayName", "location", "formattedAddress", "googleMapsURI"],
       locationRestriction: {
         center: destinoCoords,
-        radius: 700, // puedes subirlo o bajarlo
+        radius: 700,
       },
-      includedPrimaryTypes: ["parking", "parking_garage", "parking_lot"],
+      includedPrimaryTypes: ["parking"],
       maxResultCount: 5,
       rankPreference: SearchNearbyRankPreference.DISTANCE,
-    };
-
-    const { places } = await Place.searchNearby(request);
+    });
 
     if (!places || places.length === 0) {
-      console.log("No se encontraron estacionamientos cercanos.");
+      await Swal.fire({
+        icon: "info",
+        title: "Sin estacionamientos cercanos",
+        text: "No se encontraron estacionamientos en este radio.",
+      });
       return;
     }
 
@@ -57,13 +60,6 @@ async function showNearbyParking(destinoCoords) {
       });
 
       parkingMarkers.push(marker);
-
-      // Si quieres que al dar clic abra Google Maps:
-      marker.addListener?.("click", () => {
-        if (place.googleMapsURI) {
-          window.open(place.googleMapsURI, "_blank");
-        }
-      });
     });
   } catch (error) {
     console.error("Error buscando estacionamientos cercanos:", error);
@@ -77,6 +73,7 @@ async function initMap() {
   mapa = new Map(document.getElementById("map"), {
     center: userLocation,
     zoom: 16,
+    mapId: "DEMO_MAP_ID", // o tu MAP ID real
     styles: [
       {
         featureType: "poi",

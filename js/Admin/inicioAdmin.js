@@ -1,6 +1,8 @@
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+
 async function fetchLoadUsers() {
   try {
-      const response = await fetch(`${server}/api/usuarioTurista`, {
+      const response = await fetch(`${API_BASE_URL}/api/usuarioTurista`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
       });
@@ -13,7 +15,7 @@ async function fetchLoadUsers() {
 
 async function fetchLoadQuejasMuseos() {
   try {
-      const response = await fetch(`${server}/api/queja`, {
+      const response = await fetch(`${API_BASE_URL}/api/queja`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
       });
@@ -26,7 +28,7 @@ async function fetchLoadQuejasMuseos() {
 
 async function fetchRecommendedMuseums() {
     try {
-        const response = await fetch(`${server}/api/lugarVisitado/recomendarMuseos`,
+        const response = await fetch(`${API_BASE_URL}/api/lugarVisitado/recomendarMuseos`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
@@ -150,7 +152,7 @@ recommendedMuseums.forEach(async museum => {
         icon: 'info', title: 'Iniciando...', text: 'Arrancando motor de scraping...', timer: 1500, showConfirmButton: false
       });
 
-      const res = await fetch(`${server}/ejecutarScript`, { method: "POST" });
+      const res = await fetch(`${API_BASE_URL}/ejecutarScript`, { method: "POST" });
       
       if (res.ok) {
         // Limpiar intervalo anterior si existe
@@ -159,7 +161,7 @@ recommendedMuseums.forEach(async museum => {
         // Empezar a preguntar por los logs cada 2 segundos
         intervaloMuseos = setInterval(async () => {
           try {
-            const resLog = await fetch(`${server}/logs/museos`);
+            const resLog = await fetch(`${API_BASE_URL}/logs/museos`);
             const texto = await resLog.text();
             const cajaTexto = document.getElementById("museos-json");
             cajaTexto.innerText = texto;
@@ -186,14 +188,14 @@ recommendedMuseums.forEach(async museum => {
         icon: 'info', title: 'Iniciando...', text: 'Buscando cartelera...', timer: 1500, showConfirmButton: false
       });
 
-      const res = await fetch(`${server}/ejecutarScriptNightMuseums`, { method: "POST" });
+      const res = await fetch(`${API_BASE_URL}/ejecutarScriptNightMuseums`, { method: "POST" });
       
       if (res.ok) {
         if(intervaloEventos) clearInterval(intervaloEventos);
         
         intervaloEventos = setInterval(async () => {
           try {
-            const resLog = await fetch(`${server}/logs/eventos`);
+            const resLog = await fetch(`${API_BASE_URL}/logs/eventos`);
             const texto = await resLog.text();
             const cajaTexto = document.getElementById("eventos-log");
             cajaTexto.innerText = texto;
