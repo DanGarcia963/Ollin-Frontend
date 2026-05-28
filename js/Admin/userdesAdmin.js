@@ -1,7 +1,23 @@
-// Función para obtener los usuarios
-async function fetchUsers() {
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+
+let currentFilters = {
+  nombre: '',
+  estado: ''
+};
+
+// Función para obtener los usuarios con filtros
+async function fetchUsers(filters = {}) {
   try {
-    const response = await fetch(`${server}/api/usuarioTurista`, {
+    const params = new URLSearchParams();
+
+    if (filters.nombre) params.append('nombre', filters.nombre);
+    if (filters.estado) params.append('estado', filters.estado);
+
+    const url = params.toString()
+      ? `${API_BASE_URL}/api/usuarioTurista?${params.toString()}`
+      : `${API_BASE_URL}/api/usuarioTurista`;
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -15,7 +31,7 @@ async function fetchUsers() {
 }
 
 function deleteUser(userID) {
-  fetch(`${server}/api/deleteUsuario/${userID}`, {
+  fetch(`${API_BASE_URL}/api/deleteUsuario/${userID}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -26,7 +42,7 @@ function deleteUser(userID) {
         text: "El usuario fue eliminado con éxito",
         icon: "success"
       }).then(() => {
-        window.location.reload();
+        displayUsers(1000, currentFilters);
       });
     })
     .catch(error => {
@@ -34,26 +50,62 @@ function deleteUser(userID) {
     });
 }
 
+async function validateUser(userID) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/usuarioTurista/validarCuenta`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id_Turista: userID }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'No se pudo validar el usuario');
+    }
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Usuario validado',
+      text: result.message || 'El usuario fue validado correctamente.'
+    }).then(() => {
+      displayUsers(1000, currentFilters);
+    });
+
+  } catch (error) {
+    console.error('Error validando usuario:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error.message || 'No se pudo validar el usuario.'
+    });
+  }
+}
+
 // Helper genérico para actualizar campos del usuario
 async function updateUserField(endpoint, entrada) {
-  const response = await fetch(`${server}/api/usuarioTurista/${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}/api/usuarioTurista/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ entrada }),
+    body: JSON.stringify(entrada),
   });
 
-  if (!response.ok) {
-    throw new Error(`Error actualizando ${endpoint}: ${response.status}`);
+  const data = await response.json();
+
+  if (!response.ok || data.status >= 400) {
+    throw new Error(data.error || `Error actualizando ${endpoint}`);
   }
 
-  return await response.json();
+  return data;
 }
 
 // Abre modal de edición
 async function openEditUserModal(userID) {
-  const users = await fetchUsers();
+  const users = await fetchUsers(currentFilters);
   const user = users.find(u => String(u.id) === String(userID));
 
   if (!user) {
@@ -113,7 +165,6 @@ async function openEditUserModal(userID) {
 
   try {
     const entradaBase = { id_Turista: user.id };
-
     const promises = [];
 
     if (value.Nombre !== (user.Nombre ?? '')) {
@@ -148,7 +199,7 @@ async function openEditUserModal(userID) {
       title: 'Actualizado',
       text: 'El usuario se actualizó correctamente.',
     }).then(() => {
-      displayUsers(1000);
+      displayUsers(1000, currentFilters);
     });
 
   } catch (error) {
@@ -161,37 +212,41 @@ async function openEditUserModal(userID) {
   }
 }
 
-// Crea la tarjeta HTML para un usuario con TAILWIND (Responsive)
+// Crea la tarjeta HTML para un usuario
 async function createUserCard(userInfo) {
   const isVerified = userInfo.Estado_Cuenta === 'Y';
 
-  const verifiedIcon = isVerified
-    ? `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span class="truncate">Verificado</span>`
-    : `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span class="truncate">No Verificado</span>`;
+  const verifiedBadge = isVerified
+    ? `<span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">Verificado</span>`
+    : `<span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">No verificado</span>`;
 
-  const verifiedColor = isVerified ? 'text-[#438B9E]' : 'text-gray-400';
+  const verifyButton = isVerified
+    ? `<span class="text-xs px-3 py-2 rounded-lg bg-gray-100 text-gray-500 font-semibold">Ya validado</span>`
+    : `<button class="text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-2 rounded-lg transition-colors cursor-pointer verifyBtn" title="Validar" data-userid="${userInfo.id}">
+         Validar
+       </button>`;
 
   return `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full transition-transform hover:shadow-md hover:-translate-y-1">
       <div class="p-4 md:p-5 flex items-center gap-4 md:gap-5">
         <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-200 rounded-full flex items-center justify-center shrink-0 shadow-inner overflow-hidden border-2 border-gray-50">
           <img src="assets/icons/Perfil.PNG" alt="User" class="w-full h-full object-cover" onerror="this.style.display='none'">
-          <svg class="w-6 h-6 md:w-8 md:h-8 text-gray-400 absolute -z-10" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-          </svg>
         </div>
 
         <div class="flex flex-col min-w-0 flex-1">
           <h3 class="text-[#438B9E] font-bold text-base md:text-lg leading-tight mb-1 truncate" title="${userInfo.Nombre || 'Usuario Sin Nombre'}">
             ${userInfo.Nombre || 'Usuario Sin Nombre'}
           </h3>
-          <span class="${verifiedColor} font-medium text-xs md:text-sm flex items-center gap-1">
-            ${verifiedIcon}
-          </span>
+
+          <div class="flex flex-wrap items-center gap-2">
+            ${verifiedBadge}
+          </div>
         </div>
       </div>
 
-      <div class="border-t border-gray-100 bg-gray-50/50 p-2 md:p-3 flex justify-end gap-2 pr-4">
+      <div class="border-t border-gray-100 bg-gray-50/50 p-2 md:p-3 flex flex-wrap justify-end gap-2 pr-4">
+        ${verifyButton}
+
         <button class="text-[#438B9E] hover:bg-[#438B9E] hover:text-white p-2 rounded-lg transition-colors cursor-pointer editBtn" title="Editar" data-userid="${userInfo.id}">
           <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
@@ -208,15 +263,16 @@ async function createUserCard(userInfo) {
   `;
 }
 
-async function displayUsers(maxUsers = Infinity) {
-  const favoritePlaces = await fetchUsers();
-  const museumContainer = document.getElementById('usersdes');
+async function displayUsers(maxUsers = Infinity, filters = currentFilters) {
+  const users = await fetchUsers(filters);
+  const usersContainer = document.getElementById('usersdes');
   const emptyMessage = document.getElementById('no-favorites-message');
 
-  museumContainer.innerHTML = '';
+  usersContainer.innerHTML = '';
 
-  if (!favoritePlaces || favoritePlaces.length === 0) {
+  if (!users || users.length === 0) {
     emptyMessage.style.display = 'block';
+    emptyMessage.querySelector('p').textContent = 'No hay usuarios que coincidan con los filtros.';
     return;
   } else {
     emptyMessage.style.display = 'none';
@@ -224,11 +280,11 @@ async function displayUsers(maxUsers = Infinity) {
 
   let count = 0;
 
-  for (const place of favoritePlaces) {
+  for (const user of users) {
     if (count >= maxUsers) break;
 
-    const cardHTML = await createUserCard(place);
-    museumContainer.insertAdjacentHTML('beforeend', cardHTML);
+    const cardHTML = await createUserCard(user);
+    usersContainer.insertAdjacentHTML('beforeend', cardHTML);
 
     count++;
   }
@@ -237,13 +293,63 @@ async function displayUsers(maxUsers = Infinity) {
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('usersdes');
 
+  const inputName = document.getElementById('filterName');
+  const selectVerified = document.getElementById('filterVerified');
+  const btnApplyFilters = document.getElementById('btnApplyFilters');
+  const btnClearFilters = document.getElementById('btnClearFilters');
+
+  function applyFilters() {
+    currentFilters = {
+      nombre: inputName.value.trim(),
+      estado: selectVerified.value
+    };
+    displayUsers(Infinity, currentFilters);
+  }
+
+  btnApplyFilters.addEventListener('click', applyFilters);
+
+  btnClearFilters.addEventListener('click', () => {
+    inputName.value = '';
+    selectVerified.value = '';
+    currentFilters = { nombre: '', estado: '' };
+    displayUsers(Infinity, currentFilters);
+  });
+
+  inputName.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') applyFilters();
+  });
+
+  selectVerified.addEventListener('change', applyFilters);
+
   container.addEventListener('click', async function (event) {
     const editBtn = event.target.closest('.editBtn');
     const deleteBtn = event.target.closest('.deleteBtn');
+    const verifyBtn = event.target.closest('.verifyBtn');
 
     if (editBtn) {
       const userID = editBtn.getAttribute('data-userid');
       await openEditUserModal(userID);
+      return;
+    }
+
+    if (verifyBtn) {
+      const userID = verifyBtn.getAttribute('data-userid');
+
+      Swal.fire({
+        title: "¿Validar usuario?",
+        text: "Esta acción marcará al usuario como verificado.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#16a34a",
+        cancelButtonColor: "#888888",
+        confirmButtonText: "Sí, validar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          validateUser(userID);
+        }
+      });
+
       return;
     }
 
@@ -267,5 +373,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  displayUsers(Infinity);
+  displayUsers(Infinity, currentFilters);
 });

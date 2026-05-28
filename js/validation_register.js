@@ -1,43 +1,60 @@
 const server = "https://ollin-backend-production-a735.up.railway.app"
 
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('loginFormRegister');
+    const btnRegister = document.getElementById('next');
+    btnRegister.textContent = 'Registrando usuario...';
+    let isSubmitting = false;
 
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        if (validateForm()) {
-            try {
-                const nombre = document.getElementById('name').value;
-                const apellido = document.getElementById('lastname').value;
-                const correo = document.getElementById('email').value;
-                const contrasena = document.getElementById('password').value;
-                const fechaNacimiento = document.getElementById('birthdate').value;
-                console.log(nombre, apellido, correo, contrasena, fechaNacimiento);
-                const res = await fetch(`${server}/api/authenticator/registro/usuarioTurista`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Nombre: nombre,
-                        Apellido: apellido,
-                        Correo: correo,
-                        Contrasena: contrasena,
-                        Fecha_Nacimiento: fechaNacimiento
-                    })
-                });
+        if (isSubmitting) return; // evita doble click / doble enter
 
-                const resultado = await res.json();
+        if (!validateForm()) {
+            return;
+        }
 
-                if (resultado.redirect) {
-                    handleSuccessfulAccountCreation(resultado.redirect);
-                } else {
-                    showAlert(resultado.message || 'Error al crear la cuenta', 'error');
-                }
-            } catch (error) {
-                showAlert('Error de conexión con el servidor', 'error');
+        isSubmitting = true;
+        btnRegister.disabled = true;
+        btnRegister.textContent = 'Registrando usuario...';
+
+        try {
+            const nombre = document.getElementById('name').value;
+            const apellido = document.getElementById('lastname').value;
+            const correo = document.getElementById('email').value;
+            const contrasena = document.getElementById('password').value;
+            const fechaNacimiento = document.getElementById('birthdate').value;
+
+            const res = await fetch(`${API_BASE_URL}/api/authenticator/registro/usuarioTurista`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Nombre: nombre,
+                    Apellido: apellido,
+                    Correo: correo,
+                    Contrasena: contrasena,
+                    Fecha_Nacimiento: fechaNacimiento
+                })
+            });
+
+            const resultado = await res.json();
+
+            if (resultado.redirect) {
+                handleSuccessfulAccountCreation(resultado.redirect);
+            } else {
+                showAlert(resultado.message || 'Error al crear la cuenta', 'error');
             }
+        } catch (error) {
+            showAlert('Error de conexión con el servidor', 'error');
+        } finally {
+            isSubmitting = false;
+            btnRegister.disabled = false;
+            btnRegister.textContent = 'Siguiente';
         }
     });
 
