@@ -9,13 +9,15 @@ const files = [
   'index.html', 'inicio.html', 'Museums.html', 'MisFavoritos.html',
   'MisVisitados.html', 'Aventuras_proximas.html', 'AventuraEnCurso.html',
   'perfilTurista.html', 'editarAventura.html', 'SingleRoute.html',
-  'aventuras_pasadas.html'
+  'aventuras_pasadas.html', 'registro_turista_ES.html',
+  'recuperacion_de_cuenta_ES.html', 'pagesAdmin/login_Admin.html',
+  'pagesAdmin/recuperacion_de_cuenta_Admin.html', 'pagesAdmin/registro_Admin.html'
 ];
 const source = (path) => readFileSync(resolve(root, path), 'utf8');
 
 for (const page of files) {
   const html = source(page);
-  assert.match(html, /<body class="ollin-refresh(?: ollin-auth)?">/, page + ' debe usar los estilos renovados');
+  assert.match(html, /<body class="ollin-refresh(?: ollin-auth(?:-form)?)?">/, page + ' debe usar los estilos renovados');
   assert.match(html, /\/styles\/ollin-refresh\.css/, page + ' sin CSS del rediseño');
   assert.match(html, /\/js\/ollin-enhancements\.js/, page + ' sin mejoras compartidas');
   assert.equal((html.match(/<body(?:\s|>)/g) || []).length, 1, page + ': etiqueta body duplicada');
@@ -39,6 +41,7 @@ for (const localFile of ['styles/ollin-refresh.css', 'js/ollin-enhancements.js']
 
 const scripts = [
   'ARCY-PRUEBAS/login.js', 'ARCY-PRUEBAS/admin.js',
+  'ARCY-PRUEBAS/loginAdmin.js', 'js/validation_register.js',
   'js/ollin-enhancements.js', 'js/itinerariosDes.js', 'js/musdes.js'
 ];
 for (const script of scripts) {
