@@ -1,94 +1,95 @@
 const server = "https://ollin-backend-production-46550904.up.railway.app";
 
-document.addEventListener('DOMContentLoaded', async function () {
-  
-  // =================================================================
-  // NUEVO: Atrapar el token de la URL si viene del correo de verificación
-  // =================================================================
-  const urlParams = new URLSearchParams(window.location.search);
-  const tokenDesdeURL = urlParams.get('token');
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(location.search);
+  const tokenDesdeURL = params.get('token');
 
   if (tokenDesdeURL) {
-    // 1. Guardamos la llave en la memoria como si hubiera hecho login normal
     localStorage.setItem('token', tokenDesdeURL);
-    
-    // 2. Limpiamos la URL para borrar el "?token=..." y que no se vea feo ni quede expuesto
-    window.history.replaceState({}, document.title, window.location.pathname);
-    
-    // 3. (Opcional) Mostrarle que todo salió bien
-    Swal.fire({
-      icon: 'success',
-      title: '¡Cuenta verificada!',
-      text: 'Tu correo ha sido confirmado y ya has iniciado sesión automáticamente.',
-      timer: 3000,
-      showConfirmButton: false
-    });
+    params.delete('token');
+    const rest = params.toString();
+    history.replaceState({}, document.title, location.pathname + (rest ? '?' + rest : '') + location.hash);
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Cuenta verificada!',
+        text: 'Tu cuenta se ha verificado y puedes continuar explorando.',
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
   }
-  // =================================================================
 
-  // 1. Sacamos la llave de la memoria (ahora atrapará el del correo si acaba de entrar)
   const token = localStorage.getItem('token');
-
-  // Si no trae llave, lo rebotamos inmediatamente
   if (!token) {
-    console.log("No hay token guardado, regresando al login...");
-    window.location.href = "/";
+    location.replace('/');
     return;
   }
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
   try {
-    // 2. Mandamos la llave al backend en el cuerpo (body) de la petición
-    const res = await fetch(`${server}/api/authenticator/usuarioLogueado`, {
+    const response = await fetch(server + '/api/authenticator/usuarioLogueado', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ token: token }) // ¡Vital mandar esto!
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+      signal: controller.signal
     });
 
-    // Si el backend dice que el token es viejo o inválido
-    if (!res.ok) {
-      throw new Error("El backend rechazó el token (401)");
+    if (response.status === 401 || response.status === 403) {
+      const invalid = new Error('Tu sesión ha expirado.');
+      invalid.invalidSession = true;
+      throw invalid;
+    }
+    if (!response.ok) {
+      throw new Error('El servidor de Ollin no está disponible en este momento.');
     }
 
-    let usuario = await res.json();
-
-    // 3. Parche para extraer el ID si viene en arreglo de Supabase
-    if (Array.isArray(usuario) && usuario.length > 0) {
-      usuario = usuario[0];
+    const result = await response.json();
+    const usuario = Array.isArray(result) ? result[0] : result;
+    if (!usuario || typeof usuario !== 'object' || !usuario.id) {
+      const invalid = new Error('Tu sesión ya no es válida.');
+      invalid.invalidSession = true;
+      throw invalid;
     }
 
-    // Si el usuario viene vacío o es "false"
-    if (!usuario || usuario === false) {
-      throw new Error("Token válido pero usuario no existe");
-    }
-
-    // ==========================================
-    // ¡ÉXITO! SI LLEGA AQUÍ, EL USUARIO ESTÁ DENTRO
-    // ==========================================
-    console.log("¡Sesión validada con éxito!", usuario);
     window.usuarioLogueado = usuario;
-    window.idTurista = usuario.id; 
-    
-    const nombreUsuario = document.getElementById("nombreUsuario");
+    window.idTurista = usuario.id;
+    const nombreUsuario = document.getElementById('nombreUsuario');
     if (nombreUsuario) {
-        nombreUsuario.innerHTML = usuario.Nombre;
-        nombreUsuario.dataset.idTurista = usuario.id;
+      nombreUsuario.textContent = usuario.Nombre || 'Visitante';
+      nombreUsuario.dataset.idTurista = usuario.id;
+    }
+    window.dispatchEvent(new CustomEvent('ollin:session-ready', { detail: { id: usuario.id } }));
+  } catch (error) {
+    console.error('Error verificando sesión:', error.message);
+    if (error.invalidSession) {
+      localStorage.removeItem('token');
+      location.replace('/');
+      return;
     }
 
-  } catch (error) {
-    // Si cualquier cosa falla arriba, borramos la llave sucia y lo rebotamos
-    console.error("Error verificando sesión:", error.message);
-    localStorage.removeItem('token');
-    window.location.href = "/";
+    // Las caídas temporales de Supabase no deben borrar una sesión válida.
+    const message = document.createElement('div');
+    message.className = 'ollin-network-alert';
+    message.setAttribute('role', 'alert');
+    message.textContent = 'No pudimos validar tu sesión. Revisa la conexión e inténtalo de nuevo. ';
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.textContent = 'Reintentar';
+    retry.style.cssText = 'margin-left:8px;text-decoration:underline;font-weight:700;';
+    retry.addEventListener('click', () => location.reload());
+    message.append(retry);
+    document.body.append(message);
+  } finally {
+    clearTimeout(timer);
   }
 });
-document.addEventListener('DOMContentLoaded', function () {
-  const logoutBtn = document.getElementById('cerrarSesion');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', function () {
-      localStorage.removeItem('token');
-      window.location.href = "/";
-    });
-  }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('cerrarSesion')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    localStorage.removeItem('token');
+    location.replace('/');
+  });
 });
