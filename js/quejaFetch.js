@@ -1,5 +1,5 @@
 // submitQueja.js
-//const server = "https://ollin-backend-production-a735.up.railway.app"
+//const server = "https://ollin-backend-production-46550904.up.railway.app"
 
 async function enviarQueja() {
     var idTurista = "1"; // Este valor podría ser dinámico según la sesión del usuario
