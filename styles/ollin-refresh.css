@@ -228,3 +228,22 @@ body.ollin-auth #recuperation,body.ollin-auth .register-link { color:#176f75; }
 @media (prefers-reduced-motion: reduce) {
   .ollin-backtop, .ollin-action, .ollin-filter-chip { transition:none !important; }
 }
+/* Formularios secundarios: registro, recuperación y acceso de administración. */
+body.ollin-auth-form .main-wrapper { width: min(100%, 520px); max-width: 520px; }
+body.ollin-auth-form .glass-card {
+  background: rgba(255,253,250,.96);
+  border: 1px solid #dbe6e2;
+  border-radius: 26px;
+  box-shadow: 0 24px 64px rgba(23,58,67,.14);
+}
+body.ollin-auth-form #next {
+  background: #176f75;
+  box-shadow: 0 12px 26px rgba(23,111,117,.18);
+}
+body.ollin-auth-form #next:hover { background: #14555d; }
+body.ollin-auth-form .register-link,
+body.ollin-auth-form #recuperation { color:#176f75; }
+body.ollin-auth-form input:focus {
+  border-color: #176f75;
+  box-shadow: 0 0 0 4px rgba(23,111,117,.10);
+}
