@@ -17,7 +17,8 @@ async function fetchItineraryPlaces(id_Turista) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error('Error fetching favorite places:', error);
+        console.error('Error obteniendo itinerarios:', error);
+        throw error;
     }
 }
 
@@ -39,49 +40,34 @@ async function fetchItineraryPlaces1(idPlan) {
 // Función para mostrar los lugares favoritos
 // Función modificada para mostrar los lugares favoritos
 async function displayFavorites() {
-    
-        const nombreUsuario = document.getElementById("nombreUsuario");
-        const itinerarios = await fetchItineraryPlaces(nombreUsuario.dataset.idTurista);
-        const itinerariesContainer = document.getElementById('containerItinerarios');
+    const nameElement = document.getElementById('nombreUsuario');
+    const idTurista = window.idTurista || nameElement?.dataset.idTurista;
+    const container = document.getElementById('containerItinerarios');
+    const emptyState = document.getElementById('no-favorites-message');
 
-        if (itinerarios && itinerarios.length > 0) {
-            itinerariesContainer.innerHTML = ''; // Limpiar el contenedor
+    if (!container || !idTurista) {
+        throw new Error('No se pudo identificar la sesión del usuario.');
+    }
 
-            // Usar forEach para obtener tanto el itinerario como su índice
-            itinerarios.forEach(async (itinerario, index) => {
-                console.log("Itinerario actual:", itinerario);
-                const zeroItinerario = await fetchFirstPlaceOfItinerary(itinerario.ID);
+    const itinerarios = await fetchItineraryPlaces(idTurista);
+    if (!Array.isArray(itinerarios)) {
+        throw new Error('Respuesta inesperada al obtener los itinerarios.');
+    }
 
-                // Verifica si el itinerario está vacío
-                if (!zeroItinerario || Object.keys(zeroItinerario).length === 0) {
-                    console.log(`Itinerario vacío encontrado con ID: ${itinerario.ID}`);
-                    const emptyItineraryCard = createEmptyItineraryCard(itinerario);
-                    itinerariesContainer.innerHTML += emptyItineraryCard;
-                    return;
-                }
+    // Las consultas se completan antes de pintar las tarjetas, en el orden correcto.
+    const cards = await Promise.all(itinerarios.map(async (itinerario, index) => {
+        const primerMuseo = await fetchFirstPlaceOfItinerary(itinerario.ID);
+        if (!primerMuseo) return createEmptyItineraryCard(itinerario);
+        if (itinerario.Estado === 'F') return '';
+        return createItineraryCard(
+            itinerario, index, primerMuseo.NombreMuseo, primerMuseo.Imagenes
+        );
+    }));
 
-                var idPlace = zeroItinerario['ID MUSEO'];
-                var stateMuseum = zeroItinerario['Estado Museo'];
-                
-                console.log(idPlace);
-
-                // Obtener información del lugar utilizando el ID del lugar
-                if(itinerario.Estado !=='F'){
-                try {
-                    
-                    const itineraryCard = createItineraryCard(itinerario, index, zeroItinerario.NombreMuseo, zeroItinerario.Imagenes); // Pasar el nombre del lugar
-                    itinerariesContainer.innerHTML += itineraryCard; // Agregar la tarjeta al contenedor
-                } catch (error) {
-                    console.error('Error obteniendo información del lugar:', error);
-                }
-            }
-            });
-        } else {
-            document.getElementById("no-favorites-message").style.display = "block";
-        }
+    const visibleCards = cards.filter(Boolean);
+    container.innerHTML = visibleCards.join('');
+    if (emptyState) emptyState.style.display = visibleCards.length ? 'none' : 'block';
 }
-
-
 
 // Función para crear una tarjeta de itinerario
 // 1. FUNCIÓN PARA TARJETAS CON CONTENIDO
@@ -158,17 +144,21 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
 }
 
 
-function esperarUsuario() {
-    return new Promise(resolve => {
+function esperarUsuario(timeoutMs = 12000) {
+    return new Promise((resolve, reject) => {
+        if (window.usuarioLogueado) return resolve(window.usuarioLogueado);
+        const startTime = Date.now();
         const interval = setInterval(() => {
             if (window.usuarioLogueado) {
                 clearInterval(interval);
                 resolve(window.usuarioLogueado);
+            } else if (Date.now() - startTime >= timeoutMs) {
+                clearInterval(interval);
+                reject(new Error('No fue posible verificar la sesión a tiempo.'));
             }
-        }, 50);
+        }, 100);
     });
 }
-
 
 // Evento al cargar el documento
 document.addEventListener('DOMContentLoaded', async function () {
@@ -178,8 +168,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     try{
     await displayFavorites();
     }
-    catch(e){
+    catch(error){
         console.error('Error al inicializar pantalla de planes de visita:', error);
+        const container = document.getElementById('containerItinerarios');
+        if (container) {
+            container.innerHTML = '<div class="error-message" role="alert">No se pudieron cargar los planes de visita. <button type="button" onclick="location.reload()">Reintentar</button></div>';
+        }
     }
     finally{
         hideLoading();
@@ -330,7 +324,8 @@ async function fetchFirstPlaceOfItinerary(idPlan) {
         const lugares = await response.json();
         return lugares.find(lugar => lugar['Posición en itinerario'] === 0);
     } catch (error) {
-        console.error('Error fetching first place of itinerary:', error);
+        console.error('Error obteniendo el primer museo del itinerario:', error);
+        throw error;
     }
 }
 
