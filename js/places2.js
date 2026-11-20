@@ -1,6 +1,6 @@
 import { getUserLocation } from "../ARCY-imports/getUserLocation.js"
 import { imprimirMapa } from "../ARCY-imports/imiprimirMapa.js"
-const server = "https://ollin-backend-production-a735.up.railway.app"
+const server = "https://ollin-backend-production-46550904.up.railway.app"
 
 let mapa;
 let geocoder;
