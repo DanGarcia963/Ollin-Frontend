@@ -1,4 +1,4 @@
-//const server = "https://ollin-backend-production-a735.up.railway.app"
+//const server = "https://ollin-backend-production-46550904.up.railway.app"
 
 const API_URL = `${server}/api/itinerario/obtenerItinerarios`;
 const API_URL_CREAR_LUGAR_ITINERARIO = `${server}/api/lugarItinerario/crearLugarItinerario`;

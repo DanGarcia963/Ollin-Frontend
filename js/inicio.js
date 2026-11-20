@@ -7,7 +7,7 @@ console.log("Inicio.js cargado");
 const API_BASE_URL =
     (typeof server !== "undefined" && server) ||
     (typeof window !== "undefined" && window.server) ||
-    ("localhost:1234" ? `http://${"localhost:1234"}` : null) ||
+    "https://ollin-backend-production-46550904.up.railway.app" ||
     "";
 
 if (!API_BASE_URL) {

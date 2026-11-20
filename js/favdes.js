@@ -5,7 +5,7 @@ let ALL_FAVORITES = [];
 let CURRENT_LIMIT = Infinity; // Mostrar todos los lugares favoritos sin límite 
 
 console.log("iniciandodespliegue");
-const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "https://ollin-backend-production-46550904.up.railway.app";
 
 // Define la URL de la API para obtener lugares favoritos
 const API_URL = `${API_BASE_URL}/api/lugarFavorito/obtenerLugaresFavoritos`;

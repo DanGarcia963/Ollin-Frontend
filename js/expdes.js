@@ -1,7 +1,7 @@
 async function fetchNumMesVisitPlaces(idTurista) {
     console.log("fetchNumVisitPlaces llamada con idTurista:", idTurista);
     try {
-        const response = await fetch('http://localhost:1234/api/lugarVisitado/obtenerNumMuseoVisitadoMes', {
+        const response = await fetch('https://ollin-backend-production-46550904.up.railway.app/api/lugarVisitado/obtenerNumMuseoVisitadoMes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idTurista })
@@ -16,7 +16,7 @@ async function fetchNumMesVisitPlaces(idTurista) {
 async function fetchNumAnioVisitPlaces(idTurista) {
     console.log("fetchNumVisitPlaces llamada con idTurista:", idTurista);
     try {
-        const response = await fetch('http://localhost:1234/api/lugarVisitado/obtenerNumMuseoVisitadoAno', {
+        const response = await fetch('https://ollin-backend-production-46550904.up.railway.app/api/lugarVisitado/obtenerNumMuseoVisitadoAno', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idTurista })

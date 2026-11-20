@@ -5,7 +5,7 @@ let mapa;
 let directionsService
 let directionsRenderer
 
-const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "https://ollin-backend-production-46550904.up.railway.app";
 
 async function initMap() {
         const userLocation = await getUserLocation();

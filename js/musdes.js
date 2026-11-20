@@ -1,6 +1,6 @@
 import { showLoading, hideLoading } from "../ARCY-imports/loading.js";
 
-const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "http://localhost:1234";
+const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "https://ollin-backend-production-46550904.up.railway.app";
 
 const API_URL = `${API_BASE_URL}/api/lugar/`;
 const API_URL_ITINERARIOS = `${API_BASE_URL}/api/itinerario/obtenerItinerarios`;
