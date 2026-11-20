@@ -1,62 +1,61 @@
-const server = "https://ollin-backend-production-46550904.up.railway.app"
+const server = "https://ollin-backend-production-46550904.up.railway.app";
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('login').addEventListener('submit', async (e) => {
-    e.preventDefault()
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('login');
+  if (!form) return;
 
-    const password = document.getElementById('password').value
-    const email = document.getElementById('email').value;
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email')?.value.trim();
+    const password = document.getElementById('password')?.value;
+    const submit = form.querySelector('button[type="submit"]');
 
-    try{
-    const res = await fetch(`${server}/api/authenticatorAdmin/loginAdmin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        Correo: email,
-        Contrasena: password
-      })
-    })
-
-    const resultado = await res.json()
-    
-    if(resultado.error || resultado.status === 401) {
-      return showAlert(resultado.error || resultado.message)
+    if (!email || !password) {
+      return showAdminLoginError('Completa tu correo y contraseña.');
     }
 
+    if (submit) submit.disabled = true;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 18000);
 
-    if(resultado.token) {
-      localStorage.setItem('token', resultado.token);
-      localStorage.setItem('isAdmin', 'true'); // Guardamos un indicador de que es admin
-    }
-
-    console.log("Respuesta del servidor:", resultado);
-    console.log("Token guardado en localStorage:", localStorage.getItem('token'));
-    console.log("Indicador isAdmin guardado en localStorage:", localStorage.getItem('isAdmin'));
-    Swal.fire({
-      icon: 'success',
-      title: '¡Bienvenido!',
-      text: 'Has iniciado sesión correctamente',
-      timer: 2000,
-      showConfirmButton: true
-    }).then((result) => {
-      if(result.isConfirmed) {
-        window.location.href = resultado.redirect
+    try {
+      const response = await fetch(server + '/api/authenticatorAdmin/loginAdmin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ Correo: email, Contrasena: password }),
+        signal: controller.signal
+      });
+      const data = await response.json();
+      if (!response.ok || data.error || data.status === 401 || data.status === 503) {
+        throw new Error(data.error || data.message || 'No fue posible iniciar sesión.');
       }
-    })
+      if (!data.token) throw new Error('El servidor no proporcionó una sesión válida.');
 
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('isAdmin', 'true');
+      if (typeof Swal !== 'undefined') {
+        await Swal.fire({
+          icon: 'success', title: '¡Bienvenido!',
+          text: 'Tu sesión de administración está lista.',
+          timer: 1200, showConfirmButton: false
+        });
+      }
+      const redirect = new URL(data.redirect || '/inicioAdmin', location.origin);
+      location.assign(redirect.origin === location.origin ? redirect.href : '/inicioAdmin');
     } catch (error) {
-      console.error(error);
-      showAlert('Error de conexión con el servidor');
+      console.error('Error en acceso de administración:', error.message);
+      showAdminLoginError(error.name === 'AbortError'
+        ? 'La conexión tardó demasiado. Intenta nuevamente.'
+        : error.message || 'No se pudo conectar con Ollin.');
+    } finally {
+      clearTimeout(timer);
+      if (submit) submit.disabled = false;
     }
-  })
-})
+  });
+});
 
-function showAlert (message) {
-  Swal.fire({
-    icon: 'error',
-    title: 'Error',
-    text: message
-  })
+function showAdminLoginError(message) {
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({ icon: 'error', title: 'Acceso no disponible', text: message });
+  } else alert(message);
 }

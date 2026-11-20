@@ -5,7 +5,7 @@ const API_BASE_URL = typeof server !== "undefined" ? server : window.server || "
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('loginFormRegister');
     const btnRegister = document.getElementById('next');
-    btnRegister.textContent = 'Registrando usuario...';
+    btnRegister.textContent = 'Siguiente';
     let isSubmitting = false;
 
     form.addEventListener('submit', async function (event) {
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const resultado = await res.json();
 
-            if (resultado.redirect) {
+            if (res.ok && (resultado.status === 201 || resultado.status === 200) && resultado.redirect) {
                 handleSuccessfulAccountCreation(resultado.redirect);
             } else {
-                showAlert(resultado.message || 'Error al crear la cuenta', 'error');
+                showAlert(resultado.message || resultado.error || 'No se pudo registrar la cuenta. Intenta nuevamente.', 'error');
             }
         } catch (error) {
             showAlert('Error de conexión con el servidor', 'error');
@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const birthdate = document.getElementById('birthdate');
 console.log(name, lastname, email, password,passwordRE, birthdate);
         const today = new Date();
-        const birthdateValue = new Date(birthdate.value);
-        const age = today.getFullYear() - birthdateValue.getFullYear();
+        const birthdateValue = new Date(birthdate.value + 'T00:00:00');
+        const requiredDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 
         // Nombre
         if (name.value.trim() === '') {
@@ -148,7 +148,7 @@ console.log(name, lastname, email, password,passwordRE, birthdate);
             removeHighlight(birthdate);
         }
 
-        if (age < 18) {
+        if (Number.isNaN(birthdateValue.getTime()) || birthdateValue > requiredDate) {
             showAlert('Debes ser mayor de 18 años para registrarte', 'error');
             highlightInvalidField(birthdate);
             return false;
