@@ -12,6 +12,16 @@ const translations = {
 
       home:                   "Inicio",
       LogIn:                  "Inicio de Sesión",
+      button_login: "Iniciar sesión",
+      ollin_auth_kicker: "OLLIN · TU CAMINO CULTURAL",
+      ollin_auth_title: "La ciudad tiene historias esperando por ti.",
+      ollin_auth_desc: "Explora los museos de la Ciudad de México, guarda tus favoritos y organiza visitas memorables a tu ritmo.",
+      ollin_home_kicker: "La cultura es un viaje",
+      ollin_home_title: "Tu próximo descubrimiento está en la ciudad.",
+      ollin_home_desc: "Museos, arte, historia y rincones por conocer. Elige qué te inspira hoy y crea tu siguiente plan con Ollin.",
+      ollin_museums_desc: "Encuentra lugares que te interesen. Busca por nombre o utiliza los filtros para descubrir opciones que encajen con tu visita.",
+      ollin_favs_desc: "Ten a la mano los museos que te inspiran y conviértelos en tu próxima visita.",
+      ollin_plans_desc: "Ordena tus visitas, retoma tus planes y descubre algo nuevo en cada recorrido.",
 
       label_select_lang:      "IDIOMA :",
 
@@ -131,6 +141,16 @@ const translations = {
 
       home      :             "Home",
       LogIn:                  "Sign In",
+      button_login: "Sign in",
+      ollin_auth_kicker: "OLLIN · YOUR CULTURAL JOURNEY",
+      ollin_auth_title: "The city has stories waiting for you.",
+      ollin_auth_desc: "Explore Mexico City's museums, save favorites and plan memorable visits at your own pace.",
+      ollin_home_kicker: "Culture is a journey",
+      ollin_home_title: "Your next discovery is around the corner.",
+      ollin_home_desc: "Museums, art, history and places to explore. Follow your curiosity and make your next plan with Ollin.",
+      ollin_museums_desc: "Find places that inspire you. Search by name or use filters to discover museums that fit your plans.",
+      ollin_favs_desc: "Keep inspiring museums close and turn them into your next visit.",
+      ollin_plans_desc: "Organize visits, continue your plans and discover something new along the way.",
       label_select_lang:      "LANGUAGE :",
       heading:                "Log in with your account",
       heading_Admin:          "Access your museum administrator account",
@@ -239,6 +259,16 @@ const translations = {
 
         home:                   "Inizio",
         LogIn:                  "Accesso all'account",
+      button_login: "Accedi",
+      ollin_auth_kicker: "OLLIN · IL TUO VIAGGIO CULTURALE",
+      ollin_auth_title: "La città ha storie che ti aspettano.",
+      ollin_auth_desc: "Esplora i musei di Città del Messico, salva i preferiti e organizza visite indimenticabili.",
+      ollin_home_kicker: "La cultura è un viaggio",
+      ollin_home_title: "La tua prossima scoperta è in città.",
+      ollin_home_desc: "Musei, arte, storia e nuovi luoghi. Segui la curiosità e crea il tuo prossimo itinerario con Ollin.",
+      ollin_museums_desc: "Trova luoghi interessanti. Cerca per nome oppure usa i filtri per scegliere i musei.",
+      ollin_favs_desc: "Conserva i musei che ami e trasformali nella tua prossima visita.",
+      ollin_plans_desc: "Organizza le visite, riprendi i tuoi piani e scopri qualcosa di nuovo.",
         label_select_lang:      "LINGUA :",
         heading:                "Accedi con il tuo account",
         heading_Admin:          "Accedi al tuo account da amministratore del museo",
@@ -344,6 +374,16 @@ const translations = {
         tourist:                "Touriste",
         home:                   "Accueil",
         LogIn:                  "Connexion à votre compte",
+      button_login: "Se connecter",
+      ollin_auth_kicker: "OLLIN · VOTRE PARCOURS CULTUREL",
+      ollin_auth_title: "La ville a des histoires à vous raconter.",
+      ollin_auth_desc: "Explorez les musées de Mexico, enregistrez vos favoris et préparez des visites à votre rythme.",
+      ollin_home_kicker: "La culture est un voyage",
+      ollin_home_title: "Votre prochaine découverte est en ville.",
+      ollin_home_desc: "Musées, art, histoire et lieux à explorer. Suivez votre curiosité et préparez votre prochaine visite avec Ollin.",
+      ollin_museums_desc: "Trouvez des lieux inspirants. Recherchez par nom ou utilisez les filtres pour choisir vos musées.",
+      ollin_favs_desc: "Gardez vos musées préférés à portée de main pour votre prochaine visite.",
+      ollin_plans_desc: "Organisez vos visites, reprenez vos projets et découvrez de nouveaux lieux.",
         label_select_lang:      "LANGUE :",
         heading:                "Connectez-vous avec votre compte",
         heading_Admin:          "Accédez à votre compte d'administrateur du musée",
@@ -444,27 +484,29 @@ const translations = {
   const defaultLang = 'es';
   
   function applyTranslations(lang) {
-    document.documentElement.lang = lang;
+    const activeLang = translations[lang] ? lang : defaultLang;
+    const dictionary = translations[activeLang];
+    document.documentElement.lang = activeLang;
   
     // Text elements: data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (translations[lang][key]) {
-        el.innerText = translations[lang][key];
+      if (dictionary[key]) {
+        el.innerText = dictionary[key];
       }
     });
   
     // Placeholder attributes: data-i18n-placeholder
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const key = el.getAttribute('data-i18n-placeholder');
-      if (translations[lang][key]) {
-        el.setAttribute('placeholder', translations[lang][key]);
+      if (dictionary[key]) {
+        el.setAttribute('placeholder', dictionary[key]);
       }
     });
   
     // Título del documento
-    if (translations[lang].title) {
-      document.title = translations[lang].title;
+    if (dictionary.title) {
+      document.title = dictionary.title;
     }
   }
   
@@ -472,8 +514,9 @@ const translations = {
     const select = document.getElementById('lang-select');
     // Carga desde localStorage o usa default
     const saved = localStorage.getItem('lang') || defaultLang;
-    select.value = saved;
-    applyTranslations(saved);
+    if (!select) { applyTranslations(saved); return; }
+    select.value = translations[saved] ? saved : defaultLang;
+    applyTranslations(select.value);
     console.log(saved)
     // Cuando el usuario cambia de idioma
     if(select){
