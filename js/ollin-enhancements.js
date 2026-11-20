@@ -173,6 +173,16 @@
       }
     }
 
+    const filterIcon = document.getElementById('filter-icon');
+    if (filterIcon) {
+      filterIcon.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          filterIcon.click();
+        }
+      });
+    }
+
     // Iconos existentes, accesibles también con teclado.
     document.querySelectorAll('#togglePassword, #togglePasswordRE').forEach((icon) => {
       icon.setAttribute('role', 'button');
