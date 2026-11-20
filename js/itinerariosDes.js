@@ -5,6 +5,16 @@ const API_URL = `${API_BASE_URL}/api/itinerario/obtenerItinerarios`;
 const API_URL1 = `${API_BASE_URL}/api/lugarItinerario/obtenerLugaresItinerario`;
 const API_URL_STATEI = `${API_BASE_URL}/api/lugarItinerario/editarEstadoLugarItinerario`;
 
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[ch]);
+}
+function encodeInlineValue(value) {
+    return encodeURIComponent(String(value ?? '')).replace(/'/g, '%27');
+}
+
+
 // Función para obtener los itinerarios del usuario
 async function fetchItineraryPlaces(id_Turista) {
     console.log("fetchItineraryPlaces llamada con idTurista:", id_Turista);
@@ -120,14 +130,14 @@ function createItineraryCard(itinerario, index, placeName, photoUrls) {
         
         <div class="cardHeader">
             <h3 class="cardName" id="NombreItinerario-${index}" dataset-NomItim="${itinerario.ID}">
-                ${itinerario.Nombre}
+                ${escapeHtml(itinerario.Nombre)}
             </h3>
             <p class="cardDate">Creado: ${fechaFormateada}</p>
         </div>
 
         <div class="card-location-row">
             <img src="assets/icons/ubicacionIcon.png" class="cardLocationIcon">
-            <span class="cardLocation">Inicia en: <b>${placeName || 'Sin asignar'}</b></span>
+            <span class="cardLocation">Inicia en: <b>${escapeHtml(placeName || 'Sin asignar')}</b></span>
         </div>
 
         <div class="cardImages">
@@ -352,12 +362,12 @@ function createEmptyItineraryCard(itinerario) {
     <div class="cardsAP empty-card">
         ${deleteButtonHTML}
         <div class="cardHeader">
-            <h3 class="cardName">${itinerario.Nombre}</h3>
+            <h3 class="cardName">${escapeHtml(itinerario.Nombre)}</h3>
             <p class="cardDate">Creado: ${new Date(itinerario.fecha_Creacion).toLocaleDateString()}</p>
         </div>
         <div class="empty-state-body">
             <p data-i18n="planempty">Este plan de visita está vacío.</p>
-            <button class="add-place-btn-modern" onclick="goToMuseums('${itinerario.ID}', '${itinerario.Nombre}')">
+            <button class="add-place-btn-modern" onclick="goToMuseums(decodeURIComponent('${encodeInlineValue(itinerario.ID)}'), decodeURIComponent('${encodeInlineValue(itinerario.Nombre)}'))">
                 <img src="assets/icons/agregarIcon2.png">
                 <span data-i18n="add_museums">Agregar Museos</span>
             </button>
