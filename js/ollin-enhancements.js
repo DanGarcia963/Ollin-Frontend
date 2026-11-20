@@ -119,6 +119,24 @@
         '<button class="ollin-filter-chip" type="button" data-ollin-filter="discount">Con descuentos</button>';
       controls.after(row);
 
+      const filterLabels = {
+        es: ['Explora rápido:', 'Todos', 'Entrada gratis', 'Abiertos ahora', 'Con descuentos'],
+        en: ['Quick filters:', 'All', 'Free admission', 'Open now', 'Discounts'],
+        it: ['Filtri rapidi:', 'Tutti', 'Ingresso gratuito', 'Aperti ora', 'Sconti'],
+        fr: ['Filtres rapides :', 'Tous', 'Entrée gratuite', 'Ouverts', 'Réductions']
+      };
+      const applyFilterLanguage = () => {
+        const lang = document.getElementById('lang-select')?.value || 'es';
+        const labels = filterLabels[lang] || filterLabels.es;
+        const caption = row.querySelector('.ollin-filter-label');
+        if (caption) caption.textContent = labels[0];
+        row.querySelectorAll('button').forEach((button, index) => {
+          button.textContent = labels[index + 1];
+        });
+      };
+      applyFilterLanguage();
+      document.getElementById('lang-select')?.addEventListener('change', applyFilterLanguage);
+
       const filterIds = {
         free: 'filterAlwaysFree',
         open: 'filter-abierto-ahora',
