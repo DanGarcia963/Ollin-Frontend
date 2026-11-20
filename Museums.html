@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,8 +129,10 @@
     }
 }
 </style>
+    <link rel="stylesheet" href="/styles/ollin-refresh.css">
+    <script defer src="/js/ollin-enhancements.js"></script>
 </head>
-<body>
+<body class="ollin-refresh">
     <header>
         <div class="navbar" >
             <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
@@ -180,13 +182,18 @@
     </header>
     <main class="min-w-md max-w-full flexitems-center mx-auto px-4 py-8
     scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default"> 
-        <h1 class="titleAP" data-i18n="museums">Museos</h1>
+        <section class="ollin-page-intro" aria-labelledby="museums-page-title">
+          <div><span class="ollin-eyebrow">Explora la ciudad</span>
+          <h1 id="museums-page-title" class="titleAP" data-i18n="museums">Museos</h1>
+          <p>Encuentra lugares que te interesen. Busca por nombre o utiliza los filtros para descubrir opciones que encajen con tu visita.</p></div>
+          <span class="ollin-intro-icon" aria-hidden="true">🏛️</span>
+        </section>
 
         <div class="museums-controls flex items-center justify-between mb-4">
             <div class="search-box">
                 <input type="text" data-i18n-placeholder="search_museo" placeholder="Buscar museo por nombre..." id="searchMuseoInput">
                 <img src="assets/icons/lupaGoogl.png" id="search-box">
-                <img src="assets/icons/filtroIcono.png" alt="Filter" id="filter-icon">
+                <img src="assets/icons/filtroIcono.png" alt="Abrir filtros de museos" id="filter-icon" role="button" tabindex="0">
             </div>
         </div>
 

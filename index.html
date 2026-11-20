@@ -11,8 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
     <script defer src="js/i18n.js"></script>
+    <link rel="stylesheet" href="/styles/ollin-refresh.css">
+    <script defer src="/js/ollin-enhancements.js"></script>
 </head>
-<body>
+<body class="ollin-refresh ollin-auth">
     <div class="bg-circles">
         <div class="circle c1"></div>
         <div class="circle c2"></div>
@@ -31,22 +33,37 @@
             </div>
         </div>
 
-        <div class="glass-card">
+        <div class="ollin-auth-layout">
+          <section class="ollin-auth-story" aria-label="Bienvenida a Ollin">
+            <div>
+              <span class="ollin-auth-kicker">OLLIN · TU CAMINO CULTURAL</span>
+              <h2>La ciudad tiene historias esperando por ti.</h2>
+              <p>Explora los museos de la Ciudad de México, guarda tus favoritos y organiza visitas memorables a tu ritmo.</p>
+            </div>
+            <div class="ollin-auth-highlights" aria-label="Qué puedes hacer">
+              <span>✦ Descubre museos</span>
+              <span>♡ Guarda favoritos</span>
+              <span>↗ Planea tus rutas</span>
+            </div>
+          </section>
+          <div class="glass-card">
             <div class="brand-header">
-                <img src="/assets/icons/Logo.PNG" alt="Logo" class="logo">
+                <img src="/assets/icons/Logo.PNG" alt="Ollin" class="logo">
                 <h1 data-i18n="heading">Accede a tu cuenta</h1>
             </div>
 
-            <form id="login" novalidate>
+            <form id="login">
                     <label for="email" class="static-label" data-i18n="email_placeholder">Correo Electrónico</label>
-                    <input type="email" id="email" name="email"  required>
+                    <input type="email" id="email" name="email" autocomplete="username" inputmode="email" required>
 
                     <label for="password" class="static-label" data-i18n="password_placeholder">Contraseña</label>
                     <div class="password-wrapper">
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
                         <img src="/assets/icons/Boton ojoA.svg" alt="Mostrar" id="togglePassword" class="eye-icon">
                 </div>
                     <a href="/recuperacion" id="recuperation" data-i18n="link_recover">¿Olvidaste tu contraseña?</a>
+
+                <div id="loginMessage" class="ollin-form-message" role="status" aria-live="polite"></div>
 
                 <button type="submit" id="next" data-i18n="button_next">Iniciar sesión</button>
 
@@ -55,6 +72,7 @@
                     <a href="/registrar" class="register-link" data-i18n="button_register">Regístrate ahora</a>
                 </div>
             </form>
+          </div>
         </div>
     </div>
 

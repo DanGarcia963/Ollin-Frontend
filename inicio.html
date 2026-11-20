@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="home">Inicio</title>
+    <title data-i18n="home">Ollin | Descubre museos</title>
     <script type="module" src="js/i18n.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
@@ -43,8 +43,10 @@
     background-color: transparent;
     }
 </style>
+    <link rel="stylesheet" href="/styles/ollin-refresh.css">
+    <script defer src="/js/ollin-enhancements.js"></script>
 </head>
-<body>
+<body class="ollin-refresh">
     <header>
         <div class="navbar" >
             <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span> 
@@ -92,6 +94,21 @@
         </div>  
     </header>
     <main class="min-w-md max-w-full mx-auto px-4 py-8 scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default">
+    <section class="ollin-welcome" aria-labelledby="ollin-home-title">
+      <div>
+        <span class="ollin-eyebrow">La cultura es un viaje</span>
+        <h1 id="ollin-home-title">Tu próximo descubrimiento está en la ciudad.</h1>
+        <p>Museos, arte, historia y rincones por conocer. Elige qué te inspira hoy y crea tu siguiente plan con Ollin.</p>
+        <div class="ollin-welcome-actions">
+          <a class="ollin-action ollin-action--primary" href="/museums">Explorar museos <span aria-hidden="true">↗</span></a>
+          <a class="ollin-action ollin-action--secondary" href="/aventuras_proximas">Mis planes de visita <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="ollin-welcome-decoration" aria-hidden="true">
+        <span class="illustration">🏛️</span>
+        <span>Ciudad de México · Explora</span>
+      </div>
+    </section>
     <!-- ===== Banner / Carrusel ===== -->
 <section id="night-event" 
          class="relative w-full h-[500px] overflow-hidden rounded-2xl shadow-xl">

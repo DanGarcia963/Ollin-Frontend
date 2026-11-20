@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="/styles/loadingOverlay.css">
         <link rel="stylesheet" href="styles/navbar.css">
     <script src="ARCY-PRUEBAS/admin.js"></script>
+    <link rel="stylesheet" href="/styles/ollin-refresh.css">
+    <script defer src="/js/ollin-enhancements.js"></script>
 </head>
-<body>
+<body class="ollin-refresh">
     <header>
         <div class="navbar" >
             <span id="openBtn" class="btn-icon" onclick="openNav()" >&#9776;</span>
@@ -60,7 +62,10 @@
     </header>
     <main class="min-w-md max-w-full flexitems-center mx-auto px-4 py-8
     scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-900 scrollbar-hide hover:scrollbar-default"> 
-        <h1 class="titleAP" data-i18n="favorites">Mis Favoritos</h1>
+        <section class="ollin-page-intro"><div><span class="ollin-eyebrow">Tu colección personal</span>
+          <h1 class="titleAP" data-i18n="favorites">Mis Favoritos</h1>
+          <p>Ten a la mano los museos que te inspiran y conviértelos en tu próxima visita.</p></div>
+          <span class="ollin-intro-icon" aria-hidden="true">♡</span></section>
 
         <div id="favodes">
             <!-- Las tarjetas de lugares favoritos se insertarán aquí mediante JavaScript -->
